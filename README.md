@@ -26,15 +26,17 @@ Extract this folder. Copy the php_pdo_sqlsrv_74_nts.dll file to your php/ext fol
 Next we get to change the php.ini file. (Again, you will need to turn on visible extensions for this. Find that [here](https://fileinfo.com/help/windows_10_show_file_extensions)).
 Ctrl+F to find "curl". The first one should result in a "block" of extension lines.
 Uncomment the lines with these plugins:
+```
   curl
   fileinfo
   intl
   imap
   mbstring
   openssl
-  
+```
+
 And finally, add this line to the bottom of that extension block:
-  extension=php_pdo_sqlsrv_74_nts_x64.dll
+  `extension=php_pdo_sqlsrv_74_nts_x64.dll`
   
 Save the file and close it.
 
@@ -44,14 +46,16 @@ I will use the Windows Terminal for this, but opening the terminal in VSCode wil
 Using Windows Terminal:
 If using VSCode, skip past this section...
   cd into the project folder, wherever you put it. Mine was in 
-    > cd "C:\Users\Daniel Boling\Documents\Cemetery Project\cemetery_project\"
+    `> cd "C:\Users\Daniel Boling\Documents\Cemetery Project\cemetery_project\"`
     
 After in the working directory:
   run
+  ```
     > composer install
     > composer update
+  ```
   finally, start the dev server with
-    > symfony server:start -d
+    `> symfony server:start -d`
    
    
 You should see a prompt saying the site is running. Follow any other prompts (you may see one about a ca:certificate. Go ahead and run that command). If you visit [localhost:8000](localhost:8000) you should get a Symfony page, or the project loaded, depending on the project files.
