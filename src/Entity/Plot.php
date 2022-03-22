@@ -1,0 +1,125 @@
+<?php
+
+namespace App\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Plot
+ *
+ * @ORM\Table(name="plot")
+ * @ORM\Entity
+ */
+class Plot
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="plot_id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $plotId;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="cemetery_name", type="string", length=50, nullable=true)
+     */
+    private $cemeteryName;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="section", type="string", length=10, nullable=true)
+     */
+    private $section;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="lot", type="string", length=10, nullable=true)
+     */
+    private $lot;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="space", type="string", length=10, nullable=true)
+     */
+    private $space;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="notes", type="text", length=16, nullable=true)
+     */
+    private $notes;
+
+    public function getPlotId(): ?int
+    {
+        return $this->plotId;
+    }
+
+    public function getCemeteryName(): ?string
+    {
+        return $this->cemeteryName;
+    }
+
+    public function setCemeteryName(?string $cemeteryName): self
+    {
+        $this->cemeteryName = $cemeteryName;
+
+        return $this;
+    }
+
+    public function getSection(): ?string
+    {
+        return $this->section;
+    }
+
+    public function setSection(?string $section): self
+    {
+        $this->section = $section;
+
+        return $this;
+    }
+
+    public function getLot(): ?string
+    {
+        return $this->lot;
+    }
+
+    public function setLot(?string $lot): self
+    {
+        $this->lot = $lot;
+
+        return $this;
+    }
+
+    public function getSpace(): ?string
+    {
+        return $this->space;
+    }
+
+    public function setSpace(?string $space): self
+    {
+        $this->space = $space;
+
+        return $this;
+    }
+
+    public function getNotes(): ?string
+    {
+        return $this->notes;
+    }
+
+    public function setNotes(?string $notes): self
+    {
+        $this->notes = $notes;
+
+        return $this;
+    }
+
+
+}
