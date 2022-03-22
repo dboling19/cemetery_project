@@ -1,4 +1,4 @@
-# cemetery_project
+# Project Management - Cemetery Project 
 
 Useful Documentation/Sources:
   [Symfony](https://symfony.com/doc/current/index.html)
