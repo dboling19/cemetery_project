@@ -1,0 +1,20 @@
+{{ form(owner_form) }}
+{{ form(plot_form) }}
+
+{# <script>
+var $owner = $('#owner');
+// When owner gets selected ...
+$owner.change(function() {
+  // ... retrieve the corresponding form.
+  var $form = $(this).closest('first_owner_form');
+  // Simulate form data, but only include the selected owner value.
+  var data = {};
+  data[$owner.attr('ownerFullName')] = $owner.val();
+  // Submit data via AJAX to the form's action path.
+  $.ajax({
+    url : $form.attr('action'),
+    type: $form.attr('method'),
+    data : data
+  });
+});
+</script> #}

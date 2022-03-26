@@ -5,8 +5,9 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use App\Repository\PlotRepository;
 use App\Entity\Plot;
 use App\Entity\Owner;
 use App\Entity\Burial;
@@ -24,16 +25,18 @@ class DisplayController extends AbstractController
    * 
    * @Route("/", name="display")
    */
-  public function display(): Response
+  public function display(PlotRepository $plot_repository): Response
   {
 
-    $plot = $this->getDoctrine()->getRepository(Plot::class)
-        ->findAll();
+    $plot = $plot_repository->findBy(array(), array('plotId' => 'desc'), 10);
 
 
-    return $this->render('display/display.html.twig', [
+    return $this->render('display.html.twig', [
         'plot' => $plot,
     ]);
 
   }
 }
+
+
+// EOF

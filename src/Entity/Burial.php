@@ -24,16 +24,16 @@ class Burial
     /**
      * @var string|null
      *
-     * @ORM\Column(name="burial_last", type="string", length=50, nullable=true)
+     * @ORM\Column(name="burial_first", type="string", length=50, nullable=true)
      */
-    private $burialLast;
+    private $burialFirst;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="burial_first", type="string", length=50, nullable=true)
+     * @ORM\Column(name="burial_last", type="string", length=50, nullable=true)
      */
-    private $burialFirst;
+    private $burialLast;
 
     /**
      * @var string|null
@@ -75,18 +75,6 @@ class Burial
         return $this->burialId;
     }
 
-    public function getBurialLast(): ?string
-    {
-        return $this->burialLast;
-    }
-
-    public function setBurialLast(?string $burialLast): self
-    {
-        $this->burialLast = $burialLast;
-
-        return $this;
-    }
-
     public function getBurialFirst(): ?string
     {
         return $this->burialFirst;
@@ -95,6 +83,18 @@ class Burial
     public function setBurialFirst(?string $burialFirst): self
     {
         $this->burialFirst = $burialFirst;
+
+        return $this;
+    }
+
+    public function getBurialLast(): ?string
+    {
+        return $this->burialLast;
+    }
+
+    public function setBurialLast(?string $burialLast): self
+    {
+        $this->burialLast = $burialLast;
 
         return $this;
     }
