@@ -49,6 +49,7 @@ class LotPurchaseController extends AbstractController
     // find required data for choice menus in forms
 
     $form_array = array();
+    // passing empty array into form to *hopefully* return an array with data later
     $form = $this->createForm(LotPurchaseForm::class, $form_array, [
       'owners' => $owners,
       'sections' => $sections,
