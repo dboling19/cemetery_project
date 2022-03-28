@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Burial
  *
  * @ORM\Table(name="burial")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass=BurialRepository::class)
  */
 class Burial
 {

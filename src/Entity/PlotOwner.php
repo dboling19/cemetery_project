@@ -8,10 +8,19 @@ use Doctrine\ORM\Mapping as ORM;
  * PlotOwner
  *
  * @ORM\Table(name="plot_owner")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass=PlotOwnerRepository::class)
  */
 class PlotOwner
 {
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="table_id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
+     */
+    private $tableId;
+
     /**
      * @var int
      *
@@ -26,17 +35,10 @@ class PlotOwner
      */
     private $plotId;
 
-    /**
-     * @var \PlotOwner
-     *
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     * @ORM\OneToOne(targetEntity="PlotOwner")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="table_id", referencedColumnName="table_id")
-     * })
-     */
-    private $table;
+    public function getTableId(): ?int
+    {
+        return $this->tableId;
+    }
 
     public function getOwnerId(): ?int
     {
@@ -58,18 +60,6 @@ class PlotOwner
     public function setPlotId(int $plotId): self
     {
         $this->plotId = $plotId;
-
-        return $this;
-    }
-
-    public function getTable(): ?self
-    {
-        return $this->table;
-    }
-
-    public function setTable(?self $table): self
-    {
-        $this->table = $table;
 
         return $this;
     }

@@ -1,20 +1,73 @@
-{{ form(owner_form) }}
-{{ form(plot_form) }}
 
-{# <script>
-var $owner = $('#owner');
-// When owner gets selected ...
-$owner.change(function() {
-  // ... retrieve the corresponding form.
-  var $form = $(this).closest('first_owner_form');
-  // Simulate form data, but only include the selected owner value.
-  var data = {};
-  data[$owner.attr('ownerFullName')] = $owner.val();
-  // Submit data via AJAX to the form's action path.
-  $.ajax({
-    url : $form.attr('action'),
-    type: $form.attr('method'),
-    data : data
-  });
-});
-</script> #}
+<p>Owner Selection</p>
+{{ form_start(form) }}
+{{ form_row(form.owner) }}
+{{ form_row(form.street_address) }}
+{{ form_row(form.city) }}
+{{ form_row(form.state) }}
+{{ form_row(form.zip_code) }}
+{{ form_row(form.phone_num) }}
+<div id="addOwnerElement"></div>
+<button type="button" onclick="addOwner()">Add Owner</button>
+<br>
+<br>
+<p>Plot Selection</p>
+{{ form_row(form.cemetery) }}
+{{ form_row(form.section) }}
+{{ form_row(form.lot) }}
+{{ form_row(form.space) }}
+{{ form_row(form.notes) }}
+{{ form_row(form.submit) }}
+{{ form_end(form) }}
+
+<script>
+
+  let owner_count = 1;
+
+  function addOwner()
+  {
+    let div = document.createElement('div');
+    div.setAttribute('id', 'addOwnerElement');
+
+    let owner = document.createElement('owner');
+    owner.setAttribute('id', 'lot_purchase_form_owner_' + owner_count);
+    owner.setAttribute('name', 'lot_purchase_form[owner][]');
+    owner.setAttribute('type', 'text');
+
+    let street = document.createElement('street');
+    owner.setAttribute('id', 'lot_purchase_form_owner_' + owner_count);
+    owner.setAttribute('name', 'lot_purchase_form[owner][]');
+    owner.setAttribute('type', 'text');
+
+    let city = document.createElement('city');
+    owner.setAttribute('id', 'lot_purchase_form_owner_' + owner_count);
+    owner.setAttribute('name', 'lot_purchase_form[owner][]');
+    owner.setAttribute('type', 'text');
+
+    let state = document.createElement('state');
+    owner.setAttribute('id', 'lot_purchase_form_owner_' + owner_count);
+    owner.setAttribute('name', 'lot_purchase_form[owner][]');
+    owner.setAttribute('type', 'text');
+
+    let zip = document.createElement('zip');
+    owner.setAttribute('id', 'lot_purchase_form_owner_' + owner_count);
+    owner.setAttribute('name', 'lot_purchase_form[owner][]');
+    owner.setAttribute('type', 'text');
+
+    let phone = document.createElement('phone');
+    owner.setAttribute('id', 'lot_purchase_form_owner_' + owner_count);
+    owner.setAttribute('name', 'lot_purchase_form[owner][]');
+    owner.setAttribute('type', 'text');
+
+
+    document.getElementById('addOwnerElement').appendChild(owner);
+    document.getElementById('addOwnerElement').appendChild(street);
+    document.getElementById('addOwnerElement').appendChild(city);
+    document.getElementById('addOwnerElement').appendChild(state);
+    document.getElementById('addOwnerElement').appendChild(zip);
+    document.getElementById('addOwnerElement').appendChild(phone);
+    document.getElementById('addOwnerElement').appendChild(div);
+
+  }
+
+</script>

@@ -61,13 +61,6 @@ class Plot
         return $this->plotId;
     }
 
-    public function setPlotId(?int $plotId): self
-    {
-        $this->plotId = $plotId;
-
-        return $this;
-    }
-
     public function getCemetery(): ?string
     {
         return $this->cemetery;
