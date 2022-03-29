@@ -8,6 +8,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
@@ -32,6 +33,9 @@ class OwnerType extends AbstractType
       ->add('state', TextType::class)
       ->add('zipCode', TextType::class)
       ->add('phoneNum', TextType::class)
+      ->add('oldOwner', CheckboxType::class, [
+        'required' => false,
+      ])
     ;
   }
 

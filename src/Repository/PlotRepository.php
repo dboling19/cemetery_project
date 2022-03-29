@@ -22,46 +22,6 @@ class PlotRepository extends ServiceEntityRepository
         parent::__construct($registry, Plot::class); 
     }
 
-    public function getSectionsArray()
-    {
-        $sections = [];
-
-        $results = $this->_em->createQueryBuilder('plot')
-            ->select("p.section, max('p.plot_id')")
-            ->from(Plot::class, 'p')
-            ->groupBy('p.section')
-            ->getQuery()
-            ->getArrayResult();
-
-        foreach ($results as $result) {
-            if (!in_array($result['section'], $sections)) {
-                $sections[$result['section']] = $result['section'];
-            }
-        }
-
-        return $sections;
-    }
-
-    public function getSpacesArray()
-    {
-        $spaces = [];
-
-        $results = $this->_em->createQueryBuilder('plot')
-            ->select("p.space, max('p.plot_id')")
-            ->from(Plot::class, 'p')
-            ->groupBy('p.space')
-            ->getQuery()
-            ->getArrayResult();
-
-        foreach ($results as $result) {
-            if (!in_array($result['space'], $spaces)) {
-                $spaces[$result['space']] = $result['space'];
-            }
-        }
-
-        return $spaces;
-    }
-
     /**
      * @throws ORMException
      * @throws OptimisticLockException

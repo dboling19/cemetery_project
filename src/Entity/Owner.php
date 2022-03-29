@@ -63,6 +63,12 @@ class Owner
      */
     private $phoneNum;
 
+    /**
+     * @var bool|null
+     * 
+     */
+    private $oldOwner;
+
     public function getOwnerId(): ?int
     {
         return $this->ownerId;
@@ -136,6 +142,18 @@ class Owner
     public function setPhoneNum(?string $phoneNum): self
     {
         $this->phoneNum = $phoneNum;
+
+        return $this;
+    }
+
+    public function getOldOwner(): ?bool
+    {
+        return $this->oldOwner;
+    }
+
+    public function setOldOwner(?bool $oldOwner): self
+    {
+        $this->oldOwner = $oldOwner;
 
         return $this;
     }

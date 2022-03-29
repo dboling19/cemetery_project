@@ -32,13 +32,15 @@ class PlotType extends AbstractType
         'choices' => [
           'West Goshen' => 'West Goshen',
           'Oakridge' => 'Oakridge',
-          'Violet' => 'Violet'
+          'Violet' => 'Violet',
         ],
       ])
       ->add('section', TextType::class)
       ->add('lot', TextType::class)
       ->add('space', TextType::class)
-      ->add('notes', TextAreaType::class)
+      ->add('notes', TextAreaType::class, [
+        'required' => false,
+      ])
     ;
 
 
