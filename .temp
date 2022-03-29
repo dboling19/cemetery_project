@@ -1,44 +1,50 @@
-let div = document.createElement('div');
-div.setAttribute('id', 'addOwnerElement');
+let owner_count = 1;
 
-let owner = document.createElement('owner');
-owner.setAttribute('id', 'lot_purchase_form_owner_' + owner_count);
-owner.setAttribute('name', 'lot_purchase_form[owner][]');
-owner.setAttribute('type', 'text');
+function addOwner()
+{
+  let div = document.createElement('div');
+  div.setAttribute('id', 'addOwnerElement');
 
-let street = document.createElement('street');
-owner.setAttribute('id', 'lot_purchase_form_owner_' + owner_count);
-owner.setAttribute('name', 'lot_purchase_form[owner][]');
-owner.setAttribute('type', 'text');
+  let owner = document.createElement('owner');
+  owner.setAttribute('id', 'lot_purchase_form_owner_' + owner_count);
+  owner.setAttribute('name', 'lot_purchase_form[owner][]');
+  owner.setAttribute('type', 'text');
 
-let city = document.createElement('city');
-owner.setAttribute('id', 'lot_purchase_form_owner_' + owner_count);
-owner.setAttribute('name', 'lot_purchase_form[owner][]');
-owner.setAttribute('type', 'text');
+  let street = document.createElement('street');
+  owner.setAttribute('id', 'lot_purchase_form_owner_' + owner_count);
+  owner.setAttribute('name', 'lot_purchase_form[owner][]');
+  owner.setAttribute('type', 'text');
 
-let state = document.createElement('state');
-owner.setAttribute('id', 'lot_purchase_form_owner_' + owner_count);
-owner.setAttribute('name', 'lot_purchase_form[owner][]');
-owner.setAttribute('type', 'text');
+  let city = document.createElement('city');
+  owner.setAttribute('id', 'lot_purchase_form_owner_' + owner_count);
+  owner.setAttribute('name', 'lot_purchase_form[owner][]');
+  owner.setAttribute('type', 'text');
 
-let zip = document.createElement('zip');
-owner.setAttribute('id', 'lot_purchase_form_owner_' + owner_count);
-owner.setAttribute('name', 'lot_purchase_form[owner][]');
-owner.setAttribute('type', 'text');
+  let state = document.createElement('state');
+  owner.setAttribute('id', 'lot_purchase_form_owner_' + owner_count);
+  owner.setAttribute('name', 'lot_purchase_form[owner][]');
+  owner.setAttribute('type', 'text');
 
-let phone = document.createElement('phone');
-owner.setAttribute('id', 'lot_purchase_form_owner_' + owner_count);
-owner.setAttribute('name', 'lot_purchase_form[owner][]');
-owner.setAttribute('type', 'text');
+  let zip = document.createElement('zip');
+  owner.setAttribute('id', 'lot_purchase_form_owner_' + owner_count);
+  owner.setAttribute('name', 'lot_purchase_form[owner][]');
+  owner.setAttribute('type', 'text');
+
+  let phone = document.createElement('phone');
+  owner.setAttribute('id', 'lot_purchase_form_owner_' + owner_count);
+  owner.setAttribute('name', 'lot_purchase_form[owner][]');
+  owner.setAttribute('type', 'text');
 
 
-document.getElementById('addOwnerElement').appendChild(owner);
-document.getElementById('addOwnerElement').appendChild(street);
-document.getElementById('addOwnerElement').appendChild(city);
-document.getElementById('addOwnerElement').appendChild(state);
-document.getElementById('addOwnerElement').appendChild(zip);
-document.getElementById('addOwnerElement').appendChild(phone);
-document.getElementById('addOwnerElement').appendChild(div);
+  document.getElementById('addOwnerElement').appendChild(owner);
+  document.getElementById('addOwnerElement').appendChild(street);
+  document.getElementById('addOwnerElement').appendChild(city);
+  document.getElementById('addOwnerElement').appendChild(state);
+  document.getElementById('addOwnerElement').appendChild(zip);
+  document.getElementById('addOwnerElement').appendChild(phone);
+  document.getElementById('addOwnerElement').appendChild(div);
+
+}
 
 
 
@@ -103,3 +109,47 @@ document.getElementById('addOwnerElement').appendChild(div);
   }
 
 </script>
+
+
+->add('street_address', CollectionType::class, [
+        'entry_type' => TextType::class,
+        'allow_add' => true,
+        'allow_delete' => true,
+      ])
+      ->add('city', CollectionType::class, [
+        'entry_type' => TextType::class,
+        'allow_add' => true,
+        'allow_delete' => true,
+      ])
+      ->add('state', CollectionType::class, [
+        'entry_type' => TextType::class,
+        'allow_add' => true,
+        'allow_delete' => true,
+      ])
+      ->add('zip_code', CollectionType::class, [
+        'entry_type' => TextType::class,
+        'allow_add' => true,
+        'allow_delete' => true,
+      ])
+      ->add('phone_num', CollectionType::class, [
+        'entry_type' => TextType::class,
+        'allow_add' => true,
+        'allow_delete' => true,
+      ])
+      ->add('cemetery', ChoiceType::class, [
+        'choices' => [
+          'West Goshen' => 'West Goshen',
+          'Oakridge' => 'Oakridge',
+          'Violet' => 'Violet'
+        ],
+      ])
+      ->add('section', ChoiceType::class, [
+        'choices' => $this->sections,
+      ])
+      ->add('lot', TextType::class)
+      ->add('space', ChoiceType::class, [
+        'choices' => $this->spaces,
+      ])
+      ->add('notes', TextAreaType::class, [
+        'required' => false,
+      ])

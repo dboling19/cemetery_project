@@ -1,4 +1,4 @@
-<?php
+<?php    
 
 namespace App\Form;
 
@@ -16,40 +16,31 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use App\Entity\Owner;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 
-class LotPurchaseForm extends AbstractType
+class OwnerType extends AbstractType
 {
-
   public function buildForm(FormBuilderInterface $builder, array $options): void
   {
 
     $builder
-      ->add('owner', CollectionType::class, [
-        'entry_type' => OwnerType::class,
-        'entry_options' => ['label' => false],
-        'allow_add' => true,
-        'allow_delete' => true,
-        'prototype' => true,
-        'delete_empty' => true,
-      ])
-      ->add('plot', CollectionType::class, [
-        'entry_type' => PlotType::class,
-        'entry_options' => ['label' => false],
-        'allow_add' => true,
-        'allow_delete' => true,
-        'prototype' => true,
-        'delete_empty' => true,
-      ])
-      ->add('submit', SubmitType::class, [
-        'label' => 'Submit Record',
-      ])
+      ->add('ownerFullName', TextType::class)
+      ->add('streetAddress', TextType::class)
+      ->add('city', TextType::class)
+      ->add('state', TextType::class)
+      ->add('zipCode', TextType::class)
+      ->add('phoneNum', TextType::class)
     ;
-
   }
 
+  public function configureOptions(OptionsResolver $resolver): void
+  {
+    $resolver->setDefaults([
+      'data_class' => Owner::class,
+    ]);
+  }
 }
-
 
 // EOF

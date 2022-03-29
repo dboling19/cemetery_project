@@ -50,16 +50,16 @@ class Owner
     private $state;
 
     /**
-     * @var string|null
+     * @var int|null
      *
-     * @ORM\Column(name="zip_code", type="string", length=10, nullable=true)
+     * @ORM\Column(name="zip_code", type="integer", nullable=true)
      */
     private $zipCode;
 
-    /**`
-     * @var int|null
+    /**
+     * @var string|null
      *
-     * @ORM\Column(name="phone_num", type="integer", nullable=true)
+     * @ORM\Column(name="phone_num", type="string", length="50", nullable=true)
      */
     private $phoneNum;
 
@@ -116,24 +116,24 @@ class Owner
         return $this;
     }
 
-    public function getZipCode(): ?string
+    public function getZipCode(): ?int
     {
         return $this->zipCode;
     }
 
-    public function setZipCode(?string $zipCode): self
+    public function setZipCode(?int $zipCode): self
     {
         $this->zipCode = $zipCode;
 
         return $this;
     }
 
-    public function getPhoneNum(): ?int
+    public function getPhoneNum(): ?string
     {
         return $this->phoneNum;
     }
 
-    public function setPhoneNum(?int $phoneNum): self
+    public function setPhoneNum(?string $phoneNum): self
     {
         $this->phoneNum = $phoneNum;
 
