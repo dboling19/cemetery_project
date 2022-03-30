@@ -109,7 +109,7 @@ class PlotReleaseController extends AbstractController
         $po = $po_repo->findOneBy(array('ownerId' => $from_from_owner->getOwnerId(), 'plotId' => $plot->getPlotId()));
         $po->setPlotId($plot->getPlotId());
         $po->setOwnerId($found_to_owner->getOwnerId());
-        $po->setNotarized(0);
+        $po->setNotarized($form_array['notarized']);
         $po->setDate($this->date);
         // setting up the M-M table input
         $this->em->persist($po);
