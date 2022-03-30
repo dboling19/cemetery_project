@@ -5,20 +5,6 @@
 <p>Owner Selection</p>
 {{ form_start(form) }}
 
-<div id="owner-fields-list"
-    data-prototype="{{ form_widget(form.owner.vars.prototype)|e }}"
-    data-widget-tags="{{ '<p></p>'|e }}"
-    data-widget-counter="{{ form.owner|length }}">
-<br>
-<br>
-{% for ownerField in form.owner %}
-  <p>Owner</p>
-  {{ form_widget(ownerField) }}
-{% endfor %}
-</div>
-<button type="button" class="add-another-collection-widget" data-list-selector="#owner-fields-list">Add Owner</button>
-
-
 <div id="plot-fields-list"
     data-prototype="{{ form_widget(form.plot.vars.prototype)|e }}"
     data-widget-tags="{{ '<p></p>'|e }}"
@@ -26,12 +12,16 @@
 <br>
 <br>
 {% for plotField in form.plot %}
-  <p>Plot</p>
   {{ form_row(plotField) }}
 {% endfor %}
 </div>
 <button type="button" class="add-another-collection-widget" data-list-selector="#plot-fields-list">Add Plot</button>
-
+<br>
+<br>
+{{ form_row(form.from_owner) }}
+<br>
+<br>
+{{ form_row(form.to_owner) }}
 
 {{ form_row(form.submit) }}
 {{ form_end(form, {'render_rest': false}) }}

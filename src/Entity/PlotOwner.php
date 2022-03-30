@@ -35,6 +35,20 @@ class PlotOwner
      */
     private $plotId;
 
+    /**
+     * @var int
+     * 
+     * @ORM\Column(name="notarized", type="integer", nullable=false)
+     */
+    private $notarized;
+
+    /**
+     * @var \DateTimeInterface|null
+     * 
+     * @ORM\Column(name="date", type="date", nullable=true)
+     */
+    private $date;
+
     public function getTableId(): ?int
     {
         return $this->tableId;
@@ -60,6 +74,30 @@ class PlotOwner
     public function setPlotId(int $plotId): self
     {
         $this->plotId = $plotId;
+
+        return $this;
+    }
+
+    public function getNotarized(): ?int
+    {
+        return $this->notarized;
+    }
+
+    public function setNotarized(int $notarized): self
+    {
+        $this->notarized = $notarized;
+
+        return $this;
+    }
+
+    public function getDate(): ?\DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    public function setdate(\DateTimeInterface $date): self
+    {
+        $this->date = $date;
 
         return $this;
     }

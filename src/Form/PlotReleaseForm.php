@@ -19,23 +19,15 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 
-class LotPurchaseForm extends AbstractType
+class PlotReleaseForm extends AbstractType
 {
 
   public function buildForm(FormBuilderInterface $builder, array $options): void
   {
 
     $builder
-      ->add('owner', CollectionType::class, [
-        'entry_type' => OwnerType::class,
-        'entry_options' => [
-          'label' => false,
-        ],
-        'allow_add' => true,
-        'allow_delete' => true,
-        'prototype' => true,
-        'delete_empty' => true,
-      ])
+      ->add('from_owner', OwnerType::class)
+      ->add('to_owner', OwnerType::class)
       ->add('plot', CollectionType::class, [
         'entry_type' => PlotType::class,
         'entry_options' => [
