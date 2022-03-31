@@ -31,15 +31,13 @@ class PlotReleaseForm extends AbstractType
       ->add('to_owner', OwnerType::class)
       ->add('plot', CollectionType::class, [
         'entry_type' => PlotType::class,
-        'entry_options' => [
-          'label' => false,
-        ],
         'allow_add' => true,
         'allow_delete' => true,
         'prototype' => true,
         'delete_empty' => true,
       ])
       ->add('notarized', CheckboxType::class)
+      ->add('date', DateType::class)
       ->add('submit', SubmitType::class, [
         'label' => 'Submit Record',
       ])

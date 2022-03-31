@@ -1,47 +1,29 @@
-{% import _self as plotMacros %}
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 {{ include("navbar.html.twig") }}
-
-{% macro printPlotFieldRow(plotField) %}
-  <div class="plot-fields-list">
-    <label>Plot Name</label>
-    {{ form_label(plotField.cemetery) }}
-    <br>
-    {{ form_widget(plotField.cemetery) }}
-  </div>
-{% endmacro %}
 
 <p>Owner Selection</p>
 {{ form_start(form) }}
 
-<div id="owner-fields-list"
-    data-prototype="{{ form_widget(form.owner.vars.prototype)|e }}"
-    data-widget-tags="{{ '<p></p>'|e }}"
-    data-widget-counter="{{ form.owner|length }}">
-<br>
-<br>
-{% for ownerField in form.owner %}
-  <p>Owner</p>
-  {{ form_widget(ownerField) }}
-{% endfor %}
-</div>
-<button type="button" class="add-another-collection-widget" data-list-selector="#owner-fields-list">Add Owner</button>
-
-
 <div id="plot-fields-list"
-    data-prototype="{{ plotMacros.printPlotFieldRow(form.plot.vars.prototype)|e('html_attr') }}"
+    data-prototype="{{ form_widget(form.plot.vars.prototype)|e }}"
     data-widget-tags="{{ '<p></p>'|e }}"
     data-widget-counter="{{ form.plot|length }}">
 <br>
 <br>
-<p>Plot(s)</p>
 {% for plotField in form.plot %}
-  {{ plotMacros.printPlotFieldRow(plotField) }}
+  {{ form_row(plotField) }}
 {% endfor %}
 </div>
 <button type="button" class="add-another-collection-widget" data-list-selector="#plot-fields-list">Add Plot</button>
+<br>
+<br>
+{{ form_row(form.from_owner) }}
+<br>
+<br>
+{{ form_row(form.to_owner) }}
 
-
+{{ form_row(form.notarized) }}
 {{ form_row(form.submit) }}
 {{ form_end(form, {'render_rest': false}) }}
 
