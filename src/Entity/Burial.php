@@ -17,7 +17,7 @@ class Burial
      *
      * @ORM\Column(name="burial_id", type="integer", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $burialId;
 
@@ -70,9 +70,22 @@ class Burial
      */
     private $funeralHome;
 
+    /**
+     * @var \DateTimeInterface|null
+     */
+    private $date;
+
+    
     public function getBurialId(): ?int
     {
         return $this->burialId;
+    }
+
+    public function setBurialId(?int $burialId): self
+    {
+        $this->burialId = $burialId;
+
+        return $this;
     }
 
     public function getBurialFirst(): ?string
@@ -155,6 +168,18 @@ class Burial
     public function setFuneralHome(?string $funeralHome): self
     {
         $this->funeralHome = $funeralHome;
+
+        return $this;
+    }
+
+    public function getDate(): ?\DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    public function setDate(\DateTimeInterface $date): self
+    {
+        $this->date = $date;
 
         return $this;
     }

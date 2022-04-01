@@ -35,20 +35,19 @@ class PlotReleaseController extends AbstractController
   }
 
   /**
-   * Provides the logic and form rendering for the lot purchase form.
+   * Provides the logic and form rendering for the lot purchase and affidavit forms.
    *
    * @author Daniel Boling
    * 
-   * @Route("/plot_release", name="plot_release")
+   * @Route("/owner_transfer", name="owner_transfer")
    */
-  public function plot_release(Request $request, PlotRepository $plot_repo, OwnerRepository $owner_repo, PlotOwnerRepository $po_repo): Response
+  public function owner_transfer(Request $request, PlotRepository $plot_repo, OwnerRepository $owner_repo, PlotOwnerRepository $po_repo): Response
   {
 
     $form_array = array();
     // passing empty array into form to *hopefully* return an array with data later
     $form = $this->createForm(PlotReleaseForm::class, $form_array);
     $form->handleRequest($request);
-    // both of these forms will be empty values. This is intended to pull dummy data back from the forms for lookup
 
 
     if ($form->isSubmitted() && $form->isValid())
@@ -116,7 +115,7 @@ class PlotReleaseController extends AbstractController
         $this->em->flush();
 
       }
-      return $this->redirectToRoute('plot_release');
+      return $this->redirectToRoute('owner_transfer');
       // this may need to redirect elsewhere
 
     }

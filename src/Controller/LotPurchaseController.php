@@ -47,7 +47,6 @@ class LotPurchaseController extends AbstractController
     // passing empty array into form to *hopefully* return an array with data later
     $form = $this->createForm(LotPurchaseForm::class, $form_array);
     $form->handleRequest($request);
-    // both of these forms will be empty values. This is intended to pull dummy data back from the forms for lookup
 
 
     if ($form->isSubmitted() && $form->isValid())
