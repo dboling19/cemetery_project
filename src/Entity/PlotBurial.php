@@ -7,10 +7,10 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * PlotOwner
  *
- * @ORM\Table(name="plot_owner")
- * @ORM\Entity(repositoryClass=PlotOwnerRepository::class)
+ * @ORM\Table(name="plot_burial")
+ * @ORM\Entity(repositoryClass=PlotBurialRepository::class)
  */
-class PlotOwner
+class PlotBurial
 {
     /**
      * @var int
@@ -24,9 +24,9 @@ class PlotOwner
     /**
      * @var int
      *
-     * @ORM\Column(name="owner_id", type="integer", nullable=false)
+     * @ORM\Column(name="burial_id", type="integer", nullable=false)
      */
-    private $ownerId;
+    private $burialId;
 
     /**
      * @var int
@@ -38,30 +38,30 @@ class PlotOwner
     /**
      * @var int
      * 
-     * @ORM\Column(name="notarized", type="integer", nullable=false)
+     * @ORM\Column(name="approval", type="integer", nullable=false)
      */
-    private $notarized;
+    private $approval;
 
     /**
      * @var \DateTimeInterface|null
      * 
-     * @ORM\Column(name="date", type="date", nullable=true)
+     * @ORM\Column(name="burial_date", type="date", nullable=true)
      */
-    private $date;
+    private $burial_date;
 
     public function getTableId(): ?int
     {
         return $this->tableId;
     }
 
-    public function getOwnerId(): ?int
+    public function getBurialId(): ?int
     {
-        return $this->ownerId;
+        return $this->burialId;
     }
 
-    public function setOwnerId(int $ownerId): self
+    public function setBurialId(int $burialId): self
     {
-        $this->ownerId = $ownerId;
+        $this->burialId = $burialId;
 
         return $this;
     }
@@ -78,26 +78,26 @@ class PlotOwner
         return $this;
     }
 
-    public function getNotarized(): ?int
+    public function getApproval(): ?int
     {
-        return $this->notarized;
+        return $this->approval;
     }
 
-    public function setNotarized(int $notarized): self
+    public function setApproval(int $approval): self
     {
-        $this->notarized = $notarized;
+        $this->approval = $approval;
 
         return $this;
     }
 
-    public function getDate(): ?\DateTimeInterface
+    public function getBurialDate(): ?\DateTimeInterface
     {
-        return $this->date;
+        return $this->burial_date;
     }
 
-    public function setdate(\DateTimeInterface $date): self
+    public function setdate(\DateTimeInterface $burial_date): self
     {
-        $this->date = $date;
+        $this->burial_date = $burial_date;
 
         return $this;
     }

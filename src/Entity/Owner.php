@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Owner
  *
  * @ORM\Table(name="owner")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass=OwnerRepository::class)
  */
 class Owner
 {
@@ -28,6 +28,47 @@ class Owner
      */
     private $ownerFullName;
 
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="street_address", type="string", length=50, nullable=true)
+     */
+    private $streetAddress;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="city", type="string", length=50, nullable=true)
+     */
+    private $city;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="state", type="string", length=2, nullable=true)
+     */
+    private $state;
+
+    /**
+     * @var int|null
+     *
+     * @ORM\Column(name="zip_code", type="integer", nullable=true)
+     */
+    private $zipCode;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="phone_num", type="string", length="50", nullable=true)
+     */
+    private $phoneNum;
+
+    /**
+     * @var bool|null
+     * 
+     */
+    private $oldOwner;
+
     public function getOwnerId(): ?int
     {
         return $this->ownerId;
@@ -41,6 +82,78 @@ class Owner
     public function setOwnerFullName(string $ownerFullName): self
     {
         $this->ownerFullName = $ownerFullName;
+
+        return $this;
+    }
+
+    public function getStreetAddress(): ?string
+    {
+        return $this->streetAddress;
+    }
+
+    public function setStreetAddress(?string $streetAddress): self
+    {
+        $this->streetAddress = $streetAddress;
+
+        return $this;
+    }
+
+    public function getCity(): ?string
+    {
+        return $this->city;
+    }
+
+    public function setCity(?string $city): self
+    {
+        $this->city = $city;
+
+        return $this;
+    }
+
+    public function getState(): ?string
+    {
+        return $this->state;
+    }
+
+    public function setState(?string $state): self
+    {
+        $this->state = $state;
+
+        return $this;
+    }
+
+    public function getZipCode(): ?int
+    {
+        return $this->zipCode;
+    }
+
+    public function setZipCode(?int $zipCode): self
+    {
+        $this->zipCode = $zipCode;
+
+        return $this;
+    }
+
+    public function getPhoneNum(): ?string
+    {
+        return $this->phoneNum;
+    }
+
+    public function setPhoneNum(?string $phoneNum): self
+    {
+        $this->phoneNum = $phoneNum;
+
+        return $this;
+    }
+
+    public function getOldOwner(): ?bool
+    {
+        return $this->oldOwner;
+    }
+
+    public function setOldOwner(?bool $oldOwner): self
+    {
+        $this->oldOwner = $oldOwner;
 
         return $this;
     }

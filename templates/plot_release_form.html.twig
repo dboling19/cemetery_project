@@ -1,0 +1,126 @@
+{% import _self as plotMacros %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+{{ include('navbar.html.twig') }}
+
+{% macro printPlotFieldRow(plotField) %}
+  <div class="plot-fields-list">
+    <label>Plot</label>
+    <br>
+    {{ form_label(plotField.cemetery) }}
+    <br>
+    {{ form_widget(plotField.cemetery) }}
+  </div>
+{% endmacro %}
+
+<h2><b> Release of Burial Space Ownership Rights </b></h2>
+<!---<h3> Goshen City Cemeteries Violett, Oakridge & West Goshen </h3>-->
+<br>
+{{ form_start(form) }}
+{{ form_label(form.date) }}
+{{ form_widget(form.date) }}
+</p>
+<p>
+<label>With Regard to:</label>
+<br>
+
+<div id="plot-fields-list"
+    data-prototype="{{ plotMacros.printPlotFieldRow(form.plot.vars.prototype)|e('html_attr') }}"
+    data-widget-tags="{{ '<p></p>'|e }}"
+    data-widget-counter="{{ form.plot|length }}">
+<br>
+<br>
+<p>Plot(s)</p>
+{% for plotField in form.plot %}
+  {{ plotMacros.printPlotFieldRow(plotField) }}
+{% endfor %}
+</div>
+<button type="button" class="add-another-collection-widget" data-list-selector="#plot-fields-list">Add Plot</button>
+
+<label><b> Section: </b></label>
+  <br>
+  <select>
+    <option value="choose"> Choose one </option>
+    <option value="violett">Violett</option>
+    <option value="oakridge">Oakridge</option>
+
+    <option value="westgoshen">West Goshen</option>
+    </select> &nbsp; <input>
+  </p>
+<label><b> Lot: </b></label> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; <label><b> Spaces: </b></label>
+  <br>
+  <input> &nbsp; <input>
+  <p>
+<label> I/We, the unsigned, am the owner of record for
+  the burial spaces noted. I waive any rights I may have to
+  this burial space(s) in favor of the person named below  <b>:</b> </label>
+  <br>
+  <br>
+<label><b> Owner of Record </b></label> <p>
+<label><b> First Name: </b></label> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; <label><b> Last Name: </b></label>
+  <br>
+  <input> &nbsp; <input>
+  <p>
+<label><b> Address: </b></label> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <label><b> Phone: </b></label>
+  <br>
+  <input> &nbsp; <input>
+  <p>
+<label> Please transfer these spaces to: </label>
+  <br>
+  <p>
+<label><b>New Owner of Record: </b></label>  <p>
+<label><b> First Name: </b></label> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; <label><b> Last Name: </b></label>
+  <br>
+  <input> &nbsp; <input>
+  <p>
+<label><b> Phone Contact: </b></label> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; <label><b> Address: </b></label>
+  <br>
+  <input> &nbsp; <input>
+  <p>
+<label><b> State of: </b></label> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <label><b> County of: </b></label>
+  <br>
+  <input> &nbsp; <input>
+  <p>
+<input type="checkbox">
+<label> <b>Notarized</b> </label>
+  <br>
+  <p>
+<label><b> Notes: </b></label>
+  <br>
+  <input>
+  <p>
+    
+
+<script>
+
+  jQuery(document).ready(function () {
+    jQuery('.add-another-collection-widget').click(function (e) {
+      var list = jQuery(jQuery(this).attr('data-list-selector'));
+      // Try to find the counter of the list or use the length of the list
+      var counter = list.data('widget-counter') || list.children().length;
+
+      // grab the prototype template
+      var newWidget = list.attr('data-prototype');
+      // replace the "__name__" used in the id and name of the prototype
+      // with a number that's unique to your records
+      // end name attribute looks like name="contact[record][2]"
+      newWidget = newWidget.replace(/__name__/g, counter);
+      // Increase the counter
+      counter++;
+      // And store it, the length cannot be used if deleting widgets is allowed
+      list.data('widget-counter', counter);
+
+      // create a new list element and add it to the list
+      var newElem = jQuery(list.attr('data-widget-tags')).html(newWidget);
+      newElem.appendTo(list);
+
+    });
+  });
+
+</script>

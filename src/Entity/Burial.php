@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Burial
  *
  * @ORM\Table(name="burial")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass=BurialRepository::class)
  */
 class Burial
 {
@@ -17,16 +17,9 @@ class Burial
      *
      * @ORM\Column(name="burial_id", type="integer", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $burialId;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="burial_last", type="string", length=50, nullable=true)
-     */
-    private $burialLast;
 
     /**
      * @var string|null
@@ -34,6 +27,13 @@ class Burial
      * @ORM\Column(name="burial_first", type="string", length=50, nullable=true)
      */
     private $burialFirst;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="burial_last", type="string", length=50, nullable=true)
+     */
+    private $burialLast;
 
     /**
      * @var string|null
@@ -70,19 +70,20 @@ class Burial
      */
     private $funeralHome;
 
+    /**
+     * @var \DateTimeInterface|null
+     */
+    private $date;
+
+    
     public function getBurialId(): ?int
     {
         return $this->burialId;
     }
 
-    public function getBurialLast(): ?string
+    public function setBurialId(?int $burialId): self
     {
-        return $this->burialLast;
-    }
-
-    public function setBurialLast(?string $burialLast): self
-    {
-        $this->burialLast = $burialLast;
+        $this->burialId = $burialId;
 
         return $this;
     }
@@ -95,6 +96,18 @@ class Burial
     public function setBurialFirst(?string $burialFirst): self
     {
         $this->burialFirst = $burialFirst;
+
+        return $this;
+    }
+
+    public function getBurialLast(): ?string
+    {
+        return $this->burialLast;
+    }
+
+    public function setBurialLast(?string $burialLast): self
+    {
+        $this->burialLast = $burialLast;
 
         return $this;
     }
@@ -155,6 +168,18 @@ class Burial
     public function setFuneralHome(?string $funeralHome): self
     {
         $this->funeralHome = $funeralHome;
+
+        return $this;
+    }
+
+    public function getDate(): ?\DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    public function setDate(\DateTimeInterface $date): self
+    {
+        $this->date = $date;
 
         return $this;
     }

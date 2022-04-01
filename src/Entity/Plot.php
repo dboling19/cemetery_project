@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Plot
  *
  * @ORM\Table(name="plot")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass=PlotRepository::class)
  */
 class Plot
 {
@@ -17,16 +17,16 @@ class Plot
      *
      * @ORM\Column(name="plot_id", type="integer", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $plotId;
 
     /**
-     * @var string|null
+     * @var string
      *
-     * @ORM\Column(name="cemetery_name", type="string", length=50, nullable=true)
+     * @ORM\Column(name="cemetery", type="string", length=50, nullable=false)
      */
-    private $cemeteryName;
+    private $cemetery;
 
     /**
      * @var string|null
@@ -61,14 +61,14 @@ class Plot
         return $this->plotId;
     }
 
-    public function getCemeteryName(): ?string
+    public function getCemetery(): ?string
     {
-        return $this->cemeteryName;
+        return $this->cemetery;
     }
 
-    public function setCemeteryName(?string $cemeteryName): self
+    public function setCemetery(string $cemetery): self
     {
-        $this->cemeteryName = $cemeteryName;
+        $this->cemetery = $cemetery;
 
         return $this;
     }
