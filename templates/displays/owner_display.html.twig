@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+      <title>Cemetery - Owners</title>
+  </head>
+
+  <body>
+    {{ include("navbar.html.twig") }}
+    <div class="w3-container">
+    </div>
+      <table class="w3-table-all">
+        <tr>
+          <th>Full Name Name</th>
+          <th>Address</th>
+          <th>City</th>
+          <th>State</th>
+          <th>Phone Number</th>
+          <th></th>
+        </tr>
+        {% for row in owner %} {# simple loop to output rows #}
+          <tr>
+            <td>{{ row.ownerFullName }}</td>
+            <td>{{ row.streetAddress }}</td>
+            <td>{{ row.city }}</td>
+            <td>{{ row.state }}</td>
+            <td>{{ row.phoneNum }}</td>
+            <td>
+              <a href="{{ path('modify_owner',{ owner_id: row.ownerId }) }}" class="w3-button w3-ripple w3-border">Edit</a>
+              <a href="{{ path('toggle_owner_approval',{ owner_id: row.ownerId }) }}" class="w3-button w3-ripple w3-border">{% if row.approval == 0 %}Unapproved{% else %}Approved{% endif %}</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </table>
+
+  </body>
+
+</html>
+

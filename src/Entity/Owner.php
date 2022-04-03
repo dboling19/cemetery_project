@@ -69,6 +69,14 @@ class Owner
      */
     private $oldOwner;
 
+    /**
+     * @var int|null
+     * 
+     * @ORM\Column(name="approval", type="integer", nullable=false)
+     */
+    private $approval;
+
+
     public function getOwnerId(): ?int
     {
         return $this->ownerId;
@@ -154,6 +162,18 @@ class Owner
     public function setOldOwner(?bool $oldOwner): self
     {
         $this->oldOwner = $oldOwner;
+
+        return $this;
+    }
+
+    public function getApproval(): ?int
+    {
+        return $this->approval;
+    }
+
+    public function setApproval(?int $approval): self
+    {
+        $this->approval = $approval;
 
         return $this;
     }

@@ -23,7 +23,7 @@ class DisplayController extends AbstractController
    * @author Daniel Boling
    * @return rendered display.html.twig
    * 
-   * @Route("/", name="display")
+   * @Route("/", name="plot_display")
    */
   public function display(PlotRepository $plot_repository): Response
   {
@@ -31,7 +31,7 @@ class DisplayController extends AbstractController
     $plot = $plot_repository->findBy(array(), array('plotId' => 'desc'), 10);
 
 
-    return $this->render('display.html.twig', [
+    return $this->render('plot_display.html.twig', [
         'plot' => $plot,
     ]);
 

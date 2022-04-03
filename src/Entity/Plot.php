@@ -56,6 +56,14 @@ class Plot
      */
     private $notes;
 
+    /**
+     * @var int|null
+     * 
+     * @ORM\Column(name="approval", type="integer")
+     */
+    private $approval;
+
+
     public function getPlotId(): ?int
     {
         return $this->plotId;
@@ -117,6 +125,18 @@ class Plot
     public function setNotes(?string $notes): self
     {
         $this->notes = $notes;
+
+        return $this;
+    }
+
+    public function getApproval(): ?int
+    {
+        return $this->approval;
+    }
+
+    public function setApproval(?int $approval): self
+    {
+        $this->approval = $approval;
 
         return $this;
     }

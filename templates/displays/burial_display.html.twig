@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+      <title>Cemetery - Burials</title>
+  </head>
+
+  <body>
+    {{ include("navbar.html.twig") }}
+    {# {% if order = 'ASC' %} {% set order = 'DESC' %} {% else %} {% set order = 'ASC' %} {% endif %} #}
+      <table class="w3-table-all">
+        <tr>
+          <th><a href="{{ path('burial_display', { column: 'firstName', order: order }) }}">First Name</a></th>
+          <th><a href="{{ path('burial_display', { column: 'lastName', order: order }) }}">Last Name</a></th>
+          <th><a href="{{ path('burial_display', { column: 'date', order: order }) }}">Date</a></th>
+          <th><a href="{{ path('burial_display', { column: 'cremation', order: order }) }}">Cremation</a></th>
+          <th><a href="{{ path('burial_display', { column: 'funeralHome', order: order }) }}">Funeral Home</a></th>
+          <th>Off-date d-m-Y</th>
+          <th><div class="w3-center"><a href="{{ path('burial_display', { column: 'approval', order: order }) }}">Approval</a></div></th>
+        </tr>
+        {% for row in burial %} {# simple loop to output rows #}
+          <tr>
+            <td>{{ row.firstName }}</td>
+            <td>{{ row.lastName }}</td> 
+            <td>{% if row.date is not null %} {{ row.date|date('m/d/Y') }} {% endif %}</td>
+            <td>{% if row.cremation == 1 %} Yes {% endif %}</td>
+            <td>{{ row.funeralHome }}</td>
+            <td>{% if row.date is null %} {{ row.burialMonth ~ '-' ~ row.burialDay ~ '-' ~ row.burialYear }} {% endif %}</td>
+            <td>
+              <div class="w3-center"><a href="{{ path('modify_burial',{ burial_id: row.burialId }) }}" class="w3-button w3-ripple w3-border">Edit</a></div>
+              <div class="w3-center"><a href="{{ path('toggle_burial_approval',{ burial_id: row.burialId }) }}" class="w3-button w3-ripple w3-border {% if row.approval == 0 %}w3-red{% else %}w3-green{% endif %}">{% if row.approval == 0 %}Unapproved{% else %}Approved{% endif %}</a></div>
+            </td>
+          </tr>
+        {% endfor %}
+      </table>
+
+  </body>
+
+</html>
+

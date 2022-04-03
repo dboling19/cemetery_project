@@ -24,16 +24,16 @@ class Burial
     /**
      * @var string|null
      *
-     * @ORM\Column(name="burial_first", type="string", length=50, nullable=true)
+     * @ORM\Column(name="first_name", type="string", length=50, nullable=true)
      */
-    private $burialFirst;
+    private $firstName;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="burial_last", type="string", length=50, nullable=true)
+     * @ORM\Column(name="last_name", type="string", length=50, nullable=true)
      */
-    private $burialLast;
+    private $lastName;
 
     /**
      * @var string|null
@@ -72,8 +72,17 @@ class Burial
 
     /**
      * @var \DateTimeInterface|null
+     * 
+     * @ORM\Column(name="burial_date", type="date", nullable=true)
      */
     private $date;
+
+    /**
+     * @var int|null
+     * 
+     * @ORM\Column(name="approval", type="integer", nullable=true)
+     */
+    private $approval;
 
     
     public function getBurialId(): ?int
@@ -88,26 +97,26 @@ class Burial
         return $this;
     }
 
-    public function getBurialFirst(): ?string
+    public function getFirstName(): ?string
     {
-        return $this->burialFirst;
+        return $this->firstName;
     }
 
-    public function setBurialFirst(?string $burialFirst): self
+    public function setFirstName(?string $firstName): self
     {
-        $this->burialFirst = $burialFirst;
+        $this->firstName = $firstName;
 
         return $this;
     }
 
-    public function getBurialLast(): ?string
+    public function getLastName(): ?string
     {
-        return $this->burialLast;
+        return $this->lastName;
     }
 
-    public function setBurialLast(?string $burialLast): self
+    public function setLastName(?string $lastName): self
     {
-        $this->burialLast = $burialLast;
+        $this->lastName = $lastName;
 
         return $this;
     }
@@ -180,6 +189,18 @@ class Burial
     public function setDate(\DateTimeInterface $date): self
     {
         $this->date = $date;
+
+        return $this;
+    }
+
+    public function getApproval(): ?int
+    {
+        return $this->approval;
+    }
+
+    public function setApproval(?int $approval): self
+    {
+        $this->approval = $approval;
 
         return $this;
     }
