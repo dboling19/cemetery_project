@@ -36,7 +36,7 @@ class DisplayController extends AbstractController
    * @author Daniel Boling
    * @return rendered display.html.twig
    * 
-   * @Route("/", name="display")
+   * @Route("/", name="plot_display")
    */
   public function display(Request $request, PlotRepository $plot_repo, OwnerRepository $owner_repo, BurialRepository $burial_repo): Response
   {
