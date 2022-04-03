@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+      <title>Cemetery - Plots</title>
+  </head>
+
+  <body>
+    {{ include("navbar.html.twig") }}
+    <div class="w3-container">
+    </div>
+      <table class="w3-table-all">
+        <tr>
+          <th>Cemetery</th>
+          <th>Plot</th>
+          <th>Notes</th>
+        </tr>
+        {% for row in plot %} {# simple loop to output rows #}
+          <tr>
+            <td>{{ row.cemetery }}</td>
+            <td>{{ row.section ~ row.lot ~ row.space}}</td>
+            <td>{{ row.notes }}</td>
+            <td>
+              <a href="{{ path('modify_plot',{ plot_id: row.plotId }) }}" class="w3-button w3-ripple w3-border">Edit</a>
+              <a href="{{ path('toggle_plot_approval',{ plot_id: row.plotId }) }}" class="w3-button w3-ripple w3-border">{% if row.approval == 0 %}Unapproved{% else %}Approved{% endif %}</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </table>
+
+  </body>
+
+</html>
+
