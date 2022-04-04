@@ -12,6 +12,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use App\Repository\OwnerRepository;
 use App\Repository\BurialRepository;
 use App\Repository\PlotRepository;
+use App\Form\SearchForm;
 use App\Form\OwnerForm;
 use App\Form\BurialForm;
 use App\Form\PlotForm;
@@ -36,16 +37,34 @@ class EntityController extends AbstractController
    * @author Daniel Boling
    * @return rendered owner_display.html.twig
    * 
-   * @Route("/owners", name="owner_display")
+   * @Route("/owners/{column}/{order}/{result}", name="owner_display")
    */
-  public function owner_display(OwnerRepository $owner_repo): Response
+  public function owner_display(Request $request, OwnerRepository $owner_repo, $order = 'asc', $column = 'ownerId', $result = NULL): Response
   {
 
-    $owner = $owner_repo->findAll();
+    if ($order == 'asc')
+    // if page was previously asc, load next with desc.
+    {
+      $order = 'desc';
+    } else {
+      $order = 'asc';
+    }
+
+    // $form_array = array();
+    // $search_form = $this->createForm(SearchForm::class, $form_array);
+    // $search_form->handleRequest($request);
+    // if ($search_form->isSubmitted() && $search_form->isValid())
+    // {
+    //   return $this->redirectToRoute('search_burial');
+
+    // }
+
+    $result = $owner_repo->findBy(array(), array($column => $order));
 
 
     return $this->render('displays/owner_display.html.twig', [
-        'owner' => $owner,
+        'result' => $result,
+        'order' => $order,
     ]);
 
   }
@@ -115,9 +134,9 @@ class EntityController extends AbstractController
    * @author Daniel Boling
    * @return rendered burial_display.html.twig
    * 
-   * @Route("/burials/{column}/{order}", name="burial_display")
+   * @Route("/burials/{column}/{order}/{result}", name="burial_display")
    */
-  public function burial_display(BurialRepository $burial_repo, $order = 'desc', $column = 'burialId'): Response
+  public function burial_display(Request $request, BurialRepository $burial_repo, $order = 'asc', $column = 'burialId', $result = NULL): Response
   {
 
     if ($order == 'asc')
@@ -127,28 +146,42 @@ class EntityController extends AbstractController
     } else {
       $order = 'asc';
     }
-    $burial = $burial_repo->findBy(array(), array($column => $order));
-    foreach ($burial as $selection)
-    {
-      if ($selection->getDate() == null)
-      // check if the datetime object is null - this is due to the miscellaneous date formatting and inputs in the original data
-      {
-        if ($selection->getBurialDay() != null && $selection->getBurialMonth() != null && $selection->getBurialYear() != null)
-        {
-          // this will only fire if all three date inputs are null. Otherwise no date will be shown.
-          $new_date = new \DateTime($selection->getBurialMonth() . '/' . $selection->getBurialDay() . '/' . $selection->getBurialYear());
-          $selection->setDate($new_date);
-          $this->em->persist($selection);
-        }
 
-      }
-    }
-    $this->em->flush();
+    // $form_array = array();
+    // $search_form = $this->createForm(SearchForm::class, $form_array);
+    // $search_form->handleRequest($request);
+    // if ($search_form->isSubmitted() && $search_form->isValid())
+    // {
+    //   return $this->redirectToRoute('search_burial');
+
+    // }
+
+    $result = $burial_repo->findBy(array(), array($column => $order));
+
+
+    // foreach ($burial as $selection)
+    // {
+    //   if ($selection->getDate() == null)
+    //   // check if the datetime object is null - this is due to the miscellaneous date formatting and inputs in the original data
+    //   {
+    //     if ($selection->getBurialDay() != null && $selection->getBurialMonth() != null && $selection->getBurialYear() != null)
+    //     {
+    //       // this will only fire if all three date inputs are null. Otherwise no date will be shown.
+    //       $new_date = new \DateTime($selection->getBurialMonth() . '/' . $selection->getBurialDay() . '/' . $selection->getBurialYear());
+    //       $selection->setDate($new_date);
+    //       $this->em->persist($selection);
+    //     }
+
+    //   }
+    // }
+    // $this->em->flush();
+    // uncomment and modify later as data is added.
 
 
     return $this->render('displays/burial_display.html.twig', [
-        'burial' => $burial,
+        'result' => $result,
         'order' => $order,
+        // 'search_form' => $search_form,
     ]);
 
   }
@@ -219,16 +252,43 @@ class EntityController extends AbstractController
    * @author Daniel Boling
    * @return rendered plot_display.html.twig
    * 
-   * @Route("/plots", name="plot_display")
+   * @Route("/plots/{column}/{order}/{result}", name="plot_display")
    */
-  public function plot_display(PlotRepository $plot_repo): Response
+  public function plot_display(Request $request, PlotRepository $plot_repo, $order = 'asc', $column = 'plotId', $result = NULL): Response
   {
 
-    $plot = $plot_repo->findAll();
+    if ($order == 'asc')
+    // if page was previously asc, load next with desc.
+    {
+      $order = 'desc';
+    } else {
+      $order = 'asc';
+    }
+
+    if ($column == 'plot')
+    {
+      // $result = $plot_repo->createQueryBuilder('p')
+      //   ->join('p.section', 's')
+      //   ->join('p.lot', 'l')
+      //   ->join('p.space', 's')
+      //   ->orderBy('p', $order)
+      //   ->getQuery()
+      //   ->getResult()
+      // ;
+
+      $result = $plot_repo->findBy(array(), array('section' => $order, 'lot' => $order, 'space' => $order));
+
+
+    } else {
+      $result = $plot_repo->findBy(array(), array($column => $order));
+    }
+
 
 
     return $this->render('displays/plot_display.html.twig', [
-        'plot' => $plot,
+        'result' => $result,
+        'order' => $order,
+        // 'search_form' => $search_form,
     ]);
 
   }

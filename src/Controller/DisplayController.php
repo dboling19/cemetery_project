@@ -3,15 +3,23 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use App\Repository\OwnerRepository;
+use App\Repository\BurialRepository;
 use App\Repository\PlotRepository;
+use App\Form\OwnerForm;
+use App\Form\BurialForm;
+use App\Form\PlotForm;
 use App\Entity\Plot;
 use App\Entity\Owner;
 use App\Entity\Burial;
 use App\Entity\PlotOwner;
+
 
 class DisplayController extends AbstractController
 {
@@ -25,10 +33,10 @@ class DisplayController extends AbstractController
    * 
    * @Route("/", name="plot_display")
    */
-  public function display(PlotRepository $plot_repository): Response
+  public function display(PlotRepository $plot_repo): Response
   {
 
-    $plot = $plot_repository->findBy(array(), array('plotId' => 'desc'), 10);
+    $plot = $plot_repo->findBy(array(), array('plotId' => 'desc'), 10);
 
 
     return $this->render('plot_display.html.twig', [
