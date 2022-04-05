@@ -91,7 +91,9 @@ class EntityController extends AbstractController
       $this->em->persist($owner);
       $this->em->flush();
 
-      // return $this->redirectToRoute('owner_display');
+      return $this->redirectToRoute('owner_display', [
+        $order = 'asc', $column = 'ownerId'
+      ]);
     }
 
     return $this->render('modify_forms/modify_owner.html.twig', [
@@ -123,7 +125,9 @@ class EntityController extends AbstractController
     $this->em->persist($owner);
     $this->em->flush();
 
-    return $this->redirectToRoute('owner_display');
+    return $this->redirectToRoute('owner_display', [
+      $order = 'asc', $column = 'ownerId'
+    ]);
 
   }
 
@@ -157,6 +161,7 @@ class EntityController extends AbstractController
     // }
 
     $result = $burial_repo->findBy(array(), array($column => $order));
+    $result = array_merge($result, $plot_repo->findBy())
 
 
     // foreach ($burial as $selection)
@@ -252,9 +257,9 @@ class EntityController extends AbstractController
    * @author Daniel Boling
    * @return rendered plot_display.html.twig
    * 
-   * @Route("/plots/{column}/{order}/{result}", name="plot_display")
+   * @Route("/{column}/{order}/{result}", name="plot_display")
    */
-  public function plot_display(Request $request, PlotRepository $plot_repo, $order = 'asc', $column = 'plotId', $result = NULL): Response
+  public function plot_display(Request $request, PlotRepository $plot_repo, $order = 'desc', $column = 'plotId', $result = NULL): Response
   {
 
     if ($order == 'asc')

@@ -21,28 +21,6 @@ class OwnerRepository extends ServiceEntityRepository
     parent::__construct($registry, Owner::class);
   }
 
-  public function getOwnerNames()
-  {
-
-    $owners = [];
-
-    $results = $this->_em->createQueryBuilder('owner')
-      ->select("o.ownerFullName")
-      ->from(Owner::class, 'o')
-      ->getQuery()
-      ->getArrayResult()
-    ;
-
-    foreach ($results as $result) {
-      if (!in_array($result['ownerFullName'], $owners)) {
-        $owners[$result['ownerFullName']] = $result['ownerFullName'];
-      }
-    }
-
-    return $owners;
-
-  }
-
   /**
    * @throws ORMException
    * @throws OptimisticLockException

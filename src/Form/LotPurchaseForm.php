@@ -22,6 +22,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class LotPurchaseForm extends AbstractType
 {
 
+  public function __construct()
+  {
+    $this->date = new \DateTime('now', new \DateTimeZone('America/Indiana/Indianapolis'));
+  }
+
   public function buildForm(FormBuilderInterface $builder, array $options): void
   {
 
@@ -45,6 +50,9 @@ class LotPurchaseForm extends AbstractType
         'allow_delete' => true,
         'prototype' => true,
         'delete_empty' => true,
+      ])
+      ->add('date', DateType::class, [
+        'data' => $this->date,
       ])
       ->add('submit', SubmitType::class, [
         'label' => 'Submit Record',

@@ -22,6 +22,23 @@ class BurialRepository extends ServiceEntityRepository
     }
 
     /**
+     * Returns expected result from the Burial table, and brings the respective notes field into the result.
+     * 
+     * @author Daniel Boling
+     * @return Burial[] Returns an array of Burial objects
+     */
+    public function findBurialAndNotesBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+    {
+        return $this->createQueryBuilder('b')
+            ->setParameter('val', $value)
+            ->orderBy('b.id', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
      * @throws ORMException
      * @throws OptimisticLockException
      */
