@@ -1,6 +1,26 @@
+<!DOCTYPE html>
+<html>
+{% block stylesheets %}
+  {{encore_entry_link_tags('app')}}
+{% endblock %}
 {% import _self as plotMacros %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 {{ include("navbar.html.twig") }}
+
+<h2><b> Cemetery Lot Purchase Goshen City Cemeteries </b></h2>
+<p>
+<h3><b> Owner/Buyer Information: </b></h3>
+ 
+    <style>.error{color:#FF0000;}</style>
+  <p> <span class="error">* required field</span></p>
+<form method="post" target="_self">
+
+    <label><b> Date: </b></label> 
+    <span class="error">* </span>
+  <br>
+  <input type="numbers" required> 
+  <p>
+
 
 {% macro printPlotFieldRow(plotField) %}
   <div class="plot-fields-list">
@@ -11,18 +31,20 @@
   </div>
 {% endmacro %}
 
-<p>Owner Selection</p>
+
+
 {{ form_start(form) }}
 
 <div id="owner-fields-list"
     data-prototype="{{ form_widget(form.owner.vars.prototype)|e }}"
     data-widget-tags="{{ '<p></p>'|e }}"
     data-widget-counter="{{ form.owner|length }}">
+    
 <br>
 <br>
+<body style="background-color:antiquewhite;">
 {% for ownerField in form.owner %}
-  <p>Owner</p>
-  {{ form_widget(ownerField) }}
+  {{ form_widget(ownerField)}}
 {% endfor %}
 </div>
 <button type="button" class="add-another-collection-widget" data-list-selector="#owner-fields-list">Add Owner</button>
@@ -39,7 +61,9 @@
   {{ plotField }}
 {% endfor %}
 </div>
-<button type="button" class="add-another-collection-widget" data-list-selector="#plot-fields-list">Add Plot</button>
+<button type="button" class="add-another-collection-widget" data-list-selector="#plot-fields-list">
+Add Plot
+</button>
 
 {{ form_row(form.date) }}
 
@@ -74,3 +98,4 @@
   });
 
 </script>
+</html>
