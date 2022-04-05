@@ -28,6 +28,7 @@ class LotPurchaseForm extends AbstractType
     $builder
       ->add('owner', CollectionType::class, [
         'entry_type' => OwnerType::class,
+        'required' => false,
         'entry_options' => [
           'label' => false,
         ],

@@ -27,14 +27,70 @@ class OwnerType extends AbstractType
   {
 
     $builder
-      ->add('ownerFullName', TextType::class)
-      ->add('streetAddress', TextType::class)
-      ->add('city', TextType::class)
-      ->add('state', TextType::class)
-      ->add('zipCode', TextType::class)
-      ->add('phoneNum', TextType::class)
+      ->add('ownerFullName', TextType::class,[
+        'label' => "Owner Full Name",
+        'label_attr' => [
+          'class' => 'labelsClass'
+        ],
+        'attr'=> [
+          'class'=>'inputClass'
+        ]
+      ])
+      ->add('streetAddress', TextType::class,[
+        'label' => "Street Address",
+        'label_attr' => [
+          'class' => 'labelsClass'
+        ],
+        'attr'=> [
+          'class'=>'inputClass'
+        ]
+      ])
+      ->add('city', TextType::class,[
+        'label' => "City",
+        'label_attr' => [
+          'class' => 'labelsClass'
+        ],
+        'attr'=> [
+          'class'=>'inputClass'
+        ]
+      ]
+      )
+      ->add('state', TextType::class,[
+        'label' => "State",
+        'label_attr' => [
+          'class' => 'labelsClass'
+        ],
+        'attr'=> [
+          'class'=>'inputClass'
+        ]
+      ])
+      ->add('zipCode', TextType::class,[
+        'label' => "Zip Code",
+        'label_attr' => [
+          'class' => 'labelsClass'
+        ],
+        'attr'=> [
+          'class'=>'inputClass'
+        ]
+      ])
+      ->add('phoneNum', TextType::class,[
+        'label' => "Phone Num",
+        'label_attr' => [
+          'class' => 'labelsClass'
+        ],
+        'attr'=> [
+          'class'=>'inputClass'
+        ]
+      ])
       ->add('oldOwner', CheckboxType::class, [
         'required' => false,
+        'label' => "Old Owner",
+        'label_attr' => [
+          'class' => 'labelsClass'
+        ],
+        'attr'=> [
+          'class'=>'inputClass'
+        ]
       ])
     ;
   }
