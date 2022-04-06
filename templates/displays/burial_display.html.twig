@@ -9,7 +9,6 @@
   <body>
     {% include "navbar.html.twig" %}
     {# {{ form(search_form) }} #}
-    {# {% if order = 'ASC' %} {% set order = 'DESC' %} {% else %} {% set order = 'ASC' %} {% endif %} #}
       <table class="w3-table-all">
         <tr>
           <th><a href="{{ path('burial_display', { column: 'firstName', order: order }) }}">First Name</a></th>

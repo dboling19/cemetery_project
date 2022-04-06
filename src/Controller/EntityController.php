@@ -160,8 +160,21 @@ class EntityController extends AbstractController
 
     // }
 
+
+    // $query = $this->em->createQuery(
+    //   'SELECT b.burial_id, b.first_name, b.last_name, b.burial_date, b.cremation, b.funeral_home, p.notes, p.section, p.lot, p.space FROM App\Entity\PlotBurial AS pb 
+    //   JOIN App\Entity\Plot AS p ON pb.plot_id=p.plot_id
+    //   JOIN App\Entity\Burial AS b ON pb.burial_id=b.burial_id
+    //   ORDER BY :column :order'
+    // )
+    //   ->setParameter('column', $column)
+    //   ->setParameter('order', $order)
+    // ;
+
+
+
     $result = $burial_repo->findBy(array(), array($column => $order));
-    $result = array_merge($result, $plot_repo->findBy())
+
 
 
     // foreach ($burial as $selection)
