@@ -1,9 +1,11 @@
 <!DOCTYPE HTML>
 <html>
 
-    <link href="{{ asset('https://www.w3schools.com/w3css/4/w3.css') }}" rel="stylesheet"/>
-
-    <div class="w3-bar">
+    {% block stylesheets %}
+    {{encore_entry_link_tags('app')}}
+    {% endblock %}
+<body>
+  <div class = "w3-bar w3-green" >
       <div class="w3-left">
         <a class="w3-button w3-border" href="{{ path('lot_purchase') }}">Lot Purchase</a>
         <a class="w3-button w3-border" href="{{ path('owner_transfer') }}">Plot Release</a>
@@ -13,4 +15,5 @@
         <a class="w3-button w3-border" href="{{ path('burial_display') }}">Burials</a>
       </div>
     </div>
+  </body>
 </html>

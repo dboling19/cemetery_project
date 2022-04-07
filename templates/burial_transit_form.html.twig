@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
-    <link rel = "stylesheet" href = {{asset("assets/styles/app.css")}}>
-
+    {% block stylesheets %}
+    {{encore_entry_link_tags('app')}}
+    {% endblock %}
 
     {{ include('navbar.html.twig') }}
 
