@@ -1,22 +1,32 @@
 <!DOCTYPE html>
 <html>
   <head>
-      <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+      
+      {% block stylesheets %}
+        {{encore_entry_link_tags('app')}}
+      {% endblock %}
+      <script src="https://kit.fontawesome.com/0db354818b.js" crossorigin="anonymous"></script>
 
       <title>Cemetery - Plots</title>
   </head>
 
   <body>
+  <div style="position:fixed;top:0;width:100%">
     {{ include("navbar.html.twig") }}
-    <div class="w3-container">
+  </div>
+    <div class="w3-container" style = "margin-top:40px">
     </div>
+    
+     
       <table class="w3-table-all">
+       <div class="barBack">
         <tr>
-          <th><a href="{{ path('plot_display', { column: 'cemetery', order: order }) }}">Cemetery</a></th>
-          <th><a href="{{ path('plot_display', { column: 'plot', order: order }) }}">Plot</a></th>
-          <th>Notes</th>
-          <th><div class="w3-center"><a href="{{ path('plot_display', { column: 'approval', order: order }) }}">Approval</a></div></th>
+          <th><a class="w3-border w3-red w3-button w3-ripple stickyHead" href="{{ path('plot_display', { column: 'cemetery', order: order }) }}"><i class="fa-solid fa-sort"></i>Cemetery</a></th>
+          <th><a class="w3-border w3-red w3-button w3-ripple stickyHead" href="{{ path('plot_display', { column: 'plot', order: order }) }}">Plot</a></th>
+          <th><div class="w3-button w3-red stickyHead">Notes</div></th>
+          <th><div class="w3-border w3-red w3-button w3-center w3-ripple stickyHead"><a href="{{ path('plot_display', { column: 'approval', order: order }) }}">Approval</a></div></th>
         </tr>
+        <div style = "margin-top:35px">
         {% for row in result %} {# simple loop to output rows #}
           <tr>
             <td>{{ row.cemetery }}</td>
@@ -28,6 +38,7 @@
             </td>
           </tr>
         {% endfor %}
+        </div>
       </table>
 
   </body>

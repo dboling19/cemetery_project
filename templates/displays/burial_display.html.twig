@@ -1,13 +1,20 @@
 <!DOCTYPE html>
 <html>
   <head>
-      <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+      {% block stylesheets %}
+        {{encore_entry_link_tags('app')}}
+      {% endblock %}
+    
 
       <title>Cemetery - Burials</title>
   </head>
 
   <body>
-    {% include "navbar.html.twig" %}
+    <div style="position:fixed;top:0;width:100%">
+    {{ include("navbar.html.twig") }}
+  </div>
+    <div class="w3-container" style = "margin-top:40px">
     {# {{ form(search_form) }} #}
       <table class="w3-table-all">
         <tr>
@@ -38,7 +45,7 @@
           </tr>
         {% endfor %}
       </table>
-
+  <div>
   </body>
 
 </html>
