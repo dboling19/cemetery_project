@@ -36,27 +36,6 @@ class Burial
     private $lastName;
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(name="burial_month", type="string", length=10, nullable=true)
-     */
-    private $burialMonth;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="burial_day", type="string", length=10, nullable=true)
-     */
-    private $burialDay;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="burial_year", type="string", length=10, nullable=true)
-     */
-    private $burialYear;
-
-    /**
      * @var int|null
      *
      * @ORM\Column(name="cremation", type="smallint", nullable=true)
@@ -75,12 +54,19 @@ class Burial
      * 
      * @ORM\Column(name="burial_date", type="date", nullable=true)
      */
-    private $date;
+    private $burialDate;
+
+    /**
+     * @var string|null
+     * 
+     * @ORM\Column(name="incomplete_date", type="string", nullable=true)
+     */
+    private $incompleteDate;
 
     /**
      * @var int|null
      * 
-     * @ORM\Column(name="approval", type="integer", nullable=true)
+     * @ORM\Column(name="approval", type="integer", nullable=false)
      */
     private $approval;
 
@@ -121,42 +107,6 @@ class Burial
         return $this;
     }
 
-    public function getBurialMonth(): ?string
-    {
-        return $this->burialMonth;
-    }
-
-    public function setBurialMonth(?string $burialMonth): self
-    {
-        $this->burialMonth = $burialMonth;
-
-        return $this;
-    }
-
-    public function getBurialDay(): ?string
-    {
-        return $this->burialDay;
-    }
-
-    public function setBurialDay(?string $burialDay): self
-    {
-        $this->burialDay = $burialDay;
-
-        return $this;
-    }
-
-    public function getBurialYear(): ?string
-    {
-        return $this->burialYear;
-    }
-
-    public function setBurialYear(?string $burialYear): self
-    {
-        $this->burialYear = $burialYear;
-
-        return $this;
-    }
-
     public function getCremation(): ?int
     {
         return $this->cremation;
@@ -181,14 +131,26 @@ class Burial
         return $this;
     }
 
-    public function getDate(): ?\DateTimeInterface
+    public function getBurialDate(): ?\DateTimeInterface
     {
-        return $this->date;
+        return $this->burialDate;
     }
 
-    public function setDate(\DateTimeInterface $date): self
+    public function setBurialDate(\DateTimeInterface $burialDate): self
     {
-        $this->date = $date;
+        $this->burialDate = $burialDate;
+
+        return $this;
+    }
+
+    public function getIncompleteDate(): ?\DateTimeInterface
+    {
+        return $this->incompleteDate;
+    }
+
+    public function setIncompleteDate(\DateTimeInterface $incompleteDate): self
+    {
+        $this->incompleteDate = $incompleteDate;
 
         return $this;
     }
