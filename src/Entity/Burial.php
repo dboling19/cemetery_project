@@ -15,7 +15,7 @@ class Burial
     /**
      * @var int
      *
-     * @ORM\Column(name="burial_id", type="integer", nullable=false)
+     * @ORM\Column(name="burial_id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
@@ -36,9 +36,9 @@ class Burial
     private $lastName;
 
     /**
-     * @var int|null
+     * @var bool
      *
-     * @ORM\Column(name="cremation", type="smallint", nullable=true)
+     * @ORM\Column(name="cremation", type="boolean", nullable=true)
      */
     private $cremation;
 
@@ -64,9 +64,9 @@ class Burial
     private $incompleteDate;
 
     /**
-     * @var int|null
+     * @var bool
      * 
-     * @ORM\Column(name="approval", type="integer", nullable=false)
+     * @ORM\Column(name="approval", type="boolean", nullable=false)
      */
     private $approval;
 
@@ -107,12 +107,12 @@ class Burial
         return $this;
     }
 
-    public function getCremation(): ?int
+    public function getCremation(): ?bool
     {
         return $this->cremation;
     }
 
-    public function setCremation(?int $cremation): self
+    public function setCremation(?bool $cremation): self
     {
         $this->cremation = $cremation;
 
@@ -143,24 +143,24 @@ class Burial
         return $this;
     }
 
-    public function getIncompleteDate(): ?\DateTimeInterface
+    public function getIncompleteDate(): ?string
     {
         return $this->incompleteDate;
     }
 
-    public function setIncompleteDate(\DateTimeInterface $incompleteDate): self
+    public function setIncompleteDate(?string $incompleteDate): self
     {
         $this->incompleteDate = $incompleteDate;
 
         return $this;
     }
 
-    public function getApproval(): ?int
+    public function getApproval(): ?bool
     {
         return $this->approval;
     }
 
-    public function setApproval(?int $approval): self
+    public function setApproval(?bool $approval): self
     {
         $this->approval = $approval;
 

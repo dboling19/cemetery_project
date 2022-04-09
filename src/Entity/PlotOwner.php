@@ -17,7 +17,7 @@ class PlotOwner
      *
      * @ORM\Column(name="table_id", type="integer", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $tableId;
 
@@ -36,11 +36,17 @@ class PlotOwner
     private $plotId;
 
     /**
-     * @var int
+     * @var bool
      * 
-     * @ORM\Column(name="notarized", type="integer", nullable=false)
+     * @ORM\Column(name="notarized", type="boolean", nullable=false)
      */
     private $notarized;
+
+    /**
+     * @var bool
+     * 
+     * @ORM\Column(name="approved", type="boolean", nullable=false)
+     */
 
     /**
      * @var \DateTimeInterface|null
@@ -78,14 +84,26 @@ class PlotOwner
         return $this;
     }
 
-    public function getNotarized(): ?int
+    public function getNotarized(): ?bool
     {
         return $this->notarized;
     }
 
-    public function setNotarized(int $notarized): self
+    public function setNotarized(bool $notarized): self
     {
         $this->notarized = $notarized;
+
+        return $this;
+    }
+
+    public function getApproval(): ?bool
+    {
+        return $this->approval;
+    }
+
+    public function setApproval(bool $approval): self
+    {
+        $this->approval = $approval;
 
         return $this;
     }
@@ -95,7 +113,7 @@ class PlotOwner
         return $this->date;
     }
 
-    public function setdate(\DateTimeInterface $date): self
+    public function setDate(\DateTimeInterface $date): self
     {
         $this->date = $date;
 

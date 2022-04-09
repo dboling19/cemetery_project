@@ -17,23 +17,30 @@ class Owner
      *
      * @ORM\Column(name="owner_id", type="integer", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $ownerId;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="owner_full_name", type="string", length=50, nullable=false)
+     * @ORM\Column(name="first_name", type="string", length=50, nullable=true)
      */
-    private $ownerFullName;
+    private $firstName;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="last_name", type="string", length=50, nullable=true)
+     */
+    private $lastName;
 
     /**
      * @var string|null
      *
      * @ORM\Column(name="street_address", type="string", length=50, nullable=true)
      */
-    private $streetAddress;
+    private $address;
 
     /**
      * @var string|null
@@ -45,7 +52,7 @@ class Owner
     /**
      * @var string|null
      *
-     * @ORM\Column(name="state", type="string", length=2, nullable=true)
+     * @ORM\Column(name="state", type="string", length=50, nullable=true)
      */
     private $state;
 
@@ -64,17 +71,16 @@ class Owner
     private $phoneNum;
 
     /**
-     * @var bool|null
+     * @var bool
      * 
-     */
-    private $oldOwner;
-
-    /**
-     * @var int|null
-     * 
-     * @ORM\Column(name="approval", type="integer", nullable=false)
+     * @ORM\Column(name="approval", type="boolean", nullable=false)
      */
     private $approval;
+
+    /**
+     * @var bool|null
+     */
+    private $oldOwner;
 
 
     public function getOwnerId(): ?int
@@ -82,14 +88,33 @@ class Owner
         return $this->ownerId;
     }
 
-    public function getOwnerFullName(): ?string
+    public function setOwnerId(?int $ownerId): self
     {
-        return $this->ownerFullName;
+        $this->ownerId = $ownerId;
+
+        return $this;
     }
 
-    public function setOwnerFullName(string $ownerFullName): self
+    public function getFirstName(): ?string
     {
-        $this->ownerFullName = $ownerFullName;
+        return $this->firstName;
+    }
+
+    public function setFirstName(string $firstName): self
+    {
+        $this->firstName = $firstName;
+
+        return $this;
+    }
+
+    public function getlastName(): ?string
+    {
+        return $this->lastName;
+    }
+
+    public function setlastName(string $lastName): self
+    {
+        $this->lastName = $lastName;
 
         return $this;
     }
@@ -166,12 +191,12 @@ class Owner
         return $this;
     }
 
-    public function getApproval(): ?int
+    public function getApproval(): ?bool
     {
         return $this->approval;
     }
 
-    public function setApproval(?int $approval): self
+    public function setApproval(?bool $approval): self
     {
         $this->approval = $approval;
 

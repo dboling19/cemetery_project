@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\OneToOne;
 
 /**
  * Plot
@@ -15,12 +16,20 @@ class Plot
     /**
      * @var int
      *
-     * @ORM\Column(name="plot_id", type="integer", nullable=false)
+     * @ORM\Column(name="plot_id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $plotId;
 
+    /**
+     * @var \Burial|null
+     * 
+     * @ORM\Column(name="burial", type="integer", nullable=true)
+     * @ORM\OneToOne(targetEntity="Burial")
+     */
+    private $burial;
+    
     /**
      * @var string
      *
@@ -57,9 +66,9 @@ class Plot
     private $notes;
 
     /**
-     * @var int|null
+     * @var bool
      * 
-     * @ORM\Column(name="approval", type="integer")
+     * @ORM\Column(name="approval", type="boolean")
      */
     private $approval;
 
@@ -67,6 +76,16 @@ class Plot
     public function getPlotId(): ?int
     {
         return $this->plotId;
+    }
+
+    public function getBurial(): ?Burial
+    {
+        return $this->burial;
+    }
+
+    public function setBurial(Burial $burial): self
+    {
+        $this->burial = $burial;
     }
 
     public function getCemetery(): ?string
@@ -129,12 +148,12 @@ class Plot
         return $this;
     }
 
-    public function getApproval(): ?int
+    public function getApproval(): ?bool
     {
         return $this->approval;
     }
 
-    public function setApproval(?int $approval): self
+    public function setApproval(?bool $approval): self
     {
         $this->approval = $approval;
 

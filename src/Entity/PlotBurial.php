@@ -36,9 +36,9 @@ class PlotBurial
     private $plotId;
 
     /**
-     * @var int
+     * @var bool
      * 
-     * @ORM\Column(name="approval", type="integer", nullable=false)
+     * @ORM\Column(name="approval", type="boolean", nullable=false)
      */
     private $approval;
 
@@ -78,26 +78,26 @@ class PlotBurial
         return $this;
     }
 
-    public function getApproval(): ?int
+    public function getApproval(): ?bool
     {
         return $this->approval;
     }
 
-    public function setApproval(int $approval): self
+    public function setApproval(bool $approval): self
     {
         $this->approval = $approval;
 
         return $this;
     }
 
-    public function getBurialDate(): ?\DateTimeInterface
+    public function getDate(): ?\DateTimeInterface
     {
-        return $this->burial_date;
+        return $this->date;
     }
 
-    public function setdate(\DateTimeInterface $burial_date): self
+    public function setdate(\DateTimeInterface $date): self
     {
-        $this->burial_date = $burial_date;
+        $this->date = $date;
 
         return $this;
     }
