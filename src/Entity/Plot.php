@@ -83,9 +83,11 @@ class Plot
         return $this->burial;
     }
 
-    public function setBurial(Burial $burial): self
+    public function setBurial(?Burial $burial): self
     {
         $this->burial = $burial;
+
+        return $this;
     }
 
     public function getCemetery(): ?string

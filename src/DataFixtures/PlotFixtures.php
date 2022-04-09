@@ -47,7 +47,6 @@ class PlotFixtures extends Fixture
           }
           if ($line[7] != NULL or $line[7] != '')
           {
-            echo (int)$line[7];
             $burial = $this->burial_repo->find((int)$line[7]);
             var_dump($burial);
             $plot[$i]->setBurial($burial);
