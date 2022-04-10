@@ -15,11 +15,9 @@ use Doctrine\ORM\EntityRepository;
 use App\Repository\PlotRepository;
 use App\Repository\OwnerRepository;
 use App\Repository\BurialRepository;
-use App\Repository\PlotOwnerRepository;
 use App\Entity\Plot;
 use App\Entity\Owner;
 use App\Entity\Burial;
-use App\Entity\PlotOwner;
 
 
 class LotPurchaseController extends AbstractController
@@ -40,7 +38,7 @@ class LotPurchaseController extends AbstractController
    * 
    * @Route("/lot_purchase", name="lot_purchase")
    */
-  public function lot_purchase(Request $request, PlotRepository $plot_repo, OwnerRepository $owner_repo, PlotOwnerRepository $po_repo): Response
+  public function lot_purchase(Request $request, PlotRepository $plot_repo, OwnerRepository $owner_repo): Response
   {
 
     $form_array = array();
@@ -109,14 +107,10 @@ class LotPurchaseController extends AbstractController
         // for every added plot, set each owner to own the plot.
         foreach ($owners_object_array as $owner)
         {
-          $po = new PlotOwner();
-          $po->setPlotId($plot->getPlotId());
-          $po->setOwnerId($owner->getOwnerId());
-          $po->setNotarized(0);
-          $po->setDate($this->date);
-          // setting up the M-M table input
-          $this->em->persist($po);
+          $plot->addOwner($owner);
+          // $po->setNotarized(0);
           $this->em->flush();
+          
         }
 
       }

@@ -23,8 +23,8 @@
             <td>{{ row.section ~ row.lot ~ row.space}}</td>
             <td>{{ row.notes }}</td>
             <td>
-              <div class="w3-center"><a href="{{ path('modify_plot',{ plot_id: row.plotId }) }}" class="w3-button w3-ripple w3-border">Edit</a></div>
-              <div class="w3-center"><a href="{{ path('toggle_plot_approval',{ plot_id: row.plotId }) }}" class="w3-button w3-ripple w3-border {% if row.approval == 0 %}w3-red{% else %}w3-green{% endif %}">{% if row.approval == 0 %}Unapproved{% else %}Approved{% endif %}</a></div>
+              <div class="w3-center"><a href="{{ path('modify_plot',{ id: row.id }) }}" class="w3-button w3-ripple w3-border">Edit</a></div>
+              <div class="w3-center"><a href="{{ path('toggle_plot_approval',{ id: row.id }) }}" class="w3-button w3-ripple w3-border {% if row.approval == 0 %}w3-red{% else %}w3-green{% endif %}">{% if row.approval == 0 %}Unapproved{% else %}Approved{% endif %}</a></div>
             </td>
           </tr>
         {% endfor %}

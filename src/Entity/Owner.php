@@ -2,95 +2,86 @@
 
 namespace App\Entity;
 
+use App\Repository\OwnerRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Owner
- *
- * @ORM\Table(name="owner")
  * @ORM\Entity(repositoryClass=OwnerRepository::class)
  */
 class Owner
 {
     /**
-     * @var int
-     *
-     * @ORM\Column(name="owner_id", type="integer", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\Column(type="integer")
      */
-    private $ownerId;
+    private $id;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="first_name", type="string", length=50, nullable=true)
+     * @ORM\Column(type="string", length=50, nullable=true)
      */
     private $firstName;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="last_name", type="string", length=50, nullable=true)
+     * @ORM\Column(type="string", length=50, nullable=true)
      */
     private $lastName;
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(name="street_address", type="string", length=50, nullable=true)
+     * @ORM\Column(type="string", length=50, nullable=true)
      */
     private $address;
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(name="city", type="string", length=50, nullable=true)
+     * @ORM\Column(type="string", length=50, nullable=true)
      */
     private $city;
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(name="state", type="string", length=50, nullable=true)
+     * @ORM\Column(type="string", length=50, nullable=true)
      */
     private $state;
 
     /**
-     * @var int|null
-     *
-     * @ORM\Column(name="zip_code", type="integer", nullable=true)
+     * @ORM\Column(type="integer", nullable=true)
      */
-    private $zipCode;
+    private $zipcode;
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(name="phone_num", type="string", length="50", nullable=true)
+     * @ORM\Column(type="string", length=50, nullable=true)
      */
     private $phoneNum;
 
     /**
-     * @var bool
-     * 
-     * @ORM\Column(name="approval", type="boolean", nullable=false)
+     * @ORM\Column(type="boolean")
      */
     private $approval;
 
     /**
-     * @var bool|null
+     * @ORM\ManyToMany(targetEntity=Plot::class, mappedBy="owner")
+     */
+    private $plots;
+
+    /**
+     * @var boolean
      */
     private $oldOwner;
 
-
-    public function getOwnerId(): ?int
+    public function __construct()
     {
-        return $this->ownerId;
+        $this->plots = new ArrayCollection();
     }
 
-    public function setOwnerId(?int $ownerId): self
+    public function getId(): ?int
     {
-        $this->ownerId = $ownerId;
+        return $this->id;
+    }   
+
+    public function setId(?int $id): self
+    {
+        $this->id = $id;
 
         return $this;
     }
@@ -100,33 +91,33 @@ class Owner
         return $this->firstName;
     }
 
-    public function setFirstName(string $firstName): self
+    public function setFirstName(?string $firstName): self
     {
         $this->firstName = $firstName;
 
         return $this;
     }
 
-    public function getlastName(): ?string
+    public function getLastName(): ?string
     {
         return $this->lastName;
     }
 
-    public function setlastName(string $lastName): self
+    public function setLastName(?string $lastName): self
     {
         $this->lastName = $lastName;
 
         return $this;
     }
 
-    public function getStreetAddress(): ?string
+    public function getAddress(): ?string
     {
-        return $this->streetAddress;
+        return $this->address;
     }
 
-    public function setStreetAddress(?string $streetAddress): self
+    public function setAddress(?string $address): self
     {
-        $this->streetAddress = $streetAddress;
+        $this->address = $address;
 
         return $this;
     }
@@ -155,14 +146,14 @@ class Owner
         return $this;
     }
 
-    public function getZipCode(): ?int
+    public function getZipcode(): ?int
     {
-        return $this->zipCode;
+        return $this->zipcode;
     }
 
-    public function setZipCode(?int $zipCode): self
+    public function setZipcode(?int $zipcode): self
     {
-        $this->zipCode = $zipCode;
+        $this->zipcode = $zipcode;
 
         return $this;
     }
@@ -179,6 +170,45 @@ class Owner
         return $this;
     }
 
+    public function getApproval(): ?bool
+    {
+        return $this->approval;
+    }
+
+    public function setApproval(bool $approval): self
+    {
+        $this->approval = $approval;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Plot>
+     */
+    public function getPlots(): Collection
+    {
+        return $this->plots;
+    }
+
+    public function addPlot(Plot $plot): self
+    {
+        if (!$this->plots->contains($plot)) {
+            $this->plots[] = $plot;
+            $plot->addOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removePlot(Plot $plot): self
+    {
+        if ($this->plots->removeElement($plot)) {
+            $plot->removeOwner($this);
+        }
+
+        return $this;
+    }
+
     public function getOldOwner(): ?bool
     {
         return $this->oldOwner;
@@ -188,20 +218,6 @@ class Owner
     {
         $this->oldOwner = $oldOwner;
 
-        return $this;
+        return $this->oldOwner;
     }
-
-    public function getApproval(): ?bool
-    {
-        return $this->approval;
-    }
-
-    public function setApproval(?bool $approval): self
-    {
-        $this->approval = $approval;
-
-        return $this;
-    }
-
-
 }

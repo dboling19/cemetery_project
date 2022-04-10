@@ -2,83 +2,69 @@
 
 namespace App\Entity;
 
+use App\Repository\BurialRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Burial
- *
- * @ORM\Table(name="burial")
  * @ORM\Entity(repositoryClass=BurialRepository::class)
  */
 class Burial
 {
     /**
-     * @var int
-     *
-     * @ORM\Column(name="burial_id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\Column(type="integer")
      */
-    private $burialId;
+    private $id;
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(name="first_name", type="string", length=50, nullable=true)
+     * @ORM\Column(type="string", length=50, nullable=true)
      */
     private $firstName;
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(name="last_name", type="string", length=50, nullable=true)
+     * @ORM\Column(type="string", length=50, nullable=true)
      */
     private $lastName;
 
     /**
-     * @var bool
-     *
-     * @ORM\Column(name="cremation", type="boolean", nullable=true)
+     * @ORM\Column(type="boolean")
      */
     private $cremation;
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(name="funeral_home", type="string", length=50, nullable=true)
+     * @ORM\Column(type="string", length=50, nullable=true)
      */
     private $funeralHome;
 
     /**
-     * @var \DateTimeInterface|null
-     * 
-     * @ORM\Column(name="burial_date", type="date", nullable=true)
+     * @ORM\Column(type="date", nullable=true)
      */
-    private $burialDate;
+    private $date;
 
     /**
-     * @var string|null
-     * 
-     * @ORM\Column(name="incomplete_date", type="string", nullable=true)
+     * @ORM\Column(type="string", length=50, nullable=true)
      */
-    private $incompleteDate;
+    private $incDate;
 
     /**
-     * @var bool
-     * 
-     * @ORM\Column(name="approval", type="boolean", nullable=false)
+     * @ORM\Column(type="boolean")
      */
     private $approval;
 
-    
-    public function getBurialId(): ?int
+    /**
+     * @ORM\OneToOne(targetEntity=Plot::class, mappedBy="burial", cascade={"persist", "remove"})
+     */
+    private $plot;
+
+    public function getId(): ?int
     {
-        return $this->burialId;
+        return $this->id;
     }
 
-    public function setBurialId(?int $burialId): self
+    public function setId(?int $id): self
     {
-        $this->burialId = $burialId;
+        $this->id = $id;
 
         return $this;
     }
@@ -112,7 +98,7 @@ class Burial
         return $this->cremation;
     }
 
-    public function setCremation(?bool $cremation): self
+    public function setCremation(bool $cremation): self
     {
         $this->cremation = $cremation;
 
@@ -131,26 +117,26 @@ class Burial
         return $this;
     }
 
-    public function getBurialDate(): ?\DateTimeInterface
+    public function getDate(): ?\DateTimeInterface
     {
-        return $this->burialDate;
+        return $this->date;
     }
 
-    public function setBurialDate(\DateTimeInterface $burialDate): self
+    public function setDate(?\DateTimeInterface $date): self
     {
-        $this->burialDate = $burialDate;
+        $this->date = $date;
 
         return $this;
     }
 
-    public function getIncompleteDate(): ?string
+    public function getIncDate(): ?string
     {
-        return $this->incompleteDate;
+        return $this->incDate;
     }
 
-    public function setIncompleteDate(?string $incompleteDate): self
+    public function setIncDate(?string $incDate): self
     {
-        $this->incompleteDate = $incompleteDate;
+        $this->incDate = $incDate;
 
         return $this;
     }
@@ -160,12 +146,32 @@ class Burial
         return $this->approval;
     }
 
-    public function setApproval(?bool $approval): self
+    public function setApproval(bool $approval): self
     {
         $this->approval = $approval;
 
         return $this;
     }
 
+    public function getPlot(): ?Plot
+    {
+        return $this->plot;
+    }
 
+    public function setPlot(?Plot $plot): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($plot === null && $this->plot !== null) {
+            $this->plot->setBurial(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($plot !== null && $plot->getBurial() !== $this) {
+            $plot->setBurial($this);
+        }
+
+        $this->plot = $plot;
+
+        return $this;
+    }
 }

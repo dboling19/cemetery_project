@@ -18,7 +18,6 @@ use App\Form\PlotForm;
 use App\Entity\Plot;
 use App\Entity\Owner;
 use App\Entity\Burial;
-use App\Entity\PlotOwner;
 
 
 class DisplayController extends AbstractController

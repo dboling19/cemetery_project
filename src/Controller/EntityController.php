@@ -19,7 +19,6 @@ use App\Form\PlotForm;
 use App\Entity\Plot;
 use App\Entity\Owner;
 use App\Entity\Burial;
-use App\Entity\PlotOwner;
 
 
 class EntityController extends AbstractController
@@ -39,7 +38,7 @@ class EntityController extends AbstractController
    * 
    * @Route("/owners/{column}/{order}/{result}", name="owner_display")
    */
-  public function owner_display(Request $request, OwnerRepository $owner_repo, $order = 'asc', $column = 'ownerId', $result = NULL): Response
+  public function owner_display(Request $request, OwnerRepository $owner_repo, $order = 'asc', $column = 'id', $result = NULL): Response
   {
 
     if ($order == 'asc')
@@ -50,14 +49,6 @@ class EntityController extends AbstractController
       $order = 'asc';
     }
 
-    // $form_array = array();
-    // $search_form = $this->createForm(SearchForm::class, $form_array);
-    // $search_form->handleRequest($request);
-    // if ($search_form->isSubmitted() && $search_form->isValid())
-    // {
-    //   return $this->redirectToRoute('search_burial');
-
-    // }
 
     $result = $owner_repo->findBy(array(), array($column => $order));
 
@@ -76,11 +67,11 @@ class EntityController extends AbstractController
    * @author Daniel Boling
    * @return rendered owner_form.html.twig
    * 
-   * @Route("/modify/owner/{owner_id}", name="modify_owner")
+   * @Route("/modify/owner/{id}", name="modify_owner")
    */
-  public function modify_owner(Request $request, OwnerRepository $owner_repo, $owner_id): Response
+  public function modify_owner(Request $request, OwnerRepository $owner_repo, $id): Response
   {
-    $owner = $owner_repo->findOneBy(array('ownerId' => $owner_id));
+    $owner = $owner_repo->findOneBy(array('ownerId' => $id));
     $owner_form = $this->createForm(OwnerForm::class, $owner);
     $owner_form->handleRequest($request);
 
@@ -92,7 +83,7 @@ class EntityController extends AbstractController
       $this->em->flush();
 
       return $this->redirectToRoute('owner_display', [
-        $order = 'asc', $column = 'ownerId'
+        $order = 'asc', $column = 'id'
       ]);
     }
 
@@ -108,11 +99,11 @@ class EntityController extends AbstractController
    * 
    * @author Daniel Boling
    * 
-   * @Route("/approval/owner/{owner_id}", name="toggle_owner_approval")
+   * @Route("/approval/owner/{id}", name="toggle_owner_approval")
    */
-  public function toggle_owner_approval(Request $request, OwnerRepository $owner_repo, $owner_id): Response
+  public function toggle_owner_approval(Request $request, OwnerRepository $owner_repo, $id): Response
   {
-    $owner = $owner_repo->findOneBy(array('ownerId' => $owner_id)); 
+    $owner = $owner_repo->findOneBy(array('id' => $id)); 
 
 
     if($owner->getApproval() == 1)
@@ -126,7 +117,7 @@ class EntityController extends AbstractController
     $this->em->flush();
 
     return $this->redirectToRoute('owner_display', [
-      $order = 'asc', $column = 'ownerId'
+      $order = 'asc', $column = 'id'
     ]);
 
   }
@@ -140,7 +131,7 @@ class EntityController extends AbstractController
    * 
    * @Route("/burials/{column}/{order}/{result}", name="burial_display")
    */
-  public function burial_display(Request $request, BurialRepository $burial_repo, $order = 'asc', $column = 'burialId', $result = NULL): Response
+  public function burial_display(Request $request, BurialRepository $burial_repo, $order = 'asc', $column = 'id', $result = NULL): Response
   {
 
     if ($order == 'asc')
@@ -151,50 +142,7 @@ class EntityController extends AbstractController
       $order = 'asc';
     }
 
-    // $form_array = array();
-    // $search_form = $this->createForm(SearchForm::class, $form_array);
-    // $search_form->handleRequest($request);
-    // if ($search_form->isSubmitted() && $search_form->isValid())
-    // {
-    //   return $this->redirectToRoute('search_burial');
-
-    // }
-
-
-    // $query = $this->em->createQuery(
-    //   'SELECT b.burial_id, b.first_name, b.last_name, b.burial_date, b.cremation, b.funeral_home, p.notes, p.section, p.lot, p.space FROM App\Entity\PlotBurial AS pb 
-    //   JOIN App\Entity\Plot AS p ON pb.plot_id=p.plot_id
-    //   JOIN App\Entity\Burial AS b ON pb.burial_id=b.burial_id
-    //   ORDER BY :column :order'
-    // )
-    //   ->setParameter('column', $column)
-    //   ->setParameter('order', $order)
-    // ;
-
-
-
     $result = $burial_repo->findBy(array(), array($column => $order));
-
-
-
-    // foreach ($burial as $selection)
-    // {
-    //   if ($selection->getDate() == null)
-    //   // check if the datetime object is null - this is due to the miscellaneous date formatting and inputs in the original data
-    //   {
-    //     if ($selection->getBurialDay() != null && $selection->getBurialMonth() != null && $selection->getBurialYear() != null)
-    //     {
-    //       // this will only fire if all three date inputs are null. Otherwise no date will be shown.
-    //       $new_date = new \DateTime($selection->getBurialMonth() . '/' . $selection->getBurialDay() . '/' . $selection->getBurialYear());
-    //       $selection->setDate($new_date);
-    //       $this->em->persist($selection);
-    //     }
-
-    //   }
-    // }
-    // $this->em->flush();
-    // uncomment and modify later as data is added.
-
 
     return $this->render('displays/burial_display.html.twig', [
         'result' => $result,
@@ -211,11 +159,11 @@ class EntityController extends AbstractController
    * @author Daniel Boling
    * @return rendered burial_form.html.twig
    * 
-   * @Route("/modify/burial/{burial_id}", name="modify_burial")
+   * @Route("/modify/burial/{id}", name="modify_burial")
    */
-  public function modify_burial(Request $request, BurialRepository $burial_repo, $burial_id): Response
+  public function modify_burial(Request $request, BurialRepository $burial_repo, $id): Response
   {
-    $burial = $burial_repo->findOneBy(array('burialId' => $burial_id));
+    $burial = $burial_repo->findOneBy(array('id' => $id));
     var_dump($burial);
     $burial_form = $this->createForm(BurialForm::class, $burial);
     $burial_form->handleRequest($request);
@@ -242,11 +190,11 @@ class EntityController extends AbstractController
    * 
    * @author Daniel Boling
    * 
-   * @Route("/approval/burial/{burial_id}", name="toggle_burial_approval")
+   * @Route("/approval/burial/{id}", name="toggle_burial_approval")
    */
-  public function toggle_burial_approval(Request $request, BurialRepository $burial_repo, $burial_id): Response
+  public function toggle_burial_approval(Request $request, BurialRepository $burial_repo, $id): Response
   {
-    $burial = $burial_repo->findOneBy(array('burialId' => $burial_id)); 
+    $burial = $burial_repo->findOneBy(array('id' => $id));
 
 
     if($burial->getApproval() == 1)
@@ -272,7 +220,7 @@ class EntityController extends AbstractController
    * 
    * @Route("/{column}/{order}/{result}", name="plot_display")
    */
-  public function plot_display(Request $request, PlotRepository $plot_repo, $order = 'desc', $column = 'plotId', $result = NULL): Response
+  public function plot_display(Request $request, PlotRepository $plot_repo, $order = 'desc', $column = 'id', $result = NULL): Response
   {
 
     if ($order == 'asc')
@@ -318,11 +266,11 @@ class EntityController extends AbstractController
    * @author Daniel Boling
    * @return rendered plot_form.html.twig
    * 
-   * @Route("/modify/plot/{plot_id}", name="modify_plot")
+   * @Route("/modify/plot/{id}", name="modify_plot")
    */
-  public function modify_plot(Request $request, PlotRepository $plot_repo, $plot_id): Response
+  public function modify_plot(Request $request, PlotRepository $plot_repo, $id): Response
   {
-    $plot = $plot_repo->findOneBy(array('plotId' => $plot_id));
+    $plot = $plot_repo->findOneBy(array('id' => $id));
     $plot_form = $this->createForm(PlotForm::class, $plot);
     $plot_form->handleRequest($request);
 
@@ -348,11 +296,11 @@ class EntityController extends AbstractController
    * 
    * @author Daniel Boling
    * 
-   * @Route("/approval/plot/{plot_id}", name="toggle_plot_approval")
+   * @Route("/approval/plot/{id}", name="toggle_plot_approval")
    */
-  public function toggle_plot_approval(Request $request, PlotRepository $plot_repo, $plot_id): Response
+  public function toggle_plot_approval(Request $request, PlotRepository $plot_repo, $id): Response
   {
-    $plot = $plot_repo->findOneBy(array('plotId' => $plot_id)); 
+    $plot = $plot_repo->findOneBy(array('id' => $id)); 
 
 
     if($plot->getApproval() == 1)

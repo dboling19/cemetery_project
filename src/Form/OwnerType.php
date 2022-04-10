@@ -27,11 +27,12 @@ class OwnerType extends AbstractType
   {
 
     $builder
-      ->add('ownerFullName', TextType::class)
-      ->add('streetAddress', TextType::class)
+      ->add('firstName', TextType::class)
+      ->add('lastName', TextType::class)
+      ->add('address', TextType::class)
       ->add('city', TextType::class)
       ->add('state', TextType::class)
-      ->add('zipCode', TextType::class)
+      ->add('zipcode', TextType::class)
       ->add('phoneNum', TextType::class)
       ->add('oldOwner', CheckboxType::class, [
         'required' => false,

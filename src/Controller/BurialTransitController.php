@@ -15,13 +15,9 @@ use Doctrine\ORM\EntityRepository;
 use App\Repository\PlotRepository;
 use App\Repository\OwnerRepository;
 use App\Repository\BurialRepository;
-use App\Repository\PlotOwnerRepository;
-use App\Repository\PlotBurialRepository;
 use App\Entity\Plot;
 use App\Entity\Owner;
 use App\Entity\Burial;
-use App\Entity\PlotOwner;
-use App\Entity\PlotBurial;
 
 
 class BurialTransitController extends AbstractController
@@ -43,10 +39,10 @@ class BurialTransitController extends AbstractController
      * 
      * @Route("/plot_burial", name="burial_transit")
      */
-    public function burial_transit(Request $request, PlotRepository $plot_repo, OwnerRepository $owner_repo, PlotBurialRepository $pb_repo): Response
+    public function burial_transit(Request $request, PlotRepository $plot_repo, OwnerRepository $owner_repo): Response
     {
         $form_array = array();
-        // passing empty array into form to *hopefully* return an array with data later
+        // passing empty array into form to return an array with data later
         $form = $this->createForm(BurialTransitForm::class, $form_array);
         $form->handleRequest($request);
 
@@ -78,14 +74,9 @@ class BurialTransitController extends AbstractController
           $this->em->flush();
           // add new burial from array
 
-
-          $pb = new PlotBurial();
-          $pb->setPlotId($plot->getPlotId());
-          $pb->setBurialId($burial->getBurialId());
-          $pb->setDate($burial->getDate());
-          $pb->setApproval(0);
+          $plot->setBurial($burial);
+          $plot->setApproval(0);
           // setting up the M-M table input
-          $this->em->persist($pb);
           $this->em->flush();
 
 
