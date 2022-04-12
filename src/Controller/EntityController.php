@@ -12,7 +12,6 @@ use Doctrine\Persistence\ManagerRegistry;
 use App\Repository\OwnerRepository;
 use App\Repository\BurialRepository;
 use App\Repository\PlotRepository;
-use App\Form\SearchForm;
 use App\Form\OwnerForm;
 use App\Form\BurialForm;
 use App\Form\PlotForm;
@@ -30,36 +29,6 @@ class EntityController extends AbstractController
     $this->date = new \DateTime('now', new \DateTimeZone('America/Indiana/Indianapolis'));
   }
 
-  /**
-   * Displays the list of owners in the system and shows their information.
-   * 
-   * @author Daniel Boling
-   * @return rendered owner_display.html.twig
-   * 
-   * @Route("/owners/{column}/{order}/{result}", name="owner_display")
-   */
-  public function owner_display(Request $request, OwnerRepository $owner_repo, $order = 'asc', $column = 'id', $result = NULL): Response
-  {
-
-    if ($order == 'asc')
-    // if page was previously asc, load next with desc.
-    {
-      $order = 'desc';
-    } else {
-      $order = 'asc';
-    }
-
-
-    $result = $owner_repo->findBy(array(), array($column => $order));
-
-
-    return $this->render('displays/owner_display.html.twig', [
-        'result' => $result,
-        'order' => $order,
-    ]);
-
-  }
-
 
   /**
    * Loads the owner chosen from owner_display and handles modification.
@@ -71,7 +40,7 @@ class EntityController extends AbstractController
    */
   public function modify_owner(Request $request, OwnerRepository $owner_repo, $id): Response
   {
-    $owner = $owner_repo->findOneBy(array('ownerId' => $id));
+    $owner = $owner_repo->findOneBy(array('id' => $id));
     $owner_form = $this->createForm(OwnerForm::class, $owner);
     $owner_form->handleRequest($request);
 
@@ -103,7 +72,7 @@ class EntityController extends AbstractController
    */
   public function toggle_owner_approval(Request $request, OwnerRepository $owner_repo, $id): Response
   {
-    $owner = $owner_repo->findOneBy(array('id' => $id)); 
+    $owner = $owner_repo->findOneBy(array('id' => $id));
 
 
     if($owner->getApproval() == 1)
@@ -118,36 +87,6 @@ class EntityController extends AbstractController
 
     return $this->redirectToRoute('owner_display', [
       $order = 'asc', $column = 'id'
-    ]);
-
-  }
-
-
-  /**
-   * Displays the list of burials in the system and shows their information.
-   * 
-   * @author Daniel Boling
-   * @return rendered burial_display.html.twig
-   * 
-   * @Route("/burials/{column}/{order}/{result}", name="burial_display")
-   */
-  public function burial_display(Request $request, BurialRepository $burial_repo, $order = 'asc', $column = 'id', $result = NULL): Response
-  {
-
-    if ($order == 'asc')
-    // if page was previously asc, load next with desc.
-    {
-      $order = 'desc';
-    } else {
-      $order = 'asc';
-    }
-
-    $result = $burial_repo->findBy(array(), array($column => $order));
-
-    return $this->render('displays/burial_display.html.twig', [
-        'result' => $result,
-        'order' => $order,
-        // 'search_form' => $search_form,
     ]);
 
   }
@@ -208,54 +147,6 @@ class EntityController extends AbstractController
     $this->em->flush();
 
     return $this->redirectToRoute('burial_display');
-
-  }
-
-
-  /**
-   * Displays the list of plots in the system and shows their information.
-   * 
-   * @author Daniel Boling
-   * @return rendered plot_display.html.twig
-   * 
-   * @Route("/{column}/{order}/{result}", name="plot_display")
-   */
-  public function plot_display(Request $request, PlotRepository $plot_repo, $order = 'desc', $column = 'id', $result = NULL): Response
-  {
-
-    if ($order == 'asc')
-    // if page was previously asc, load next with desc.
-    {
-      $order = 'desc';
-    } else {
-      $order = 'asc';
-    }
-
-    if ($column == 'plot')
-    {
-      // $result = $plot_repo->createQueryBuilder('p')
-      //   ->join('p.section', 's')
-      //   ->join('p.lot', 'l')
-      //   ->join('p.space', 's')
-      //   ->orderBy('p', $order)
-      //   ->getQuery()
-      //   ->getResult()
-      // ;
-
-      $result = $plot_repo->findBy(array(), array('section' => $order, 'lot' => $order, 'space' => $order));
-
-
-    } else {
-      $result = $plot_repo->findBy(array(), array($column => $order));
-    }
-
-
-
-    return $this->render('displays/plot_display.html.twig', [
-        'result' => $result,
-        'order' => $order,
-        // 'search_form' => $search_form,
-    ]);
 
   }
 
