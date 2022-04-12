@@ -214,10 +214,10 @@ class Owner
         return $this->oldOwner;
     }
 
-    public function setOldOwner(?bool $oldOwner): self
+    public function setOldOwner(bool $oldOwner): self
     {
         $this->oldOwner = $oldOwner;
 
-        return $this->oldOwner;
+        return $this;
     }
 }

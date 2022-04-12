@@ -22,19 +22,25 @@
 <p>
 <label>With Regard to:</label>
 <br>
+{{ form_row(form.from_owner) }}
+{{ form_row(form.to_owner) }}
 
 <div id="plot-fields-list"
-    data-prototype="{{ plotMacros.printPlotFieldRow(form.plot.vars.prototype)|e('html_attr') }}"
+    data-prototype="{{ form_widget(form.plot.vars.prototype)|e }}"
     data-widget-tags="{{ '<p></p>'|e }}"
     data-widget-counter="{{ form.plot|length }}">
 <br>
 <br>
 <p>Plot(s)</p>
 {% for plotField in form.plot %}
-  {{ plotMacros.printPlotFieldRow(plotField) }}
+  {{ plotField }}
 {% endfor %}
 </div>
 <button type="button" class="add-another-collection-widget" data-list-selector="#plot-fields-list">Add Plot</button>
+
+{# {{ form_row(form.notarized) }} #}
+{{ form_row(form.submit) }}
+
     
 
 <script>

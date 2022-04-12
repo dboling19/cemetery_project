@@ -36,7 +36,9 @@ class PlotReleaseForm extends AbstractType
         'prototype' => true,
         'delete_empty' => true,
       ])
-      ->add('notarized', CheckboxType::class)
+      // ->add('notarized', CheckboxType::class, [
+      //   'required' => false,
+      // ])
       ->add('date', DateType::class)
       ->add('submit', SubmitType::class, [
         'label' => 'Submit Record',

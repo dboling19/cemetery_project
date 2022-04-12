@@ -31,6 +31,7 @@ class LotPurchaseController extends AbstractController
     $this->date = new \DateTime('now', new \DateTimeZone('America/Indiana/Indianapolis'));
   }
 
+  
   /**
    * Provides the logic and form rendering for the lot purchase form.
    *
@@ -45,7 +46,6 @@ class LotPurchaseController extends AbstractController
     // passing empty array into form to *hopefully* return an array with data later
     $form = $this->createForm(LotPurchaseForm::class, $form_array);
     $form->handleRequest($request);
-
 
     if ($form->isSubmitted() && $form->isValid())
     {
@@ -76,29 +76,33 @@ class LotPurchaseController extends AbstractController
         if ($owner_query->getOldOwner() == true)
         {
 
-          $found_owner = $owner_repo->findOneBy(array('ownerFullName' => $owner_query->getOwnerFullName()));
+          $found_owner = $owner_repo->findOneBy(array('firstName' => $owner_query->getFirstName(), 'lastName' => $owner_query->getLastName()));
           // return the one result that matches the sent full name.
           array_push($owners_object_array, $found_owner);
           // use findOneBy() to return a single object, allowing easy getters like below
           // instead of findBy(), which returns an array of objects, even if you limit to one.
           // Using findBy() requires indexing for [0] to get the value.
-          $found_owner->setStreetAddress($owner_query->getStreetAddress());
+          $found_owner->setAddress($owner_query->getAddress());
           $found_owner->setCity($owner_query->getCity());
           $found_owner->setState($owner_query->getState());
-          $found_owner->setZipCode($owner_query->getZipCode());
+          $found_owner->setZipcode($owner_query->getZipcode());
           $found_owner->setPhoneNum($owner_query->getPhoneNum());
+          $found_owner->setApproval(false);
           // change old owner info (name will not change)
+          // find the matching owner(s) based on user input from form and push them to a second array
 
         } else {
+          $new_id = $owner_repo->findOneBy(array(), array('id' => 'desc'));
           $new_owner = $owner_query;
+          $new_owner->setId(($new_id->getId())+1);
+          $new_owner->setApproval(false);
+          array_push($owners_object_array, $new_owner);
           $this->em->persist($new_owner);
           // add new owner from array
 
         }
 
       }
-      // find the matching owner(s) based on user input from form and push them to a second array
-
       $this->em->flush();
       // flush changes made to database
 
@@ -110,7 +114,7 @@ class LotPurchaseController extends AbstractController
           $plot->addOwner($owner);
           // $po->setNotarized(0);
           $this->em->flush();
-          
+
         }
 
       }

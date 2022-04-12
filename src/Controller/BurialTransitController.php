@@ -29,7 +29,6 @@ class BurialTransitController extends AbstractController
     {
       $this->em = $entityManager;
       $this->date = new \DateTime('now', new \DateTimeZone('America/Indiana/Indianapolis'));
-  
     }
 
     /**
@@ -39,7 +38,7 @@ class BurialTransitController extends AbstractController
      * 
      * @Route("/plot_burial", name="burial_transit")
      */
-    public function burial_transit(Request $request, PlotRepository $plot_repo, OwnerRepository $owner_repo): Response
+    public function burial_transit(Request $request, PlotRepository $plot_repo, BurialRepository $burial_repo): Response
     {
         $form_array = array();
         // passing empty array into form to return an array with data later
@@ -51,31 +50,26 @@ class BurialTransitController extends AbstractController
         {
           $form_array = $form->getData();
           $burial = $form_array['burial'];
-          $plot_return = $form_array['plot'];
+          $plot = $form_array['plot'];
 
-          var_dump($plot_return);
-          echo "\n";
-
-
-          $plot = $plot_repo->findOneBy(array(
-            'cemetery' => $plot_return->getCemetery(),
-            'section' => $plot_return->getSection(),
-            'lot' => $plot_return->getLot(),
-            'space' => $plot_return->getSpace()
+          $plot_query = $plot_repo->findOneBy(array(
+            'cemetery' => $plot->getCemetery(),
+            'section' => $plot->getSection(),
+            'lot' => $plot->getLot(),
+            'space' => $plot->getSpace()
           ));
-          var_dump($plot);
-          echo "\n";
           // find the matching plots based on user input from form and push them to a second array
-          $plot->setNotes($plot_return->getNotes());
+          $plot_query->setNotes($plot->getNotes());
+          $plot = $plot_query;
 
-          $burial_id = new Burial();
-          $burial->setBurialId($burial_id->getBurialId());
+          $burial_id = $burial_repo->findOneBy(array(), array('id' => 'desc'));
+          $burial->setId($burial_id->getId()+1);
+          $burial->setApproval(false);
           $this->em->persist($burial);
-          $this->em->flush();
           // add new burial from array
 
           $plot->setBurial($burial);
-          $plot->setApproval(0);
+          $plot->setApproval(false);
           // setting up the M-M table input
           $this->em->flush();
 

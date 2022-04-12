@@ -44,8 +44,8 @@ class BurialFixtures extends Fixture
           if ($line[3] == "NULL" or $line[4] == "NULL" or $line[5] == "NULL")
           {
             // if any of the imported date fields are null, append them together and put them in the incomplete_date field
-            $date = $line[3] . '-' . $line[4] . '-' . $line[5];
-            $date = str_replace('NULL', '', $date);
+            $date = sprintf('%02d', $line[3]) . '-' . sprintf('%02d', $line[4]) . '-' . sprintf('%02d', $line[5]);
+            $date = str_replace(array('NULL', '00'), '', $date);
             if ($date == '--') {
               $burial[$i]->setIncDate(NULL);
             } else {

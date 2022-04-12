@@ -22,27 +22,111 @@ use App\Entity\Burial;
 
 class DisplayController extends AbstractController
 {
-    /**
-   * This should be the main page that everyone should see. Every user should be able to see this page and everything
-   * on it. This will be modified more clearly from it's current state. Currently
-   * being used as a testing stage for database outputs.
+
+  public function __construct(EntityManagerInterface $entityManager)
+  {
+    $this->em = $entityManager;
+    $this->date = new \DateTime('now', new \DateTimeZone('America/Indiana/Indianapolis'));
+  }
+
+
+  /**
+   * Displays the list of owners in the system and shows their information.
    * 
    * @author Daniel Boling
-   * @return rendered display.html.twig
+   * @return rendered owner_display.html.twig
    * 
-   * @Route("/", name="plot_display")
+   * @Route("/owners/{column}/{order}/{result}", name="owner_display")
    */
-  public function display(PlotRepository $plot_repo): Response
+  public function owner_display(Request $request, OwnerRepository $owner_repo, $order = 'asc', $column = 'id', $result = NULL): Response
   {
 
-    $plot = $plot_repo->findBy(array(), array('plotId' => 'desc'), 10);
+    if ($order == 'asc')
+    // if page was previously asc, load next with desc.
+    {
+      $order = 'desc';
+    } else {
+      $order = 'asc';
+    }
 
 
-    return $this->render('plot_display.html.twig', [
-        'plot' => $plot,
+    $result = $owner_repo->findBy(array(), array($column => $order));
+
+
+    return $this->render('displays/owner_display.html.twig', [
+        'result' => $result,
+        'order' => $order,
     ]);
 
   }
+
+
+  /**
+   * Displays the list of burials in the system and shows their information.
+   * 
+   * @author Daniel Boling
+   * @return rendered burial_display.html.twig
+   * 
+   * @Route("/burials/{column}/{order}/{result}", name="burial_display")
+   */
+  public function burial_display(Request $request, BurialRepository $burial_repo, $order = 'asc', $column = 'id', $result = NULL): Response
+  {
+
+    if ($order == 'asc')
+    // if page was previously asc, load next with desc.
+    {
+      $order = 'desc';
+    } else {
+      $order = 'asc';
+    }
+
+    $result = $burial_repo->findBy(array(), array($column => $order));
+
+    return $this->render('displays/burial_display.html.twig', [
+        'result' => $result,
+        'order' => $order,
+        // 'search_form' => $search_form,
+    ]);
+
+  }
+
+
+  /**
+   * Displays the list of plots in the system and shows their information.
+   * 
+   * @author Daniel Boling
+   * @return rendered plot_display.html.twig
+   * 
+   * @Route("/plots/{column}/{order}/{result}", name="plot_display")
+   */
+  public function plot_display(Request $request, PlotRepository $plot_repo, $order = 'desc', $column = 'id', $result = NULL): Response
+  {
+
+    if ($order == 'asc')
+    // if page was previously asc, load next with desc.
+    {
+      $order = 'desc';
+    } else {
+      $order = 'asc';
+    }
+
+    if ($column == 'plot')
+    {
+      $result = $plot_repo->findBy(array(), array('section' => $order, 'lot' => $order, 'space' => $order));
+    } else {
+      $result = $plot_repo->findBy(array(), array($column => $order));
+    }
+
+
+
+    return $this->render('displays/plot_display.html.twig', [
+        'result' => $result,
+        'order' => $order,
+        // 'search_form' => $search_form,
+    ]);
+
+  }
+
 }
 
 
