@@ -21,7 +21,7 @@
           <th><a href="{{ path('burial_display', { column: 'firstName', order: order }) }}">First Name</a></th>
           <th><a href="{{ path('burial_display', { column: 'lastName', order: order }) }}">Last Name</a></th>
           <th><a href="{{ path('burial_display', { column: 'date', order: order }) }}">Date</a></th>
-          <th><a href="{{ path('burial_display', { column: 'plot', order: order }) }}">Plot</a></th>
+          {# <th><a href="{{ path('burial_display', { column: 'plot', order: order }) }}">Plot</a></th> #}
           <th><a href="{{ path('burial_display', { column: 'cremation', order: order }) }}">Cremation</a></th>
           <th><a href="{{ path('burial_display', { column: 'funeralHome', order: order }) }}">Funeral Home</a></th>
           {# <th>Notes</th> #}
@@ -33,7 +33,7 @@
             <td>{{ row.firstName }}</td>
             <td>{{ row.lastName }}</td>
             <td>{% if row.date is not null %} {{ row.date|date('m/d/Y') }} {% endif %}</td>
-            <td>{{ row.plot }}</td>
+            {# <td>{{ row.plot }}</td> #}
             <td>{% if row.cremation == 1 %} Yes {% endif %}</td>
             <td>{{ row.funeralHome }}</td>
             {# <td>{{ row.notes }}</td> #}
