@@ -38,16 +38,34 @@ class DisplayController extends AbstractController
    * 
    * @Route("/", name="display")
    */
-  public function display(Request $request, PlotRepository $plot_repo, OwnerRepository $owner_repo, BurialRepository $burial_repo): Response
+  public function display(Request $request, PlotRepository $plot_repo): Response
   {
 
     $result = $plot_repo->findAllRelated();
-
 
     return $this->render('displays/display_all.html.twig', [
       'result' => $result,
     ]);
 
+  }
+
+
+  /**
+   * Displays all useful information to the user about the specified plot
+   * 
+   * @author Daniel Boling
+   * @return rendered details.html.twig
+   * 
+   * @Route("/details/{id}", name="details")
+   */
+  public function details(Request $request, PlotRepository $plot_repo, $id): Response
+  {
+
+    $result = $plot_repo->findAllRelated($id);
+
+    return $this->render('displays/details.html.twig', [
+      'result' => $result,
+    ]);
 
   }
 

@@ -14,31 +14,31 @@
   </div>
     <div class="w3-container" style = "margin-top:40px">
     </div>
-      <table class="w3-table-all">
+    <table class="w3-table-all">
+      <tr>
+        <th><a href="{{ path('owner_display', { column: 'firstName', order: order }) }}">First Name</a></th>
+        <th><a href="{{ path('owner_display', { column: 'lastName', order: order }) }}">Last Name</a></th>
+        <th><a href="{{ path('owner_display', { column: 'address', order: order }) }}">Address</a></th>
+        <th><a href="{{ path('owner_display', { column: 'city', order: order }) }}">City</a></th>
+        <th><a href="{{ path('owner_display', { column: 'state', order: order }) }}">State</a></th>
+        <th>Phone Number</th>
+        <th><div class="w3-center"><a href="{{ path('owner_display', { column: 'approval', order: order }) }}">Approval</a></div></th>
+      </tr>
+      {% for row in result %} {# simple loop to output rows #}
         <tr>
-          <th><a href="{{ path('owner_display', { column: 'firstName', order: order }) }}">First Name</a></th>
-                    <th><a href="{{ path('owner_display', { column: 'lastName', order: order }) }}">Last Name</a></th>
-          <th><a href="{{ path('owner_display', { column: 'address', order: order }) }}">Address</a></th>
-          <th><a href="{{ path('owner_display', { column: 'city', order: order }) }}">City</a></th>
-          <th><a href="{{ path('owner_display', { column: 'state', order: order }) }}">State</a></th>
-          <th>Phone Number</th>
-          <th><div class="w3-center"><a href="{{ path('owner_display', { column: 'approval', order: order }) }}">Approval</a></div></th>
+          <td>{{ row.firstName }}</td>
+          <td>{{ row.lastName }}</td>
+          <td>{{ row.address }}</td>
+          <td>{{ row.city }}</td>
+          <td>{{ row.state }}</td>
+          <td>{{ row.phoneNum }}</td>
+          <td>
+            <div class="w3-center"><a href="{{ path('modify_owner',{ id: row.id }) }}" class="w3-button w3-ripple w3-border">Edit</a></div>
+            <div class="w3-center"><a href="{{ path('toggle_owner_approval',{ id: row.id }) }}" class="w3-button w3-ripple w3-border {% if row.approval == 0 %}w3-red{% else %}w3-green{% endif %}">{% if row.approval == 0 %}Unapproved{% else %}Approved{% endif %}</a></div>
+          </td>
         </tr>
-        {% for row in result %} {# simple loop to output rows #}
-          <tr>
-            <td>{{ row.firstName }}</td>
-            <td>{{ row.lastName }}</td>
-            <td>{{ row.address }}</td>
-            <td>{{ row.city }}</td>
-            <td>{{ row.state }}</td>
-            <td>{{ row.phoneNum }}</td>
-            <td>
-              <div class="w3-center"><a href="{{ path('modify_owner',{ id: row.id }) }}" class="w3-button w3-ripple w3-border">Edit</a></div>
-              <div class="w3-center"><a href="{{ path('toggle_owner_approval',{ id: row.id }) }}" class="w3-button w3-ripple w3-border {% if row.approval == 0 %}w3-red{% else %}w3-green{% endif %}">{% if row.approval == 0 %}Unapproved{% else %}Approved{% endif %}</a></div>
-            </td>
-          </tr>
-        {% endfor %}
-      </table>
+      {% endfor %}
+    </table>
 
   </body>
 

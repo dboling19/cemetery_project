@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+    <title>Cemetery - Details</title>
+  </head>
+
+  <body>
+    {{ include("navbar.html.twig") }}
+    <div class="w3-container" style = "margin-top:40px">
+    <h3>Plot Details</h2>
+    <h4>{{ result.cemetery ~ ' ' ~ result.section ~ result.lot ~ result.space }}</h3>
+    {% if result.burial != null %}
+      <table class="w3-table-all">
+        <tr>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Date</th>
+          <th>Cremation</th>
+          <th>Funeral Home</th>
+          <th>Notes</th>
+          <th>Inc. d-m-Y</th>
+        </tr>
+        <tr>
+          <td>{{ result.burial.firstName }}</td>
+          <td>{{ result.burial.lastName }}</td>
+          <td>{% if result.burial.date is not null %} {{ result.burial.date|date('m/d/Y') }} {% endif %}</td>
+          <td>{% if result.burial.cremation == 1 %} Yes {% endif %}</td>
+          <td>{{ result.burial.funeralHome }}</td>
+          <td>{{ result.notes }}</td>
+          <td>{{ result.burial.IncDate }}</td>
+          <td><div class="w3-center"><a href="{{ path('modify_burial',{ id: result.burial.id }) }}" class="w3-button w3-ripple w3-border">Edit</a></div></td>
+        </tr>
+      </table>
+    {% else %}
+      <p>No registered Burial</p>
+    {% endif %}
+    
+    {% if result.owner|length > 0 %}
+      <div class="w3-container" style = "margin-top:40px">
+      </div>
+      <table class="w3-table-all">
+      <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Address</th>
+        <th>City</th>
+        <th>State</th>
+        <th>Phone Number</th>
+      </tr>
+        {% for owner in result.owner %} {# simple loop to output rows #}
+          <tr>
+            <td>{{ owner.firstName }}</td>
+            <td>{{ owner.lastName }}</td>
+            <td>{{ owner.address }}</td>
+            <td>{{ owner.city }}</td>
+            <td>{{ owner.state }}</td>
+            <td>{{ owner.phoneNum }}</td>
+            <td><div class="w3-center"><a href="{{ path('modify_owner',{ id: owner.id }) }}" class="w3-button w3-ripple w3-border">Edit</a></div></td>
+          </tr>
+        {% endfor %}
+        </table>
+      {% else %}
+        <p>No registered Owners</p>
+      {% endif %}
+
+  </body>
+
+</html>
+
