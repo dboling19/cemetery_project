@@ -31,6 +31,28 @@ class DisplayController extends AbstractController
 
 
   /**
+   * Displays all useful information to the user
+   * 
+   * @author Daniel Boling
+   * @return rendered display.html.twig
+   * 
+   * @Route("/", name="display")
+   */
+  public function display(Request $request, PlotRepository $plot_repo, OwnerRepository $owner_repo, BurialRepository $burial_repo): Response
+  {
+
+    $result = $plot_repo->findAllRelated();
+
+
+    return $this->render('displays/display_all.html.twig', [
+      'result' => $result,
+    ]);
+
+
+  }
+
+
+  /**
    * Displays the list of owners in the system and shows their information.
    * 
    * @author Daniel Boling
@@ -85,7 +107,6 @@ class DisplayController extends AbstractController
     return $this->render('displays/burial_display.html.twig', [
         'result' => $result,
         'order' => $order,
-        // 'search_form' => $search_form,
     ]);
 
   }
@@ -122,7 +143,6 @@ class DisplayController extends AbstractController
     return $this->render('displays/plot_display.html.twig', [
         'result' => $result,
         'order' => $order,
-        // 'search_form' => $search_form,
     ]);
 
   }

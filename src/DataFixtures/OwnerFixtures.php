@@ -47,9 +47,9 @@ class OwnerFixtures extends Fixture
           $owner[$i]->setFirstName(implode(' ', $full_name));
           if ((int)$line[2] == 1)
           {
-            $owner[$i]->setApproval(true);
+            $owner[$i]->setApproval(1);
           } else {
-            $owner[$i]->setApproval(false);
+            $owner[$i]->setApproval(-1);
           }
           $this->em->persist($owner[$i]);
     

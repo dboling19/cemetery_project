@@ -69,9 +69,9 @@ class BurialFixtures extends Fixture
           }
           if ((int)$line[8] == 1)
           {
-            $burial[$i]->setApproval(true);
+            $burial[$i]->setApproval(1);
           } else {
-            $burial[$i]->setApproval(false);
+            $burial[$i]->setApproval(-1);
           }
           $this->em->persist($burial[$i]);
     

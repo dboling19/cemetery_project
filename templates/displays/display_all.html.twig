@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+      <title>Cemetery - Display</title>
+  </head>
+
+  <body>
+    {{ include("navbar.html.twig") }}
+    <div class="w3-container">
+    </div>
+      <table class="w3-table-all">
+        <tr>
+          <th>Cemetery</th>
+          <th>Plot</th>
+          <th></th>
+        </tr>
+        {% for row in result %} {# simple loop to output rows #}
+          <tr>
+            <td>{{ row.cemetery }}</td>
+            <td>{{ row.notes }}</td>
+            <td>{{ row.owner.firstName }}</td>
+          </tr>
+        {% endfor %}
+      </table>
+
+  </body>
+
+</html>
+

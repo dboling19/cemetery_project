@@ -48,7 +48,7 @@ class Burial
     private $incDate;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="integer")
      */
     private $approval;
 
@@ -141,12 +141,12 @@ class Burial
         return $this;
     }
 
-    public function getApproval(): ?bool
+    public function getApproval(): ?int
     {
         return $this->approval;
     }
 
-    public function setApproval(bool $approval): self
+    public function setApproval(int $approval): self
     {
         $this->approval = $approval;
 

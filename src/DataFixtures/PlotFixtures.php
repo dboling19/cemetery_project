@@ -46,9 +46,9 @@ class PlotFixtures extends Fixture
           $plot[$i]->setNotes($line[5]);
           if ((int)$line[6] == 1)
           {
-            $plot[$i]->setApproval(true);
+            $plot[$i]->setApproval(1);
           } else {
-            $plot[$i]->setApproval(false);
+            $plot[$i]->setApproval(-1);
           }
           $this->em->persist($plot[$i]);
     
