@@ -43,6 +43,10 @@ class LotPurchaseController extends AbstractController
   {
 
     $form_array = array();
+    $owner = new Owner();
+    $plot = new Plot();
+    array_push($form_array, $owner, $plot);
+    var_dump($form_array);die;
     // passing empty array into form to *hopefully* return an array with data later
     $form = $this->createForm(LotPurchaseForm::class, $form_array);
     $form->handleRequest($request);

@@ -12,15 +12,35 @@
     </div>
       <table class="w3-table-all">
         <tr>
+          <th>Plot ID</th>
           <th>Cemetery</th>
-          <th>Plot</th>
-          <th></th>
+          <th>Burial First</th>
+          <th>Burial Last</th>
+          <th>Owner First</th>
+          <th>Owner Last</th>
+          <th>Notes</th>
         </tr>
         {% for row in result %} {# simple loop to output rows #}
           <tr>
+            <td>{{ row.id }}</td>
             <td>{{ row.cemetery }}</td>
+            <td>{% if row.burial != null %}{{ row.burial.firstName }}{% endif %}</td>
+            <td>{% if row.burial != null %}{{ row.burial.lastName }}{% endif %}</td>
+            <td>
+              {% if row.owner != null %}
+                {% for owner in row.owner %}
+                  {{ owner.firstName }};
+                {% endfor %}
+              {% endif %}
+            </td>
+            <td>
+              {% if row.owner != null %}
+                {% for owner in row.owner %}
+                  {{ owner.lastName }};
+                {% endfor %}
+              {% endif %}
+            </td>
             <td>{{ row.notes }}</td>
-            <td>{{ row.owner.firstName }}</td>
           </tr>
         {% endfor %}
       </table>

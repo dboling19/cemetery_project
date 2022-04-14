@@ -29,8 +29,10 @@ class PlotRepository extends ServiceEntityRepository
    */
   public function findAllRelated()
   {
-    return $this->createQueryBuilder('p')
-      ->join('p.owner', 'o')
+    return $this->createQueryBuilder('plot')
+      ->leftJoin('plot.burial', 'burial')
+      ->leftJoin('plot.owner', 'owner')
+      ->select('plot', 'burial', 'owner')
       ->getQuery()
       ->getResult()
     ;
