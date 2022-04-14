@@ -33,8 +33,8 @@ class BurialType extends AbstractType
   {
 
     $builder
-      ->add('burialFirst', TextType::class)
-      ->add('burialLast', TextType::class)
+      ->add('firstName', TextType::class)
+      ->add('lastName', TextType::class)
       ->add('date', DateType::class, [
           'data' => $this->date,
       ])

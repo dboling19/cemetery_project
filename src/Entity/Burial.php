@@ -2,158 +2,103 @@
 
 namespace App\Entity;
 
+use App\Repository\BurialRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Burial
- *
- * @ORM\Table(name="burial")
  * @ORM\Entity(repositoryClass=BurialRepository::class)
  */
 class Burial
 {
     /**
-     * @var int
-     *
-     * @ORM\Column(name="burial_id", type="integer", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\Column(type="integer")
      */
-    private $burialId;
+    private $id;
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(name="burial_first", type="string", length=50, nullable=true)
+     * @ORM\Column(type="string", length=50, nullable=true)
      */
-    private $burialFirst;
+    private $firstName;
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(name="burial_last", type="string", length=50, nullable=true)
+     * @ORM\Column(type="string", length=50, nullable=true)
      */
-    private $burialLast;
+    private $lastName;
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(name="burial_month", type="string", length=10, nullable=true)
-     */
-    private $burialMonth;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="burial_day", type="string", length=10, nullable=true)
-     */
-    private $burialDay;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="burial_year", type="string", length=10, nullable=true)
-     */
-    private $burialYear;
-
-    /**
-     * @var int|null
-     *
-     * @ORM\Column(name="cremation", type="smallint", nullable=true)
+     * @ORM\Column(type="boolean")
      */
     private $cremation;
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(name="funeral_home", type="string", length=50, nullable=true)
+     * @ORM\Column(type="string", length=50, nullable=true)
      */
     private $funeralHome;
 
     /**
-     * @var \DateTimeInterface|null
+     * @ORM\Column(type="date", nullable=true)
      */
     private $date;
 
-    
-    public function getBurialId(): ?int
+    /**
+     * @ORM\Column(type="string", length=50, nullable=true)
+     */
+    private $incDate;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $approval;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Plot::class, mappedBy="burial", cascade={"persist", "remove"})
+     */
+    private $plot;
+
+    public function getId(): ?int
     {
-        return $this->burialId;
+        return $this->id;
     }
 
-    public function setBurialId(?int $burialId): self
+    public function setId(?int $id): self
     {
-        $this->burialId = $burialId;
+        $this->id = $id;
 
         return $this;
     }
 
-    public function getBurialFirst(): ?string
+    public function getFirstName(): ?string
     {
-        return $this->burialFirst;
+        return $this->firstName;
     }
 
-    public function setBurialFirst(?string $burialFirst): self
+    public function setFirstName(?string $firstName): self
     {
-        $this->burialFirst = $burialFirst;
+        $this->firstName = $firstName;
 
         return $this;
     }
 
-    public function getBurialLast(): ?string
+    public function getLastName(): ?string
     {
-        return $this->burialLast;
+        return $this->lastName;
     }
 
-    public function setBurialLast(?string $burialLast): self
+    public function setLastName(?string $lastName): self
     {
-        $this->burialLast = $burialLast;
+        $this->lastName = $lastName;
 
         return $this;
     }
 
-    public function getBurialMonth(): ?string
-    {
-        return $this->burialMonth;
-    }
-
-    public function setBurialMonth(?string $burialMonth): self
-    {
-        $this->burialMonth = $burialMonth;
-
-        return $this;
-    }
-
-    public function getBurialDay(): ?string
-    {
-        return $this->burialDay;
-    }
-
-    public function setBurialDay(?string $burialDay): self
-    {
-        $this->burialDay = $burialDay;
-
-        return $this;
-    }
-
-    public function getBurialYear(): ?string
-    {
-        return $this->burialYear;
-    }
-
-    public function setBurialYear(?string $burialYear): self
-    {
-        $this->burialYear = $burialYear;
-
-        return $this;
-    }
-
-    public function getCremation(): ?int
+    public function getCremation(): ?bool
     {
         return $this->cremation;
     }
 
-    public function setCremation(?int $cremation): self
+    public function setCremation(bool $cremation): self
     {
         $this->cremation = $cremation;
 
@@ -177,12 +122,56 @@ class Burial
         return $this->date;
     }
 
-    public function setDate(\DateTimeInterface $date): self
+    public function setDate(?\DateTimeInterface $date): self
     {
         $this->date = $date;
 
         return $this;
     }
 
+    public function getIncDate(): ?string
+    {
+        return $this->incDate;
+    }
 
+    public function setIncDate(?string $incDate): self
+    {
+        $this->incDate = $incDate;
+
+        return $this;
+    }
+
+    public function getApproval(): ?int
+    {
+        return $this->approval;
+    }
+
+    public function setApproval(int $approval): self
+    {
+        $this->approval = $approval;
+
+        return $this;
+    }
+
+    public function getPlot(): ?Plot
+    {
+        return $this->plot;
+    }
+
+    public function setPlot(?Plot $plot): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($plot === null && $this->plot !== null) {
+            $this->plot->setBurial(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($plot !== null && $plot->getBurial() !== $this) {
+            $plot->setBurial($this);
+        }
+
+        $this->plot = $plot;
+
+        return $this;
+    }
 }

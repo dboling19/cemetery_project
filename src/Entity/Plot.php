@@ -2,63 +2,78 @@
 
 namespace App\Entity;
 
+use App\Repository\PlotRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Plot
- *
- * @ORM\Table(name="plot")
  * @ORM\Entity(repositoryClass=PlotRepository::class)
  */
 class Plot
 {
     /**
-     * @var int
-     *
-     * @ORM\Column(name="plot_id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\Column(type="integer")
      */
-    private $plotId;
+    private $id;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="cemetery", type="string", length=50, nullable=false)
+     * @ORM\Column(type="string", length=50, nullable=true)
      */
     private $cemetery;
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(name="section", type="string", length=10, nullable=true)
+     * @ORM\Column(type="string", length=50, nullable=true)
      */
     private $section;
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(name="lot", type="string", length=10, nullable=true)
+     * @ORM\Column(type="string", length=50, nullable=true)
      */
     private $lot;
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(name="space", type="string", length=10, nullable=true)
+     * @ORM\Column(type="string", length=50, nullable=true)
      */
     private $space;
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(name="notes", type="text", length=16, nullable=true)
+     * @ORM\Column(type="text", nullable=true)
      */
     private $notes;
 
-    public function getPlotId(): ?int
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $approval;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Burial::class, inversedBy="plot", cascade={"persist", "remove"})
+     */
+    private $burial;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Owner::class, inversedBy="plots")
+     */
+    private $owner;
+
+    public function __construct()
     {
-        return $this->plotId;
+        $this->owner = new ArrayCollection();
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function setId(?int $id): self
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     public function getCemetery(): ?string
@@ -66,7 +81,7 @@ class Plot
         return $this->cemetery;
     }
 
-    public function setCemetery(string $cemetery): self
+    public function setCemetery(?string $cemetery): self
     {
         $this->cemetery = $cemetery;
 
@@ -121,5 +136,51 @@ class Plot
         return $this;
     }
 
+    public function getApproval(): ?int
+    {
+        return $this->approval;
+    }
 
+    public function setApproval(int $approval): self
+    {
+        $this->approval = $approval;
+
+        return $this;
+    }
+
+    public function getBurial(): ?Burial
+    {
+        return $this->burial;
+    }
+
+    public function setBurial(?Burial $burial): self
+    {
+        $this->burial = $burial;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Owner>
+     */
+    public function getOwner(): Collection
+    {
+        return $this->owner;
+    }
+
+    public function addOwner(Owner $owner): self
+    {
+        if (!$this->owner->contains($owner)) {
+            $this->owner[] = $owner;
+        }
+
+        return $this;
+    }
+
+    public function removeOwner(Owner $owner): self
+    {
+        $this->owner->removeElement($owner);
+
+        return $this;
+    }
 }

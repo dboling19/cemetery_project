@@ -1,4 +1,4 @@
-<?php
+<?php    
 
 namespace App\Form;
 
@@ -8,6 +8,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
@@ -16,10 +17,11 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use App\Entity\Burial;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 
-class LotPurchaseForm extends AbstractType
+class BurialForm extends AbstractType
 {
 
   public function __construct()
@@ -31,38 +33,21 @@ class LotPurchaseForm extends AbstractType
   {
 
     $builder
-      ->add('owner', CollectionType::class, [
-        'entry_type' => OwnerType::class,
+      ->add('firstName', TextType::class)
+      ->add('lastName', TextType::class)
+      ->add('date', DateType::class)
+      ->add('cremation', CheckboxType::class, [
         'required' => false,
-        'entry_options' => [
-          'label' => false,
-        ],
-        'allow_add' => true,
-        'allow_delete' => true,
-        'prototype' => true,
-        'delete_empty' => true,
       ])
-      ->add('plot', CollectionType::class, [
-        'entry_type' => PlotType::class,
-        'entry_options' => [
-          'label' => false,
-        ],
-        'allow_add' => true,
-        'allow_delete' => true,
-        'prototype' => true,
-        'delete_empty' => true,
-      ])
-      ->add('date', DateType::class, [
-        'data' => $this->date,
+      ->add('funeralHome', TextType::class, [
+          'required' => false,
       ])
       ->add('submit', SubmitType::class, [
-        'label' => 'Submit Record',
+        'label' => 'Save Burial',
       ])
     ;
-
   }
 
 }
-
 
 // EOF

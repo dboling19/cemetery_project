@@ -1,5 +1,8 @@
 <!DOCTYPE html>
 <html>
+    {% block stylesheets %}
+        {{encore_entry_link_tags('app')}}
+    {% endblock %}
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>

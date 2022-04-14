@@ -1,4 +1,10 @@
+<!DOCTYPE html>
+<html>
+    {% block stylesheets %}
+    {{encore_entry_link_tags('app')}}
+    {% endblock %}
 
-{{ include('navbar.html.twig') }}
+    {{ include('navbar.html.twig') }}
 
-{{ form(form) }}
+    {{ form(form) }}
+</html>
