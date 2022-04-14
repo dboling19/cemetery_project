@@ -103,7 +103,6 @@ class EntityController extends AbstractController
   public function modify_burial(Request $request, BurialRepository $burial_repo, $id): Response
   {
     $burial = $burial_repo->findOneBy(array('id' => $id));
-    var_dump($burial);
     $burial_form = $this->createForm(BurialForm::class, $burial);
     $burial_form->handleRequest($request);
 
