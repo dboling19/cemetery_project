@@ -21,6 +21,7 @@
           <th>Funeral Home</th>
           <th>Notes</th>
           <th>Inc. d-m-Y</th>
+          <th></th>
         </tr>
         <tr>
           <td>{{ result.burial.firstName }}</td>
@@ -48,6 +49,7 @@
         <th>City</th>
         <th>State</th>
         <th>Phone Number</th>
+        <th></th>
       </tr>
         {% for owner in result.owner %} {# simple loop to output rows #}
           <tr>
@@ -61,9 +63,9 @@
           </tr>
         {% endfor %}
         </table>
-      {% else %}
-        <p>No registered Owners</p>
-      {% endif %}
+    {% else %}
+      <p>No registered Owners</p>
+    {% endif %}
 
   </body>
 

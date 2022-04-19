@@ -50,26 +50,30 @@ class BurialTransitController extends AbstractController
         {
           $form_array = $form->getData();
           $burial = $form_array['burial'];
-          $plot = $form_array['plot'];
+          $plot_query = $form_array['plot'];
 
-          $plot_query = $plot_repo->findOneBy(array(
-            'cemetery' => $plot->getCemetery(),
-            'section' => $plot->getSection(),
-            'lot' => $plot->getLot(),
-            'space' => $plot->getSpace()
+          $found_plot = $plot_repo->findOneBy(array(
+            'cemetery' => $plot_query->getCemetery(),
+            'section' => $plot_query->getSection(),
+            'lot' => $plot_query->getLot(),
+            'space' => $plot_query->getSpace()
           ));
           // find the matching plots based on user input from form and push them to a second array
-          $plot_query->setNotes($plot->getNotes());
+          if ($plot_query->getNotes() != null or $plot_query->getNotes() != '') {
+            // prevents setting notes to null upon form submission. this will only be allowed
+            // in the actual plot entity modification page.
+            $found_plot->setNotes($plot_query->getNotes());
+          }
           $plot = $plot_query;
 
           $burial_id = $burial_repo->findOneBy(array(), array('id' => 'desc'));
           $burial->setId($burial_id->getId()+1);
-          $burial->setApproval(false);
+          $burial->setApproval(-1);
           $this->em->persist($burial);
           // add new burial from array
 
           $plot->setBurial($burial);
-          $plot->setApproval(false);
+          $plot->setApproval(-1);
           // setting up the M-M table input
           $this->em->flush();
 

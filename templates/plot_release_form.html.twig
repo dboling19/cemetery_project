@@ -1,4 +1,5 @@
 {% import _self as plotMacros %}
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 {{ include('navbar.html.twig') }}
 
@@ -12,34 +13,54 @@
   </div>
 {% endmacro %}
 
-<h2><b> Release of Burial Space Ownership Rights </b></h2>
-<!---<h3> Goshen City Cemeteries Violett, Oakridge & West Goshen </h3>-->
-<br>
-{{ form_start(form) }}
-{{ form_label(form.date) }}
-{{ form_widget(form.date) }}
-</p>
-<p>
-<label>With Regard to:</label>
-<br>
-{{ form_row(form.from_owner) }}
-{{ form_row(form.to_owner) }}
+<div class="w3-container">
+  <h2><b> Release of Burial Space Ownership Rights </b></h2>
+  <!---<h3> Goshen City Cemeteries Violett, Oakridge & West Goshen </h3>-->
+  <br>
+  {{ form_start(form) }}
+  <b>{{ form_label(form.date) }}</b>
+  <br>
+  <div class="w3-quarter">
+    {{ form_widget(form.date.day, {'attr': {'class': 'w3-select w3-third'} }) }}
+    {{ form_widget(form.date.month, {'attr': {'class': 'w3-select w3-third'} }) }}
+    {{ form_widget(form.date.year, {'attr': {'class': 'w3-select w3-third'} }) }}
+  </div>
+  <br>
+  <br>
+  <b><label>With Regard to:</label></b>
+  <br>
+  <b><label>Current Owner</label></b>
+  {{ form_widget(form.from_owner) }}
 
-<div id="plot-fields-list"
-    data-prototype="{{ form_widget(form.plot.vars.prototype)|e }}"
-    data-widget-tags="{{ '<p></p>'|e }}"
-    data-widget-counter="{{ form.plot|length }}">
-<br>
-<br>
-<p>Plot(s)</p>
-{% for plotField in form.plot %}
-  {{ plotField }}
-{% endfor %}
+
+  <div id="to_owner-fields-list"
+      data-prototype="{{ form_widget(form.to_owner.vars.prototype)|e }}"
+      data-widget-tags="{{ '<p></p>'|e }}"
+      data-widget-counter="{{ form.to_owner|length }}">
+  <b><p>Owner(s)</p></b>
+  {% for to_ownerField in form.to_owner %}
+    {{ to_ownerField }}
+  {% endfor %}
+  </div>
+  <button type="button" class="add-another-collection-widget w3-button w3-border" data-list-selector="#to_owner-fields-list">Add Recipient</button>
+
+
+  <div id="plot-fields-list"
+      data-prototype="{{ form_widget(form.plot.vars.prototype)|e }}"
+      data-widget-tags="{{ '<p></p>'|e }}"
+      data-widget-counter="{{ form.plot|length }}">
+  <br>
+  <br>
+  <b><p>Plot(s)</p></b>
+  {% for plotField in form.plot %}
+    {{ plotField }}
+  {% endfor %}
+  </div>
+  <button type="button" class="add-another-collection-widget w3-button w3-border" data-list-selector="#plot-fields-list">Add Plot</button>
+
+  {# {{ form_row(form.notarized) }} #}
+  {{ form_row(form.submit, {'attr': {'class': 'w3-button w3-border'} }) }}
 </div>
-<button type="button" class="add-another-collection-widget" data-list-selector="#plot-fields-list">Add Plot</button>
-
-{# {{ form_row(form.notarized) }} #}
-{{ form_row(form.submit) }}
 
     
 

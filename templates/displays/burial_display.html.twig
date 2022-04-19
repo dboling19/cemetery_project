@@ -1,32 +1,47 @@
 <!DOCTYPE html>
 <html>
   <head>
-
-      {% block stylesheets %}
-        {{encore_entry_link_tags('app')}}
-      {% endblock %}
-    
-
-      <title>Cemetery - Burials</title>
+    {% block stylesheets %}
+      {{encore_entry_link_tags('app')}}
+    {% endblock %}
+  
+    <title>Cemetery - Burials</title>
   </head>
 
   <body>
     <div style="position:fixed;top:0;width:100%">
-    {{ include("navbar.html.twig") }}
-  </div>
+      {{ include("navbar.html.twig") }}
+    </div>
     <div class="w3-container" style = "margin-top:40px">
-    {# {{ form(search_form) }} #}
+    </div>
+    <form>
+      <div class="w3-row">
+        <input type="text"
+                name="search"
+                class="form-control"
+                value="{{ app.request.query.get('search') }}"
+                placeholder="Search...">
+        <div class="input-group-append">
+          <input type="submit"
+                  class="w3-button w3-border">
+              <span class="fa fa-search"></span>
+          </input>
+        </div>
+      </div>
+    </form>
+    <p>{% if searched == true %}Results: {{ result.getTotalItemCount }}{% endif %}</p>
+    <div class="w3-continer" style = "margin-top:40px">
       <table class="w3-table-all">
         <tr>
-          <th><a href="{{ path('burial_display', { column: 'firstName', order: order }) }}">First Name</a></th>
-          <th><a href="{{ path('burial_display', { column: 'lastName', order: order }) }}">Last Name</a></th>
-          <th><a href="{{ path('burial_display', { column: 'date', order: order }) }}">Date</a></th>
+          <th>{{ knp_pagination_sortable(result, 'First Name', 'burial.firstName') }}</th>
+          <th>{{ knp_pagination_sortable(result, 'Last Name', 'burial.lastName') }}</th>
+          <th>{{ knp_pagination_sortable(result, 'Date', 'burial.date') }}</th>
           {# <th><a href="{{ path('burial_display', { column: 'plot', order: order }) }}">Plot</a></th> #}
-          <th><a href="{{ path('burial_display', { column: 'cremation', order: order }) }}">Cremation</a></th>
-          <th><a href="{{ path('burial_display', { column: 'funeralHome', order: order }) }}">Funeral Home</a></th>
-          {# <th>Notes</th> #}
-          <th>Inc. d-m-Y</th>
-          <th><div class="w3-center"><a href="{{ path('burial_display', { column: 'approval', order: order }) }}">Approval</a></div></th>
+          <th>{{ knp_pagination_sortable(result, 'Cremation', 'burial.cremation') }}</th>
+          <th>{{ knp_pagination_sortable(result, 'Funeral Home', 'burial.funeralHome') }}</th>
+          <th>Notes</th>
+          <th>{{ knp_pagination_sortable(result, 'Inc. d-m-Y', 'burial.incDate') }}</th>
+          <th><div class="w3-center">{{ knp_pagination_sortable(result, 'Approval', 'burial.approval') }}</div></th>
         </tr>
         {% for row in result %} {# simple loop to output rows #}
           <tr>
@@ -36,7 +51,7 @@
             {# <td>{{ row.plot }}</td> #}
             <td>{% if row.cremation == 1 %} Yes {% endif %}</td>
             <td>{{ row.funeralHome }}</td>
-            {# <td>{{ row.notes }}</td> #}
+            <td>{{ row.plot.notes }}</td>
             <td>{{ row.IncDate }}</td>
             <td>
               <div class="w3-center"><a href="{{ path('modify_burial',{ id: row.id }) }}" class="w3-button w3-ripple w3-border">Edit</a></div>
@@ -45,7 +60,11 @@
           </tr>
         {% endfor %}
       </table>
-  <div>
+    </div>
+
+    <div class="w3-bar w3-bottom">
+      <div class="w3-bar-item">{{ knp_pagination_render(result) }}</div>
+    </div>
   </body>
 
 </html>

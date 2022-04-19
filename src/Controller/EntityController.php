@@ -44,10 +44,12 @@ class EntityController extends AbstractController
     $owner_form = $this->createForm(OwnerForm::class, $owner);
     $owner_form->handleRequest($request);
 
+    $plots = $owner->getPlots();
+
     if($owner_form->isSubmitted() && $owner_form->isValid())
     {
       $owner = $owner_form->getData();
-      $owner->setApproval(0);
+      $owner->setApproval(-1);
       $this->em->persist($owner);
       $this->em->flush();
 
@@ -58,6 +60,7 @@ class EntityController extends AbstractController
 
     return $this->render('modify_forms/modify_owner.html.twig', [
       'owner_form' => $owner_form->createView(),
+      'plots' => $plots,
     ]);
 
   }
@@ -109,8 +112,7 @@ class EntityController extends AbstractController
     if($burial_form->isSubmitted() && $burial_form->isValid())
     {
       $burial = $burial_form->getData();
-      $burial->setApproval(0);
-      $this->em->persist($burial);
+      $burial->setApproval(-1);
       $this->em->flush();
 
       return $this->redirectToRoute('burial_display');
@@ -118,6 +120,7 @@ class EntityController extends AbstractController
 
     return $this->render('modify_forms/modify_burial.html.twig', [
       'burial_form' => $burial_form->createView(),
+      'burial' => $burial,
     ]);
 
   }
@@ -142,7 +145,6 @@ class EntityController extends AbstractController
     } else {
       $burial->setApproval(1);
     }
-    $this->em->persist($burial);
     $this->em->flush();
 
     return $this->redirectToRoute('burial_display');
@@ -167,8 +169,7 @@ class EntityController extends AbstractController
     if($plot_form->isSubmitted() && $plot_form->isValid())
     {
       $plot = $plot_form->getData();
-      $plot->setApproval(0);
-      $this->em->persist($plot);
+      $plot->setApproval(-1);
       $this->em->flush();
 
       return $this->redirectToRoute('plot_display');
@@ -176,6 +177,7 @@ class EntityController extends AbstractController
 
     return $this->render('modify_forms/modify_plot.html.twig', [
       'plot_form' => $plot_form->createView(),
+      'plot' => $plot,
     ]);
 
   }

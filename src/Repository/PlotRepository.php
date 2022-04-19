@@ -27,24 +27,45 @@ class PlotRepository extends ServiceEntityRepository
    * 
    * @author Daniel Boling
    */
-  public function findAllRelated($id = null)
+  public function findAllRelated($id = null, $term = null)
   {
 
-    $query = $this->createQueryBuilder('plot')
-      ->leftJoin('plot.burial', 'burial')
+    $qb = $this->createQueryBuilder('plot');
+      
+    $qb->leftJoin('plot.burial', 'burial')
       ->leftJoin('plot.owner', 'owner')
-      ->select('plot', 'burial', 'owner')
+      ->addSelect('plot', 'burial', 'owner')
     ;
 
-    if ($id == null) {
-      return $query->getQuery()->getResult();
-    } else {
-      return $query
+    if ($id != null) {
+      // used specifically for ./src/Controller/DisplayController.php::details()
+      // for finding one plot with related entities.
+      return $qb
         ->andWhere('plot.id = :id')
         ->setParameter('id', $id)
         ->getQuery()
         ->getOneOrNullResult()
       ;
+    } elseif ($term != null) {
+      // this will send the query object back to the DisplayController::display() function
+      // for the pagination functionality
+      return $qb
+        ->andWhere('
+        CONCAT(plot.section, plot.lot, plot.space) LIKE :term
+        OR owner.firstName LIKE :term
+        OR owner.lastName LIKE :term
+        OR owner.address LIKE :term
+        OR owner.city LIKE :term
+        OR owner.state LIKE :term
+        OR owner.phoneNum LIKE :term
+        OR burial.firstName LIKE :term
+        OR burial.lastName LIKE :term
+        OR burial.funeralHome LIKE :term')
+        ->setParameter('term', '%'.$term.'%')
+      ;
+    } else {
+      // if id and query are both null
+      return $qb;
     }
 
   }
