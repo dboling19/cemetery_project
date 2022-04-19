@@ -15,6 +15,8 @@
     <div class="w3-container" style = "margin-top:40px">
     </div>
     <form>
+    <div class="w3-container" style = "margin-top:60px">
+    </div>
       <div class="w3-row">
         <input type="text"
                 name="search"
@@ -31,6 +33,7 @@
     </form>
     <p>{% if searched == true %}Results: {{ result.getTotalItemCount }}{% endif %}</p>
     <table class="w3-table-all">
+    <div class = "barBack">
       <tr>
         <th>{{ knp_pagination_sortable(result, 'First Name', 'owner.firstName') }}</th>
         <th>{{ knp_pagination_sortable(result, 'Last Name', 'owner.lastName') }}</th>
@@ -40,20 +43,23 @@
         <th>Phone Number</th>
         <th><div class="w3-center">{{ knp_pagination_sortable(result, 'Approval', 'owner.approval') }}</div></th>
       </tr>
-      {% for row in result %} {# simple loop to output rows #}
-        <tr>
-          <td>{{ row.firstName }}</td>
-          <td>{{ row.lastName }}</td>
-          <td>{{ row.address }}</td>
-          <td>{{ row.city }}</td>
-          <td>{{ row.state }}</td>
-          <td>{{ row.phoneNum }}</td>
-          <td>
-            <div class="w3-center"><a href="{{ path('modify_owner',{ id: row.id }) }}" class="w3-button w3-ripple w3-border">Edit</a></div>
-            <div class="w3-center"><a href="{{ path('toggle_owner_approval',{ id: row.id }) }}" class="w3-button w3-ripple w3-border {% if row.approval == 0 %}w3-red{% elseif row.approval == -1 %}w3-orange{% else %}w3-green{% endif %}">{% if row.approval == 0 %}Unapproved{% elseif row.approval == -1 %}Waiting{% else %}Approved{% endif %}</a></div>
-          </td>
-        </tr>
-      {% endfor %}
+    </div>
+      <div style = "margin-top:35px">
+        {% for row in result %} {# simple loop to output rows #}
+          <tr>
+            <td>{{ row.firstName }}</td>
+            <td>{{ row.lastName }}</td>
+            <td>{{ row.address }}</td>
+            <td>{{ row.city }}</td>
+            <td>{{ row.state }}</td>
+            <td>{{ row.phoneNum }}</td>
+            <td>
+              <div class="w3-center"><a href="{{ path('modify_owner',{ id: row.id }) }}" class="w3-button w3-ripple w3-border">Edit</a></div>
+              <div class="w3-center"><a href="{{ path('toggle_owner_approval',{ id: row.id }) }}" class="w3-button w3-ripple w3-border {% if row.approval == 0 %}w3-red{% elseif row.approval == -1 %}w3-orange{% else %}w3-green{% endif %}">{% if row.approval == 0 %}Unapproved{% elseif row.approval == -1 %}Waiting{% else %}Approved{% endif %}</a></div>
+            </td>
+          </tr>
+        {% endfor %}
+      <div>
     </table>
 
     <div class="w3-bar w3-bottom">

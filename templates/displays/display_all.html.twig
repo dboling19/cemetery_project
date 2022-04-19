@@ -15,6 +15,8 @@
     <div class="w3-container" style = "margin-top:40px">
     </div>
     <form>
+    <div class="w3-container" style = "margin-top:60px">
+    </div>
       <div class="w3-row">
         <input type="text"
                 name="search"
@@ -31,17 +33,20 @@
     </form>
     <p>{% if searched == true %}Results: {{ result.getTotalItemCount }}{% endif %}</p>
     <table class="w3-table-all">
+    <div class = "barBack">
       <tr>
-        <th>{{ knp_pagination_sortable(result, 'Plot ID', 'plot.id') }}</th>
-        <th>Cemetery</th>
-        <th>Plot</th>
-        <th>{{ knp_pagination_sortable(result, 'Burial First', 'burial.firstName') }}</th>
-        <th>{{ knp_pagination_sortable(result, 'Burial Last', 'burial.lastName') }}</th>
-        <th>Owner First</th>
-        <th>Owner Last</th>
-        <th>Notes</th>
+        <th><div class="w3-border w3-red w3-button w3-ripple stickyHead">{{ knp_pagination_sortable(result, 'Plot ID', 'plot.id') }}</th>
+        <th><div class="w3-border w3-red w3-button w3-ripple stickyHead">Cemetery</th>
+        <th><div class="w3-border w3-red w3-button w3-ripple stickyHead">Plot</th>
+        <th><div class="w3-border w3-red w3-button w3-ripple stickyHead">{{ knp_pagination_sortable(result, 'Burial First', 'burial.firstName') }}</th>
+        <th><div class="w3-border w3-red w3-button w3-ripple stickyHead">{{ knp_pagination_sortable(result, 'Burial Last', 'burial.lastName') }}</th>
+        <th><div class="w3-border w3-red w3-button w3-ripple stickyHead">Owner First</th>
+        <th><div class="w3-border w3-red w3-button w3-ripple stickyHead">Owner Last</th>
+        <th><div class="w3-border w3-red w3-button w3-ripple stickyHead">Notes</th>
         <th></th>
       </tr>
+      </div>
+      <div style = "margin-top:35px">
       {% for row in result %} {# simple loop to output rows #}
         <tr>
           <td>{{ row.id }}</td>

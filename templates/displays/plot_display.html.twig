@@ -17,6 +17,8 @@
     <div class="w3-container" style = "margin-top:40px">
     </div>
     <form>
+    <div class="w3-container" style = "margin-top:60px">
+    </div>
       <div class="w3-row">
         <input type="text"
                 name="search"
@@ -33,13 +35,14 @@
     </form>
     <p>{% if searched == true %}Results: {{ result.getTotalItemCount }}{% endif %}</p>
     <table class="w3-table-all">
-      <div class="barBack">
+      <div class = "barBack">
       <tr>
         <th><div class="w3-border w3-red w3-button w3-ripple stickyHead">{{ knp_pagination_sortable(result, 'Cemetery', 'plot.cemetery') }}</th>
         <th><div class="w3-border w3-red w3-button w3-ripple stickyHead">Plot</th>
         <th><div class="w3-border w3-red w3-button w3-ripple stickyHead">Notes</div></th>
         <th><div class="w3-border w3-red w3-button w3-ripple w3-center stickyHead">{{ knp_pagination_sortable(result, 'Approval', 'plot.approval') }}</div></th>
       </tr>
+      </div>
       <div style = "margin-top:35px">
           {% for row in result %} {# simple loop to output rows #}
             <tr>
