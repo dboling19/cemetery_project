@@ -35,12 +35,17 @@ class BurialForm extends AbstractType
     $builder
       ->add('firstName', TextType::class)
       ->add('lastName', TextType::class)
-      ->add('date', DateType::class)
+      ->add('date', DateType::class, [
+        'years' => range(1800, $this->date->format('Y')+1)
+      ])
       ->add('cremation', CheckboxType::class, [
         'required' => false,
       ])
       ->add('funeralHome', TextType::class, [
           'required' => false,
+      ])
+      ->add('incDate', TextType::class, [
+        'required' => false,
       ])
       ->add('submit', SubmitType::class, [
         'label' => 'Save Burial',

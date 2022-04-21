@@ -32,9 +32,9 @@
     <p>{% if searched == true %}Results: {{ result.getTotalItemCount }}{% endif %}</p>
     <table class="w3-table-all">
       <tr>
-        <th>{{ knp_pagination_sortable(result, 'Plot ID', 'plot.id') }}</th>
-        <th>Cemetery</th>
         <th>Plot</th>
+        <th>{{ knp_pagination_filter(result, {'plot.cemetery': 'West Goshen', 'plot.cemetery': 'Violet', 'plot.cemetery': 'Okaridge' }) }}</th>
+        <th>{{ knp_pagination_sortable(result, 'Plot', 'plot.id') }}</th>
         <th>{{ knp_pagination_sortable(result, 'Burial First', 'burial.firstName') }}</th>
         <th>{{ knp_pagination_sortable(result, 'Burial Last', 'burial.lastName') }}</th>
         <th>Owner First</th>

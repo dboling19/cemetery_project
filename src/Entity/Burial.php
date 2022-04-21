@@ -33,7 +33,7 @@ class Burial
     private $cremation;
 
     /**
-     * @ORM\Column(type="string", length=50, nullable=true)
+     * @ORM\Column(type="string", length=100, nullable=true)
      */
     private $funeralHome;
 

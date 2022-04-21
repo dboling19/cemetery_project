@@ -27,7 +27,7 @@ class PlotRepository extends ServiceEntityRepository
    * 
    * @author Daniel Boling
    */
-  public function findAllRelated($id = null, $term = null)
+  public function findAllRelated($id = null, $search_array = null)
   {
 
     $qb = $this->createQueryBuilder('plot');
@@ -46,7 +46,7 @@ class PlotRepository extends ServiceEntityRepository
         ->getQuery()
         ->getOneOrNullResult()
       ;
-    } elseif ($term != null) {
+    } elseif ($search_array != null) {
       // this will send the query object back to the DisplayController::display() function
       // for the pagination functionality
       return $qb
@@ -61,7 +61,18 @@ class PlotRepository extends ServiceEntityRepository
         OR burial.firstName LIKE :term
         OR burial.lastName LIKE :term
         OR burial.funeralHome LIKE :term')
-        ->setParameter('term', '%'.$term.'%')
+        // ->andWhere($qb->expr()->in($qb->expr()->concat('plot.section', $qb->expr()->concat('plot.lot', 'plot.space')), $search_array))
+        // ->andWhere($qb->expr()->in('owner.firstName', $search_array))
+        // ->andWhere($qb->expr()->in('owner.lastName', $search_array))
+        // ->andWhere($qb->expr()->in('owner.address', $search_array))
+        // ->andWhere($qb->expr()->in('owner.city', $search_array))
+        // ->andWhere($qb->expr()->in('owner.state', $search_array))
+        // ->andWhere($qb->expr()->in('owner.phoneNum', $search_array))
+        // ->andWhere($qb->expr()->in('burial.firstName', $search_array))
+        // ->andWhere($qb->expr()->in('burial.lastName', $search_array))
+        // ->andWhere($qb->expr()->in('burial.funeralHome', $search_array))
+
+        ->setParameter('term', $qb->expr()->in($search_array))
       ;
     } else {
       // if id and query are both null

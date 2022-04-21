@@ -43,6 +43,10 @@ class DisplayController extends AbstractController
   public function display(Request $request, PlotRepository $plot_repo, PaginatorInterface $paginator): Response
   {
     $search = $request->query->get('search');
+    $search_array = explode(', ', $search);
+    // foreach($search_array as $term) {
+    //   $search_array[array_search($term, $search_array)] = '%'.$term.'%';
+    // }
 
     if($search != null)
     {
