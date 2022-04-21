@@ -8,11 +8,11 @@
 
   <body>
     {{ include("navbar.html.twig") }}
-    <div class="w3-container" style = "margin-top:40px">
+    <div class="container-fluid" style = "margin-top:40px">
     <h3>Plot Details</h2>
     <h4>{{ result.cemetery ~ ' ' ~ result.section ~ result.lot ~ result.space }}</h3>
     {% if result.burial != null %}
-      <table class="w3-table-all">
+      <table class="table table-striped table-bordered">
         <tr>
           <th>First Name</th>
           <th>Last Name</th>
@@ -31,7 +31,7 @@
           <td>{{ result.burial.funeralHome }}</td>
           <td>{{ result.notes }}</td>
           <td>{{ result.burial.IncDate }}</td>
-          <td><div class="w3-center"><a href="{{ path('modify_burial',{ id: result.burial.id }) }}" class="w3-button w3-ripple w3-border">Edit</a></div></td>
+          <td><a href="{{ path('modify_burial',{ id: result.burial.id }) }}" class="btn btn-primary">Edit</a></div></td>
         </tr>
       </table>
     {% else %}
@@ -39,9 +39,9 @@
     {% endif %}
     
     {% if result.owner|length > 0 %}
-      <div class="w3-container" style = "margin-top:40px">
+      <div class="container-fluid" style = "margin-top:40px">
       </div>
-      <table class="w3-table-all">
+      <table class="table table-striped table-bordered">
       <tr>
         <th>First Name</th>
         <th>Last Name</th>
@@ -59,7 +59,7 @@
             <td>{{ owner.city }}</td>
             <td>{{ owner.state }}</td>
             <td>{{ owner.phoneNum }}</td>
-            <td><div class="w3-center"><a href="{{ path('modify_owner',{ id: owner.id }) }}" class="w3-button w3-ripple w3-border">Edit</a></div></td>
+            <td><a href="{{ path('modify_owner',{ id: owner.id }) }}" class="btn btn-primary">Edit</a></td>
           </tr>
         {% endfor %}
         </table>

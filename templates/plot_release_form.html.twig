@@ -20,11 +20,9 @@
   {{ form_start(form) }}
   <b>{{ form_label(form.date) }}</b>
   <br>
-  <div class="w3-quarter">
-    {{ form_widget(form.date.day, {'attr': {'class': 'w3-select w3-third'} }) }}
-    {{ form_widget(form.date.month, {'attr': {'class': 'w3-select w3-third'} }) }}
-    {{ form_widget(form.date.year, {'attr': {'class': 'w3-select w3-third'} }) }}
-  </div>
+    {{ form_widget(form.date.day) }}
+    {{ form_widget(form.date.month) }}
+    {{ form_widget(form.date.year) }}
   <br>
   <br>
   <b><label>With Regard to:</label></b>

@@ -29,77 +29,77 @@ class OwnerType extends AbstractType
     $builder
       ->add('firstName', TextType::class,[
         'label' => "First Name",
-        'label_attr' => [
-          'class' => 'labelsClass'
-        ],
-        'attr'=> [
-          'class'=>'inputClass'
-        ]
+        // 'label_attr' => [
+        //   'class' => 'labelsClass'
+        // ],
+        // 'attr'=> [
+        //   'class'=>'inputClass'
+        // ]
       ])
       ->add('lastName', TextType::class,[
         'label' => "Last Name",
-        'label_attr' => [
-          'class' => 'labelsClass'
-        ],
-        'attr'=> [
-          'class'=>'inputClass'
-        ]
+        // 'label_attr' => [
+        //   'class' => 'labelsClass'
+        // ],
+        // 'attr'=> [
+        //   'class'=>'inputClass'
+        // ]
       ])
       ->add('address', TextType::class,[
         'label' => "Address",
-        'label_attr' => [
-          'class' => 'labelsClass'
-        ],
-        'attr'=> [
-          'class'=>'inputClass'
-        ]
+        // 'label_attr' => [
+        //   'class' => 'labelsClass'
+        // ],
+        // 'attr'=> [
+        //   'class'=>'inputClass'
+        // ]
       ])
       ->add('city', TextType::class,[
         'label' => "City",
-        'label_attr' => [
-          'class' => 'labelsClass'
-        ],
-        'attr'=> [
-          'class'=>'inputClass'
-        ]
+        // 'label_attr' => [
+        //   'class' => 'labelsClass'
+        // ],
+        // 'attr'=> [
+        //   'class'=>'inputClass'
+        // ]
       ]
       )
       ->add('state', TextType::class,[
         'label' => "State",
-        'label_attr' => [
-          'class' => 'labelsClass'
-        ],
-        'attr'=> [
-          'class'=>'inputClass'
-        ]
+        // 'label_attr' => [
+        //   'class' => 'labelsClass'
+        // ],
+        // 'attr'=> [
+        //   'class'=>'inputClass'
+        // ]
       ])
       ->add('zipCode', TextType::class,[
         'label' => "Zip Code",
-        'label_attr' => [
-          'class' => 'labelsClass'
-        ],
-        'attr'=> [
-          'class'=>'inputClass'
-        ]
+        // 'label_attr' => [
+        //   'class' => 'labelsClass'
+        // ],
+        // 'attr'=> [
+        //   'class'=>'inputClass'
+        // ]
       ])
       ->add('phoneNum', TextType::class,[
         'label' => "Phone Num",
-        'label_attr' => [
-          'class' => 'labelsClass'
-        ],
-        'attr'=> [
-          'class'=>'inputClass'
-        ]
+        // 'label_attr' => [
+        //   'class' => 'labelsClass'
+        // ],
+        // 'attr'=> [
+        //   'class'=>'inputClass'
+        // ]
       ])
       ->add('oldOwner', CheckboxType::class, [
         'required' => false,
         'label' => "Old Owner",
-        'label_attr' => [
-          'class' => 'labelsClass'
-        ],
-        'attr'=> [
-          'class'=>'inputClass'
-        ]
+        // 'label_attr' => [
+        //   'class' => 'labelsClass'
+        // ],
+        // 'attr'=> [
+        //   'class'=>'inputClass'
+        // ]
       ])
     ;
   }

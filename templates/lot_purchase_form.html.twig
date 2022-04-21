@@ -7,66 +7,64 @@
     {% block stylesheets %}
       {{encore_entry_link_tags('app')}}
     {% endblock %}
-    <div style= "position:fixed;top:0;width:100%">
-      {{ include("navbar.html.twig")}}
-    </div>
-    <div style = "margin-top:40px">
+
   </head>
   <body>
-    <h2><b> Cemetery Lot Purchase Goshen City Cemeteries </b></h2>
-    <p>
+    <div class="fixed-top">
+      {{ include("navbar.html.twig")}}
+    </div>
 
-    <h3><b> Owner/Buyer Information: </b></h3>
+    <div class = "container-fluid" style ="margin-top:50px">
+      <h2><b> Cemetery Lot Purchase Goshen City Cemeteries </b></h2>
+      <h3><b> Owner/Buyer Information: </b></h3>
 
-    {% macro printPlotFieldRow(plotField) %}
-      <div class="plot-fields-list">
-        <label>Plot Name</label>
-        {{ form_label(plotField.cemetery) }}
+      {% macro printPlotFieldRow(plotField) %}
+        <div class="plot-fields-list">
+          <label>Plot Name</label>
+          {{ form_label(plotField.cemetery) }}
+          <br>
+          {{ form_widget(plotField.cemetery) }}
+        </div>
+      {% endmacro %}
+
+
+      {% block body %}
+        {{ form_start(form) }}
+
+        <div id="owner-fields-list"
+            data-prototype="{{ form_widget(form.owner.vars.prototype)|e }}"
+            data-widget-tags="{{ '<p></p>'|e }}"
+            data-widget-counter="{{ form.owner|length }}">
         <br>
-        {{ form_widget(plotField.cemetery) }}
-      </div>
-    {% endmacro %}
+        <br>
+        {% for ownerField in form.owner %}
+          {{ form_widget(ownerField)}}
+        {% endfor %}
+        </div>
+        <button type="button" class="add-another-collection-widget btn btn-primary" data-list-selector="#owner-fields-list">Add Owner</button>
 
 
-    {% block body %}
-    {{ form_start(form) }}
+        <div id="plot-fields-list"
+          data-prototype="{{ form_widget(form.plot.vars.prototype)|e }}"
+          data-widget-tags="{{ '<p></p>'|e }}"
+          data-widget-counter="{{ form.plot|length }}">
+        <br>
+        <br>
+        <p>Plot(s)</p>
+        {% for plotField in form.plot %}
+          {{ plotField }}
+        {% endfor %}
+        </div>
+        <button type="button" class="add-another-collection-widget btn btn-primary" data-list-selector="#plot-fields-list">
+        Add Plot
+        </button>
 
-    <div id="owner-fields-list"
-        data-prototype="{{ form_widget(form.owner.vars.prototype)|e }}"
-        data-widget-tags="{{ '<p></p>'|e }}"
-        data-widget-counter="{{ form.owner|length }}">
-        
-    <br>
-    <br>
-    <body style="background-color:antiquewhite;">
-    {% for ownerField in form.owner %}
-      {{ form_widget(ownerField)}}
-    {% endfor %}
-    </div>
-    <button type="button" class="add-another-collection-widget" data-list-selector="#owner-fields-list">Add Owner</button>
-
-
-    <div id="plot-fields-list"
-        data-prototype="{{ form_widget(form.plot.vars.prototype)|e }}"
-        data-widget-tags="{{ '<p></p>'|e }}"
-        data-widget-counter="{{ form.plot|length }}">
-    <br>
-    <br>
-    <p>Plot(s)</p>
-    {% for plotField in form.plot %}
-      {{ plotField }}
-    {% endfor %}
-    </div>
-    <button type="button" class="add-another-collection-widget" data-list-selector="#plot-fields-list">
-    Add Plot
-    </button>
-
-    {{ form_row(form.date) }}
+        {{ form_row(form.date) }}
 
 
-    {{ form_row(form.submit) }}
-    {{ form_end(form, {'render_rest': false}) }}
-    {% endblock %}
+        {{ form_row(form.submit) }}
+        {{ form_end(form, {'render_rest': false}) }}
+      {% endblock %}
     </div>
   </body>
 <script>
