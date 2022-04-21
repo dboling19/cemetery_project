@@ -44,22 +44,22 @@
         <button type="button" class="add-another-collection-widget btn btn-primary" data-list-selector="#owner-fields-list">Add Owner</button>
 
 
-    {% block body %}
-    {{ form_start(form) }}
+        <div id="plot-fields-list"
+          data-prototype="{{ form_widget(form.plot.vars.prototype)|e }}"
+          data-widget-tags="{{ '<p></p>'|e }}"
+          data-widget-counter="{{ form.plot|length }}">
+        <br>
+        <br>
+        <p>Plot(s)</p>
+        {% for plotField in form.plot %}
+          {{ plotField }}
+        {% endfor %}
+        </div>
+        <button type="button" class="add-another-collection-widget btn btn-primary" data-list-selector="#plot-fields-list">
+        Add Plot
+        </button>
 
-    <div id="owner-fields-list"
-        data-prototype="{{ form_widget(form.owner.vars.prototype)|e }}"
-        data-widget-tags="{{ '<p></p>'|e }}"
-        data-widget-counter="{{ form.owner|length }}">
-        
-    <br>
-    <br>
-    <body style="background-color:antiquewhite;">
-    {% for ownerField in form.owner %}
-      {{ form_widget(ownerField)}}
-    {% endfor %}
-    </div>
-    <button type="button" class="add-another-collection-widget" data-list-selector="#owner-fields-list">Add Owner</button>
+        {{ form_row(form.date) }}
 
 
     <div id="plot-fields-list"
