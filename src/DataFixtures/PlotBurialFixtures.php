@@ -35,44 +35,44 @@ class PlotBurialFixtures extends Fixture implements DependentFixtureInterface
    */
   public function load(ObjectManager $manager): void
   {
-    $filename = 'C:\Users\Daniel Boling\Documents\Cemetery Project\CSV\West Goshen Plot-Burial M-M.csv';
-    $csv = fopen($filename, 'r');
-    $file_count = count(file($filename));
-    $count = 0;
-    $i = 0;
+//     $filename = 'C:\Users\Daniel Boling\Documents\Cemetery Project\CSV\West Goshen Plot-Burial M-M.csv';
+//     $csv = fopen($filename, 'r');
+//     $file_count = count(file($filename));
+//     $count = 0;
+//     $i = 0;
     
-    while (($line = fgetcsv($csv)) !== false)
-    {
-      $plot = $this->plot_repo->find((int)$line[1]);
-      $burial = $this->burial_repo->find((int)$line[2]);
-      $plot->setBurial($burial);
+//     while (($line = fgetcsv($csv)) !== false)
+//     {
+//       $plot = $this->plot_repo->find((int)$line[1]);
+//       $burial = $this->burial_repo->find((int)$line[2]);
+//       $plot->setBurial($burial);
 
-      $count += 1;
-      printf("WG PB - %.2f%%\n", ($count/$file_count)*100);
+//       $count += 1;
+//       printf("WG PB - %.2f%%\n", ($count/$file_count)*100);
 
-    }
-    $this->em->flush();
+//     }
+//     $this->em->flush();
 
 
-    $filename = 'C:\Users\Daniel Boling\Documents\Cemetery Project\CSV\Violet Cemetery.csv';
-    $csv = fopen($filename, 'r');
-    $file_count = count(file($filename));
-    $count = 0;
-    $i = 0;
+//     $filename = 'C:\Users\Daniel Boling\Documents\Cemetery Project\CSV\Violet Cemetery.csv';
+//     $csv = fopen($filename, 'r');
+//     $file_count = count(file($filename));
+//     $count = 0;
+//     $i = 0;
     
-    while (($line = fgetcsv($csv)) !== false) 
-    {
-      if ($line[7] != null or $line[7] != '' and $line[8] != null or $line[8] != '')
-      {
-        $plot = $this->plot_repo->findOneBy(array('cemetery' => 'Violet', 'section' => $line[3], 'lot' => $line[4], 'space' => $line[5]));
-        $burial = $this->burial_repo->findOneBy(array('firstName' => $line[7], 'lastName' => $line[8]));
-        $plot->setBurial($burial);
-
-      }
-      $count += 1;
-      printf("Violet PB - %.2f%%\n", ($count/$file_count)*100);
-    }
-    $this->em->flush();
+//     while (($line = fgetcsv($csv)) !== false) 
+//     {
+//       if ($line[7] != null or $line[7] != '' and $line[8] != null or $line[8] != '')
+//       {
+//         $plot = $this->plot_repo->findOneBy(array('cemetery' => 'Violet', 'section' => $line[3], 'lot' => $line[4], 'space' => $line[5]));
+//         $burial = $this->burial_repo->findOneBy(array('firstName' => $line[7], 'lastName' => $line[8]));
+// //        $plot->setBurial($burial);
+// //        var_dump($plot->getBurial()->getId());
+//       }
+//       $count += 1;
+//       printf("Violet PB - %.2f%%\n", ($count/$file_count)*100);
+//     }
+//     $this->em->flush();
 
 
   }

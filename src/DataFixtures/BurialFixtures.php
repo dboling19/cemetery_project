@@ -33,49 +33,59 @@ class BurialFixtures extends Fixture implements DependentFixtureInterface
    */
   public function load(ObjectManager $manager): void
   {
-    $filename = 'C:\Users\Daniel Boling\Documents\Cemetery Project\CSV\West Goshen Burial.csv';
+    $filename = 'C:\Users\Daniel Boling\Documents\Cemetery Project\CSV\West Goshen.csv';
     $csv = fopen($filename, 'r');
     $file_count = count(file($filename));
     $count = 0;
     $i = 0;
+    $id = 0;
     
     while (($line = fgetcsv($csv)) !== false) 
     {
-
-      $burial[$i] = new Burial();
-      $burial[$i]->setId((int)$line[0]);
-      $burial[$i]->setFirstName($line[1]);
-      $burial[$i]->setLastName($line[2]);
-      if ($line[3] == "NULL" or $line[4] == "NULL" or $line[5] == "NULL")
+      if ($line[11] != null or $line[11] != '' and $line[10] != null or $line[10] != '')
       {
-        // if any of the imported date fields are null, append them together and put them in the incomplete_date field
-        $date = sprintf('%02d', $line[3]) . '-' . sprintf('%02d', $line[4]) . '-' . sprintf('%02d', $line[5]);
-        $date = str_replace(array('NULL', '00'), '', $date);
-        if ($date == '--') {
-          $burial[$i]->setIncDate(NULL);
+        $plot = $this->plot_repo->findOneBy(array('cemetery' => 'West Goshen', 'section' => trim($line[6]), 'lot' => trim($line[7]), 'space' => trim($line[8])));
+        $id += 1;
+        $burial[$i] = new Burial();
+        $burial[$i]->setId($id);
+        $burial[$i]->setFirstName(trim($line[11]));
+        $burial[$i]->setLastName(trim($line[10]));
+        if ((checkdate((int)$line[12], (int)$line[13], (int)$line[14]) == false))
+        // check if the three date fields can be made into a date
+        {
+          $date = sprintf('%02d', trim($line[12])) . '/' . sprintf('%02d', trim($line[13])) . '/' . sprintf('%02d', trim($line[14]));
+          // if dates are formatted like 5/7/2001, this will correct them to 05/07/2001 for the script and readability
+          $date = str_replace(array('NULL', '00'), '', $date);
+          if ($date == '//') {
+            $burial[$i]->setIncDate(NULL);
+          } else {
+            $burial[$i]->setIncDate($date);
+          }
         } else {
-          $burial[$i]->setIncDate($date);
+          // uses the complete date fields set and turns it into a datetime object
+          $date = sprintf('%02d', trim($line[12])) . '/' . sprintf('%02d', trim($line[13])) . '/' . sprintf('%02d', trim($line[14]));
+          // if dates are formatted like 5/7/2001, this will correct them to 05/07/2001 for the script and readability
+          $burial[$i]->setDate(new \DateTime($date));
         }
-      } else {
-        // uses the complete date fields set and turns it into a datetime object
-        $burial[$i]->setDate(new \DateTime((int)$line[3] . '-' . (int)$line[4] . '-' . (int)$line[5]));
+        if ((int)$line[15] == 1)
+        {
+          $burial[$i]->setCremation(true);
+        } else {
+          $burial[$i]->setCremation(false);
+        }
+        if ($line[16] == 'NULL' or $line[16] == '') {
+          // if null entry or empty string, skip insert.
+          $burial[$i]->setFuneralHome(NULL);
+        } else {
+          $burial[$i]->setFuneralHome(trim($line[16]));
+        }
+        $burial[$i]->setApproval(1);
+        $burial[$i]->setPlot($plot);
+        $this->em->persist($burial[$i]);
       }
-      if ((int)$line[6] == 1)
-      {
-        $burial[$i]->setCremation(true);
-      } else {
-        $burial[$i]->setCremation(false);
-      }
-      if ($line[7] == 'NULL' or $line[7] == '') {
-        // if null entry or empty string, skip insert.
-        $burial[$i]->setFuneralHome(NULL);
-      } else {
-        $burial[$i]->setFuneralHome($line[7]);
-      }
-      $burial[$i]->setApproval(1);
-      $this->em->persist($burial[$i]);
       $count += 1;
       printf("WG Burials - %.2f%%\n", ($count/$file_count)*100);
+      // row counter - should increment and output wether a find or not
 
     }
     $this->em->flush();
@@ -99,6 +109,7 @@ class BurialFixtures extends Fixture implements DependentFixtureInterface
         $burial[$i]->setFirstName($line[7]);
         $burial[$i]->setLastName($line[8]);
         if ($line[9] != null or $line[9] != '')
+        // formatted like 01/30/2001
         {
           $date = explode('/', $line[9]);
           if (count($date) == 3) {
@@ -107,8 +118,8 @@ class BurialFixtures extends Fixture implements DependentFixtureInterface
 
             } else {
               // uses the complete date fields set and turns it into a datetime object
-              $date = str_replace('/', '-', $line[9]);
-              if ($date == '--') {
+              $date = implode($date);
+              if ($date == '//') {
                 $burial[$i]->setIncDate(NULL);
               } else {
                 $burial[$i]->setIncDate($date);
@@ -125,6 +136,8 @@ class BurialFixtures extends Fixture implements DependentFixtureInterface
         }
         $burial[$i]->setFuneralHome($line[11]);
         $burial[$i]->setApproval(1);
+        $plot = $this->plot_repo->findOneBy(array('cemetery' => 'Violet', 'section' => trim($line[3]), 'lot' => trim($line[4]), 'space' => trim($line[5])));
+        $burial[$i]->setPlot($plot);
         $this->em->persist($burial[$i]);
 
 

@@ -22,12 +22,13 @@ class PlotRepository extends ServiceEntityRepository
     parent::__construct($registry, Plot::class);
   }
 
+
   /**
    * Returns all plot objects, and joins all burials and owners that are related to the plot.
    * 
    * @author Daniel Boling
    */
-  public function findAllRelated($id = null, $search_array = null)
+  public function findAllRelated($id = null, $search = null)
   {
 
     $qb = $this->createQueryBuilder('plot');
@@ -46,40 +47,43 @@ class PlotRepository extends ServiceEntityRepository
         ->getQuery()
         ->getOneOrNullResult()
       ;
-    } elseif ($search_array != null) {
-      // this will send the query object back to the DisplayController::display() function
-      // for the pagination functionality
-      return $qb
-        ->andWhere('
-        CONCAT(plot.section, plot.lot, plot.space) LIKE :term
-        OR owner.firstName LIKE :term
-        OR owner.lastName LIKE :term
-        OR owner.address LIKE :term
-        OR owner.city LIKE :term
-        OR owner.state LIKE :term
-        OR owner.phoneNum LIKE :term
-        OR burial.firstName LIKE :term
-        OR burial.lastName LIKE :term
-        OR burial.funeralHome LIKE :term')
-        // ->andWhere($qb->expr()->in($qb->expr()->concat('plot.section', $qb->expr()->concat('plot.lot', 'plot.space')), $search_array))
-        // ->andWhere($qb->expr()->in('owner.firstName', $search_array))
-        // ->andWhere($qb->expr()->in('owner.lastName', $search_array))
-        // ->andWhere($qb->expr()->in('owner.address', $search_array))
-        // ->andWhere($qb->expr()->in('owner.city', $search_array))
-        // ->andWhere($qb->expr()->in('owner.state', $search_array))
-        // ->andWhere($qb->expr()->in('owner.phoneNum', $search_array))
-        // ->andWhere($qb->expr()->in('burial.firstName', $search_array))
-        // ->andWhere($qb->expr()->in('burial.lastName', $search_array))
-        // ->andWhere($qb->expr()->in('burial.funeralHome', $search_array))
-
-        ->setParameter('term', $qb->expr()->in($search_array))
-      ;
+    } elseif ($search != null) {
+      $search = explode(' ', $search);
+      if (count($search) > 1)
+      {
+        // there are two names (first and last) separated by a space
+        return $qb
+          ->setParameter('last_term', '%'.array_pop($search).'%')
+          ->setParameter('first_term', '%'.implode($search).'%')
+          ->orWhere('
+            owner.firstName LIKE :first_term
+            AND owner.lastName LIKE :last_term')
+          ->orWhere('
+            burial.firstName LIKE :first_term
+            AND burial.lastName LIKE :last_term');
+  
+      } else {
+        $search = implode($search);
+        // this will send the query object back to the DisplayController::display() function
+        // for the pagination functionality
+        return $qb
+          ->orWhere('plot.cemetery LIKE :term')
+          ->orWhere('CONCAT(plot.section, plot.lot, plot.space) LIKE :term')
+          ->orWhere('owner.firstName LIKE :term')
+          ->orWhere('owner.lastName LIKE :term')
+          ->orWhere('burial.firstName LIKE :term')
+          ->orWhere('burial.lastName LIKE :term')
+          ->setParameter('term', '%'.$search.'%')
+        ;
+      }
     } else {
       // if id and query are both null
       return $qb;
+
     }
 
   }
+
 
   /**
    * @throws ORMException
