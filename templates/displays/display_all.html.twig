@@ -35,9 +35,9 @@
       <table class="table table-striped table-bordered">
         <thead class="table-light sticky-top" style = "top:125px;z-index:auto">
           <tr>
-            <th scope="col">{{ knp_pagination_sortable(result, 'Plot ID', 'plot.id') }}</th>
-            <th scope="col">Cemetery</th>
             <th scope="col">Plot</th>
+            <th scope="col">{{ knp_pagination_filter(result, {'plot.cemetery': 'West Goshen', 'plot.cemetery': 'Violet', 'plot.cemetery': 'Oakridge' }) }}</th>
+            <th scope="col">{{ knp_pagination_sortable(result, 'Plot', 'plot.id') }}</th>
             <th scope="col">{{ knp_pagination_sortable(result, 'Burial First', 'burial.firstName') }}</th>
             <th scope="col">{{ knp_pagination_sortable(result, 'Burial Last', 'burial.lastName') }}</th>
             <th scope="col">Owner First</th>

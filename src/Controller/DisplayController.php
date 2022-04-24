@@ -16,7 +16,6 @@ use App\Repository\PlotRepository;
 use App\Form\OwnerForm;
 use App\Form\BurialForm;
 use App\Form\PlotForm;
-use App\Form\SearchForm;
 use App\Entity\Plot;
 use App\Entity\Owner;
 use App\Entity\Burial;
@@ -43,20 +42,19 @@ class DisplayController extends AbstractController
   public function display(Request $request, PlotRepository $plot_repo, PaginatorInterface $paginator): Response
   {
     $search = $request->query->get('search');
+    $page = $request->query->getInt('page');
     $search_array = explode(', ', $search);
-    // foreach($search_array as $term) {
-    //   $search_array[array_search($term, $search_array)] = '%'.$term.'%';
-    // }
 
-    if($search != null)
+    if($search != null or $page >= 1)
     {
       $searched = true;
       $queryBuilder = $plot_repo->findAllRelated(null, $search);
+
     } else {
       $searched = false;
       $queryBuilder = $plot_repo->findAllRelated();
+      
     }
-
 
     $pagination = $paginator->paginate(
       $queryBuilder, /* query NOT result */

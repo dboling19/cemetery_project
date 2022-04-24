@@ -31,26 +31,29 @@ class PlotFixtures extends Fixture
    */
   public function load(ObjectManager $manager): void
   {
-    $filename = 'C:\Users\Daniel Boling\Documents\Cemetery Project\CSV\West Goshen Plot.csv';
+    $filename = 'C:\Users\Daniel Boling\Documents\Cemetery Project\CSV\West Goshen.csv';
     $csv = fopen($filename, 'r');
     $file_count = count(file($filename));
     $count = 0;
     $i = 0;
+    $id = 0;
     
     while (($line = fgetcsv($csv)) !== false)
     {
+      $id += 1;
       $plot[$i] = new Plot();
-      $plot[$i]->setId((int)$line[0]);
-      $plot[$i]->setCemetery($line[1]);
-      $plot[$i]->setSection($line[2]);
-      $plot[$i]->setLot($line[3]);
-      $plot[$i]->setSpace($line[4]);
-      $plot[$i]->setNotes($line[5]);
+      $plot[$i]->setId($id);
+      $plot[$i]->setCemetery('West Goshen');
+      $plot[$i]->setSection(trim($line[6]));
+      $plot[$i]->setLot(trim($line[7]));
+      $plot[$i]->setSpace(trim($line[8]));
+      $plot[$i]->setNotes(trim($line[17]));
       $plot[$i]->setApproval(1);
       $this->em->persist($plot[$i]);
 
       $count += 1;
       printf("WG Plots - %.2f%%\n", ($count/$file_count)*100);
+      // row counter - should increment and output wether a find or not
 
     }
     $this->em->flush();

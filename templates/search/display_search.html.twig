@@ -4,6 +4,10 @@
         {{encore_entry_link_tags('app')}}
     {% endblock %}
 
-    {{ form(search_form) }}
+    {{ include('navbar.html.twig') }}
+
+    <div class='w3-container'>
+        {{ form(search_form) }}
+    </div>
 
 </html>
