@@ -43,7 +43,6 @@ class DisplayController extends AbstractController
   {
     $search = $request->query->get('search');
     $page = $request->query->getInt('page');
-    $search_array = explode(', ', $search);
 
     if($search != null or $page >= 1)
     {
@@ -100,15 +99,20 @@ class DisplayController extends AbstractController
   public function owner_display(Request $request, OwnerRepository $owner_repo, PaginatorInterface $paginator): Response
   {
     $search = $request->query->get('search');
+    $page = $request->query->getInt('page');
 
-    if($search != null)
+    if($search != null or $page >= 1)
     {
       $searched = true;
       $queryBuilder = $owner_repo->findAllRelated($search);
+
     } else {
       $searched = false;
       $queryBuilder = $owner_repo->findAllRelated();
+      
     }
+
+    
 
 
     $pagination = $paginator->paginate(

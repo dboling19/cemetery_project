@@ -26,25 +26,56 @@ class BurialRepository extends ServiceEntityRepository
    * 
    * @author Daniel Boling
    */
-  public function findAllRelated($term = null)
+  public function findAllRelated($search = null)
   {
 
     $qb = $this->createQueryBuilder('burial');
 
-    if ($term != null) {
-      // this will send the query object back to the DisplayController::display() function
-      // for the pagination functionality
-      return $qb
-        ->andWhere('
-        burial.firstName LIKE :term
-        OR burial.lastName LIKE :term
-        OR burial.date LIKE :term
-        OR burial.funeralHome LIKE :term
-        OR burial.incDate LIKE :term')
-        ->setParameter('term', '%'.$term.'%')
-      ;
+    if ($search != null) {
+      if (count(explode(' ', $search)) >= 3)
+      {
+        // there are three names (first, middle, and last) separated by a space
+        $search = explode(' ', $search);
+        return $qb
+          ->setParameter('last_term', '%'.array_pop($search).'%')
+          ->setParameter('first_term', '%'.implode(' ', $search).'%')
+          ->orWhere('
+            burial.firstName LIKE :first_term
+            AND burial.lastName LIKE :last_term');
+
+      } elseif (count(explode(' ', $search)) == 2) {
+        // there there are only 2 names, first and last
+        $search = explode(' ', $search);
+        return $qb
+          ->setParameter('last_term', '%'.array_pop($search).'%')
+          ->setParameter('first_term', '%'.implode($search).'%')
+          ->orWhere('
+            burial.firstName LIKE :first_term
+            AND burial.lastName LIKE :last_term');
+
+      } else {
+        // there is only a first name
+        // this will send the query object back to the DisplayController::display() function
+        // for the pagination functionality
+        if (count(explode('/', $search)) == 3) {
+          $date = explode('/', $search);
+          $date = ($date[2].'-'.$date[0].'-'.$date[1]);
+          $qb->setParameter('date', $date);
+          $qb->orWhere('burial.date LIKE :date');
+
+        }
+        return $qb
+          ->orWhere('
+            burial.firstName LIKE :term
+            OR burial.lastName LIKE :term
+            OR burial.funeralHome LIKE :term
+            OR burial.incDate LIKE :term')
+          ->setParameter('term', '%'.$search.'%');
+
+      }
     } else {
       return $qb;
+      
     }
 
   }

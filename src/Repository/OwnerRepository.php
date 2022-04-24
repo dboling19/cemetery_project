@@ -28,24 +28,47 @@ class OwnerRepository extends ServiceEntityRepository
    * 
    * @author Daniel Boling
    */
-  public function findAllRelated($term = null)
+  public function findAllRelated($search = null)
   {
-
     $qb = $this->createQueryBuilder('owner');
 
-    if ($term != null) {
-      // this will send the query object back to the DisplayController::display() function
-      // for the pagination functionality
-      return $qb
-        ->andWhere('
-        owner.firstName LIKE :term
-        OR owner.lastName LIKE :term
-        OR owner.address LIKE :term
-        OR owner.city LIKE :term
-        OR owner.state LIKE :term
-        OR owner.phoneNum LIKE :term')
-        ->setParameter('term', '%'.$term.'%')
-      ;
+    if ($search != null) {
+      $search = explode(' ', $search);
+      if (count($search) > 1)
+      {
+        // there are two names (first and last) separated by a space
+        return $qb
+          ->setParameter('last_term', '%'.array_pop($search).'%')
+          ->setParameter('first_term', '%'.implode(' ', $search).'%')
+          ->orWhere('
+            owner.firstName LIKE :first_term
+            AND owner.lastName LIKE :last_term');
+
+      } elseif (count($search) > 2) {
+        // there are three names (first, middle, and last) separated by a space
+        return $qb
+          ->setParameter('last_term', '%'.array_pop($search).'%')
+          ->setParameter('first_term', '%'.implode($search).'%')
+          ->orWhere('
+            owner.firstName LIKE :first_term
+            AND owner.lastName LIKE :last_term');
+
+      } else {
+        // this will send the query object back to the DisplayController::display() function
+        // for the pagination functionality
+        $search = $search[0];
+        $search = str_replace(array('(', ')', '-'), '', $search);
+        return $qb
+          ->orWhere('
+            owner.firstName LIKE :term
+            OR owner.lastName LIKE :term
+            OR owner.address LIKE :term
+            OR owner.city LIKE :term
+            OR owner.state LIKE :term
+            OR owner.phoneNum LIKE :term')
+          ->setParameter('term', '%'.$search.'%')
+        ;
+      }
     } else {
       return $qb;
     }
