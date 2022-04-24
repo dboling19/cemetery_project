@@ -30,7 +30,6 @@ class PlotRepository extends ServiceEntityRepository
    */
   public function findAllRelated($id = null, $search = null)
   {
-
     $qb = $this->createQueryBuilder('plot');
       
     $qb->leftJoin('plot.burial', 'burial')
@@ -54,7 +53,7 @@ class PlotRepository extends ServiceEntityRepository
         // there are two names (first and last) separated by a space
         return $qb
           ->setParameter('last_term', '%'.array_pop($search).'%')
-          ->setParameter('first_term', '%'.implode($search).'%')
+          ->setParameter('first_term', '%'.implode(' ', $search).'%')
           ->orWhere('
             owner.firstName LIKE :first_term
             AND owner.lastName LIKE :last_term')
@@ -62,8 +61,17 @@ class PlotRepository extends ServiceEntityRepository
             burial.firstName LIKE :first_term
             AND burial.lastName LIKE :last_term');
   
+      } elseif (count($search) > 2) {
+        // there are three names (first, middle, and last) separated by a space
+        return $qb
+          ->setParameter('last_term', '%'.array_pop($search).'%')
+          ->setParameter('first_term', '%'.implode($search).'%')
+          ->orWhere('
+            burial.firstName LIKE :first_term
+            AND burial.lastName LIKE :last_term');
+
       } else {
-        $search = implode($search);
+        $search = $search[0];
         // this will send the query object back to the DisplayController::display() function
         // for the pagination functionality
         return $qb
