@@ -41,6 +41,7 @@ class OwnerFixtures extends Fixture implements DependentFixtureInterface
     $id = 0;
     $completed_owners = array();
     
+    
     while (($line = fgetcsv($csv)) !== false)
     {
       if (($line[3] != null or $line[3] != '' and $line[2] != null or $line[2] != '') or ($line[1] != null or $line[1] != ''and $line[2] != null or $line[2] != '' and $line[1]))
@@ -152,7 +153,6 @@ class OwnerFixtures extends Fixture implements DependentFixtureInterface
       // row counter - should increment and output wether a find or not
 
     }
-    // $this->em->flush();
     $this->em->flush();
 
 
@@ -168,52 +168,75 @@ class OwnerFixtures extends Fixture implements DependentFixtureInterface
     {
       if (($line[0] != null or $line[0] != '' and $line[1] != null or $line[1] != '') or ($line[2] != null or $line[2] != '' and $line[1] != null or $line[1] != ''))
       {
-        $names = explode(' & ', $line[0]);
-        if (count($names) > 1)
-        // if the formatting proves more than one first name
+        if ($line[0] != null or $line[0] != '')
         {
-          foreach ($names as $name) {
-            if (in_array(trim($name) . trim($line[2]), $completed_owners) == false)
+          $names = explode('&', $line[0]);
+          if (count($names) > 1)
+          // if the formatting proves more than one first name
+          {
+            foreach ($names as $name) {
+              if (in_array(trim($name) . trim($line[2]), $completed_owners) == false)
+              // check in the local array if the owner has already been added
+              {
+                $id += 1;
+                $owner[$i] = new Owner();
+                $owner[$i]->setId($id);
+                // ids must be manually set
+                $owner[$i]->setFirstName(trim($name));
+                // removes each name one at a time, end-to-start
+                $owner[$i]->setLastName(trim($line[2]));
+                $owner[$i]->setApproval(1);
+                // m-m setting of the plot per line
+                $this->em->persist($owner[$i]);
+                array_push($completed_owners, $owner[$i]->getFirstName() . $owner[$i]->getLastName());
+
+              }
+            }
+          } else {
+            // if there is just a single owner
+            if (in_array(trim($line[0]) . trim($line[2]), $completed_owners) == false)
             // check in the local array if the owner has already been added
             {
               $id += 1;
               $owner[$i] = new Owner();
               $owner[$i]->setId($id);
-              // ids must be manually set
-              $owner[$i]->setFirstName(trim($name));
-              // removes each name one at a time, end-to-start
+              $owner[$i]->setFirstName(trim($line[0]));
               $owner[$i]->setLastName(trim($line[2]));
               $owner[$i]->setApproval(1);
-              // m-m setting of the plot per line
               $this->em->persist($owner[$i]);
               array_push($completed_owners, $owner[$i]->getFirstName() . $owner[$i]->getLastName());
 
             }
           }
-        } else {
-          // if there is just a single owner
-          if (in_array(trim($line[0]) . trim($line[2]), $completed_owners) == false)
-          // check in the local array if the owner has already been added
-          {
-            $id += 1;
-            $owner[$i] = new Owner();
-            $owner[$i]->setId($id);
-            $owner[$i]->setFirstName(trim($line[0]));
-            $owner[$i]->setLastName(trim($line[2]));
-            $owner[$i]->setApproval(1);
-            $this->em->persist($owner[$i]);
-            array_push($completed_owners, $owner[$i]->getFirstName() . $owner[$i]->getLastName());
-
-          }
-
         }
 
         if ($line[1] != null or $line[1] != '')
         // if a name/owner exists in joint-owner field
         {
-          if (in_array(trim($line[1]) . trim($line[2]), $completed_owners) == false)
-          // check in the local array if the owner has already been added
+          // if there is just a single owner
+          $names = explode('&', $line[1]);
+          if(count($names) > 1)
           {
+            foreach ($names as $name) {
+              if (in_array(trim($name) . trim($line[2]), $completed_owners) == false)
+              // check in the local array if the owner has already been added
+              {
+                $id += 1;
+                $owner[$i] = new Owner();
+                $owner[$i]->setId($id);
+                // ids must be manually set
+                $owner[$i]->setFirstName(trim($name));
+                // removes each name one at a time, end-to-start
+                $owner[$i]->setLastName(trim($line[2]));
+                $owner[$i]->setApproval(1);
+                // m-m setting of the plot per line
+                $this->em->persist($owner[$i]);
+                array_push($completed_owners, $owner[$i]->getFirstName() . $owner[$i]->getLastName());
+
+              }
+            }
+          } else {
+            // check in the local array if the owner has already been added
             $id += 1;
             $owner[$i] = new Owner();
             $owner[$i]->setId($id);
@@ -230,7 +253,109 @@ class OwnerFixtures extends Fixture implements DependentFixtureInterface
       printf("Violet Owners - %.2f%%\n", ($count/$file_count)*100);
 
     }
-    // $this->em->flush();
+    $this->em->flush();
+
+    
+    $filename = 'C:\Users\Daniel Boling\Documents\Cemetery Project\CSV\Oakridge Cemetery.csv';
+    $csv = fopen($filename, 'r');
+    $file_count = count(file($filename));
+    $count = 0;
+    $i = 0;
+    $completed_owners = array();
+    
+    $id = $this->owner_repo->findOneBy(array(), array('id' => 'desc'))->getId();
+    while (($line = fgetcsv($csv)) !== false)
+    {
+      if (($line[0] != null or $line[0] != '' and $line[1] != null or $line[1] != '') or ($line[2] != null or $line[2] != '' and $line[1] != null or $line[1] != ''))
+      {
+        if ($line[0] != null or $line[0] != '')
+        {
+          $names = explode('&', $line[0]);
+          if (count($names) > 1)
+          // if the formatting proves more than one first name
+          {
+            foreach ($names as $name) {
+              if (in_array(trim($name) . trim($line[2]), $completed_owners) == false)
+              // check in the local array if the owner has already been added
+              {
+                $id += 1;
+                $owner[$i] = new Owner();
+                $owner[$i]->setId($id);
+                // ids must be manually set
+                $owner[$i]->setFirstName(trim($name));
+                // removes each name one at a time, end-to-start
+                $owner[$i]->setLastName(trim($line[2]));
+                $owner[$i]->setApproval(1);
+                // m-m setting of the plot per line
+                $this->em->persist($owner[$i]);
+                array_push($completed_owners, $owner[$i]->getFirstName() . $owner[$i]->getLastName());
+
+              }
+            }
+          } else {
+            // if there is just a single owner
+            if (in_array(trim($line[0]) . trim($line[2]), $completed_owners) == false)
+            // check in the local array if the owner has already been added
+            {
+              $id += 1;
+              $owner[$i] = new Owner();
+              $owner[$i]->setId($id);
+              $owner[$i]->setFirstName(trim($line[0]));
+              $owner[$i]->setLastName(trim($line[2]));
+              $owner[$i]->setApproval(1);
+              $this->em->persist($owner[$i]);
+              array_push($completed_owners, $owner[$i]->getFirstName() . $owner[$i]->getLastName());
+
+            }
+          }
+        }
+
+        if ($line[1] != null or $line[1] != '')
+        // if a name/owner exists in joint-owner field
+        {
+          $names = explode('&', $line[1]);
+          if (count($names) > 1)
+          // if the formatting proves more than one first name
+          {
+            foreach ($names as $name) {
+              if (in_array(trim($name) . trim($line[2]), $completed_owners) == false)
+              // check in the local array if the owner has already been added
+              {
+                $id += 1;
+                $owner[$i] = new Owner();
+                $owner[$i]->setId($id);
+                // ids must be manually set
+                $owner[$i]->setFirstName(trim($name));
+                // removes each name one at a time, end-to-start
+                $owner[$i]->setLastName(trim($line[2]));
+                $owner[$i]->setApproval(1);
+                // m-m setting of the plot per line
+                $this->em->persist($owner[$i]);
+                array_push($completed_owners, $owner[$i]->getFirstName() . $owner[$i]->getLastName());
+
+              }
+            }
+          } else {
+            // if there is just a single owner
+            if (in_array(trim($line[1]) . trim($line[2]), $completed_owners) == false)
+            // check in the local array if the owner has already been added
+            {
+              $id += 1;
+              $owner[$i] = new Owner();
+              $owner[$i]->setId($id);
+              $owner[$i]->setFirstName(trim($line[1]));
+              $owner[$i]->setLastName(trim($line[2]));
+              $owner[$i]->setApproval(1);
+              $this->em->persist($owner[$i]);
+              array_push($completed_owners, $owner[$i]->getFirstName() . $owner[$i]->getLastName());
+            }
+          }
+        }
+      }
+      $count += 1;
+      printf("Oakridge Owners - %.2f%%\n", ($count/$file_count)*100);
+
+    }
     $this->em->flush();
 
 
