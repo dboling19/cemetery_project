@@ -1,8 +1,9 @@
 {% import _self as plotMacros %}
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-{{ include('navbar.html.twig') }}
 
+<div class="fixed-top">
+{{ include('navbar.html.twig') }}
+</div>
 {% macro printPlotFieldRow(plotField) %}
   <div class="plot-fields-list">
     <label>Plot</label>
@@ -13,19 +14,14 @@
   </div>
 {% endmacro %}
 
-<div class="w3-container">
+<div class="container-fluid">
   <h2><b> Release of Burial Space Ownership Rights </b></h2>
   <!---<h3> Goshen City Cemeteries Violett, Oakridge & West Goshen </h3>-->
   <br>
   {{ form_start(form) }}
   <b>{{ form_label(form.date) }}</b>
   <br>
-    {{ form_widget(form.date.day) }}
-    {{ form_widget(form.date.month) }}
-    {{ form_widget(form.date.year) }}
-  <br>
-  <br>
-  <b><label>With Regard to:</label></b>
+    {{ form_widget(form.date) }}
   <br>
   <b><label>Current Owner</label></b>
   {{ form_widget(form.from_owner) }}
@@ -35,12 +31,16 @@
       data-prototype="{{ form_widget(form.to_owner.vars.prototype)|e }}"
       data-widget-tags="{{ '<p></p>'|e }}"
       data-widget-counter="{{ form.to_owner|length }}">
+  
+  <br>
+  <b><label>With Regard to:</label></b>
+  <br>
   <b><p>Owner(s)</p></b>
   {% for to_ownerField in form.to_owner %}
     {{ to_ownerField }}
   {% endfor %}
   </div>
-  <button type="button" class="add-another-collection-widget w3-button w3-border" data-list-selector="#to_owner-fields-list">Add Recipient</button>
+  <button type="button" class="add-another-collection-widget btn btn-primary" data-list-selector="#to_owner-fields-list">Add Recipient</button>
 
 
   <div id="plot-fields-list"
@@ -54,10 +54,11 @@
     {{ plotField }}
   {% endfor %}
   </div>
-  <button type="button" class="add-another-collection-widget w3-button w3-border" data-list-selector="#plot-fields-list">Add Plot</button>
-
+  <button type="button" class="add-another-collection-widget btn btn-primary" data-list-selector="#plot-fields-list">Add Plot</button>
+  <br>
+  <br>
   {# {{ form_row(form.notarized) }} #}
-  {{ form_row(form.submit, {'attr': {'class': 'w3-button w3-border'} }) }}
+  {{ form_row(form.submit, {'attr': {'class': 'btn btn-primary'} }) }}
 </div>
 
     

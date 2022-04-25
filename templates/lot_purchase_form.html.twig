@@ -59,24 +59,6 @@
         Add Plot
         </button>
 
-        {{ form_row(form.date) }}
-
-
-    <div id="plot-fields-list"
-        data-prototype="{{ form_widget(form.plot.vars.prototype)|e }}"
-        data-widget-tags="{{ '<p></p>'|e }}"
-        data-widget-counter="{{ form.plot|length }}">
-    <br>
-    <br>
-    <p>Plot(s)</p>
-    {% for plotField in form.plot %}
-      {{ plotField }}
-    {% endfor %}
-    </div>
-    <button type="button" class="add-another-collection-widget btn btn-primary" data-list-selector="#plot-fields-list">
-    Add Plot
-    </button>
-
     {{ form_row(form.date) }}
 
 

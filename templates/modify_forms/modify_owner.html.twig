@@ -11,27 +11,26 @@
   </head>
 
   <body>
-    <div style="position:fixed;top:0;width:100%">
+    <div style="fixed-top">
       {{ include("navbar.html.twig") }}
     </div>
-    <div class="w3-container" style = "margin-top:40px">
+    <div class="container-fluid">
+      {{ form(owner_form) }}
     </div>
-    {{ form(owner_form) }}
-    <div class="w3-container">
-      <table class="w3-table-all">
+    <div class="container-fluid">
+      <table class="table table-striped table-bordered">
         <tr>
           <th>Cemetery</th>
           <th>Plot</th>
           <th>Notes</th>
           <th></th>
         </tr>
-        <div style = "margin-top:35px">
             {% for row in plots %} {# simple loop to output rows #}
               <tr>
                 <td>{{ row.cemetery }}</td>
                 <td>{{ row.section ~ row.lot ~ row.space}}</td>
                 <td>{{ row.notes }}</td>
-                <td><div class="w3-center"><a href="{{ path('modify_plot',{ id: row.id }) }}" class="w3-button w3-ripple w3-border">Edit</a></div></td>
+                <td><a href="{{ path('modify_plot',{ id: row.id }) }}" class="btn btn-primary">Edit</a></td>
               </tr>
             {% endfor %}
       </table>

@@ -33,4 +33,14 @@
       </div>
     </nav>
   </body>
+
+<script>
+  $(".nav .nav-link").on("click", function(){
+   $(".nav").find(".active").removeClass("active");
+   $(this).addClass("active");
+  });
+</script>
+
+
 </html>
+
