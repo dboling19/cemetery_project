@@ -86,6 +86,35 @@ class PlotFixtures extends Fixture
     }
     $this->em->flush();
 
+
+    $filename = 'C:\Users\Daniel Boling\Documents\Cemetery Project\CSV\Oakridge Cemetery.csv';
+    $csv = fopen($filename, 'r');
+    $file_count = count(file($filename));
+    $count = 0;
+    $i = 0;
+    
+    $id = $this->plot_repo->findOneBy(array(), array('id' => 'desc'))->getId();
+
+    while (($line = fgetcsv($csv)) !== false)
+    {
+      $id += 1;
+      $plot[$i] = new Plot();
+      $plot[$i]->setId($id);
+      $plot[$i]->setCemetery("Oakridge");
+      $plot[$i]->setSection($line[4]);
+      $plot[$i]->setLot($line[5]);
+      $plot[$i]->setSpace($line[6]);
+      $plot[$i]->setNotes($line[14]);
+      $plot[$i]->setApproval(1);
+      $this->em->persist($plot[$i]);
+
+      $count += 1;
+      printf("Oakridge Plots - %.2f%%\n", ($count/$file_count)*100);
+
+    }
+    $this->em->flush();
+    
+
   }
 
 }

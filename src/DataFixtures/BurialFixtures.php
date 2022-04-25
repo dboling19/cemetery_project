@@ -117,14 +117,17 @@ class BurialFixtures extends Fixture implements DependentFixtureInterface
               $burial[$i]->setDate(new \DateTime($line[9]));
 
             } else {
-              // uses the complete date fields set and turns it into a datetime object
-              $date = implode($date);
+              // reformats and pushes the date as a string to incDate
+              $date = sprintf('%02d', trim($date[2])) . '/' . sprintf('%02d', trim($date[1])) . '/' . sprintf('%02d', trim($date[0]));
+              // if dates are formatted like 5/7/2001, this will correct them to 05/07/2001 for the script and readability
+              $date = str_replace(array('NULL', '00'), '', $date);
               if ($date == '//') {
                 $burial[$i]->setIncDate(NULL);
+
               } else {
                 $burial[$i]->setIncDate($date);
-              }
 
+              }
             }
           }
         }
@@ -144,6 +147,82 @@ class BurialFixtures extends Fixture implements DependentFixtureInterface
       }
       $count += 1;
       printf("Violet Burials - %.2f%%\n", ($count/$file_count)*100);
+
+    }
+    $this->em->flush();
+
+    
+    $filename = 'C:\Users\Daniel Boling\Documents\Cemetery Project\CSV\Oakridge Cemetery.csv';
+    $csv = fopen($filename, 'r');
+    $file_count = count(file($filename));
+    $count = 0;
+    $i = 0;
+    
+    $id = $this->burial_repo->findOneBy(array(), array('id' => 'desc'))->getId();
+
+    while (($line = fgetcsv($csv)) !== false) 
+    {
+      if ($line[10] != null or $line[10] != '' and $line1[11] != null or $line[11] != '')
+      {
+        foreach ($line as $col)
+        {
+          if (mb_check_encoding($col, 'UTF-8') == false)
+          {
+            var_dump($line);die;
+          }
+        }
+        $id += 1;
+        $burial[$i] = new Burial();
+        $burial[$i]->setId($id);
+        $burial[$i]->setFirstName($line[11]);
+        $burial[$i]->setLastName($line[10]);
+        if ($line[19] != null or $line[19] != '')
+        // formatted like 01/30/2001
+        {
+          if (strpos($line[19], '//') == true or strpos($line[19], '-') == true or strpos($line[19], '?') == true or strpos($line[19], '&') == true or strpos($line[19], 'or') == true)
+          // each of these conditions are to handle some outlier in the data file
+          // if the string begins with // then just commit it to the incDate field immediately
+          {
+            $burial[$i]->setIncDate(str_replace('//', '', $line[19]));
+
+          } elseif (count(explode('/', $line[19])) == 3) {
+            // the date is "formatted" and needs to be checked if it's partial or correct
+            $date = explode('/', $line[19]);
+            if (checkdate((int)$date[0], (int)$date[1], (int)$date[2]) == true) {
+              $burial[$i]->setDate(new \DateTime($line[19]));
+
+            } else {
+              // reformats and pushes the date as a string to incDate
+              $date = sprintf('%02d', trim($date[2])) . '/' . sprintf('%02d', trim($date[1])) . '/' . sprintf('%02d', trim($date[0]));
+              // if dates are formatted like 5/7/2001, this will correct them to 05/07/2001 for the script and readability
+              $date = str_replace(array('NULL', '00'), '', $date);
+              if ($date == '//') {
+                $burial[$i]->setIncDate(NULL);
+
+              } else {
+                $burial[$i]->setIncDate($date);
+
+              }
+
+            }
+          }
+        }
+        if ((int)$line[12] == 1)
+        {
+          $burial[$i]->setCremation(true);
+        } else {
+          $burial[$i]->setCremation(false);
+        }
+        $burial[$i]->setFuneralHome($line[13]);
+        $burial[$i]->setApproval(1);
+        $plot = $this->plot_repo->findOneBy(array('cemetery' => 'Oakridge', 'section' => trim($line[4]), 'lot' => trim($line[5]), 'space' => trim($line[6])));
+        $burial[$i]->setPlot($plot);
+        $this->em->persist($burial[$i]);
+
+
+      }
+      $count += 1;
+      printf("Oakridge Burials - %.2f%%\n", ($count/$file_count)*100);
 
     }
     $this->em->flush();

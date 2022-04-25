@@ -40,7 +40,7 @@ class PlotOwnerFixtures extends Fixture implements DependentFixtureInterface
     $file_count = count(file($filename));
     $count = 0;
     $i = 0;
-    $id = 0;
+    
     
     while (($line = fgetcsv($csv)) !== false)
     {
@@ -80,7 +80,6 @@ class PlotOwnerFixtures extends Fixture implements DependentFixtureInterface
                 $joint_name = explode(',', $name);
                 $owner[$i] = $this->owner_repo->findOneBy(array('firstName' => trim($joint_name[1]), 'lastName' => trim($joint_name[0])));
                 $owner[$i]->addPlot($plot);
-                
               } else {
                 // if no comma, assume it is just a first name and append it to the last name in column 3
                 $owner[$i] = $this->owner_repo->findOneBy(array('firstName' => trim($name), 'lastName' => trim($line[3])));
@@ -102,7 +101,6 @@ class PlotOwnerFixtures extends Fixture implements DependentFixtureInterface
       // row counter - should increment and output wether a find or not
 
     }
-    // $this->em->flush();
     $this->em->flush();
 
 
@@ -117,37 +115,114 @@ class PlotOwnerFixtures extends Fixture implements DependentFixtureInterface
     {
       if (($line[0] != null or $line[0] != '' and $line[1] != null or $line[1] != '') or ($line[2] != null or $line[2] != '' and $line[1] != null or $line[1] != ''))
       {
-        var_dump($line);
         $plot = $this->plot_repo->findOneBy(array('cemetery' => 'Violet', 'section' => trim($line[3]), 'lot' => trim($line[4]), 'space' => trim($line[5])));
-        $names = explode(' & ', $line[0]);
-        if (count($names) > 1)
-        // if the formatting proves more than one first name
+        if ($line[0] != null or $line[0] != '')
         {
-          foreach ($names as $name) {
-            $owner[$i] = $this->owner_repo->findOneBy(array('firstName' => trim($name), 'lastName' => trim($line[2])));
+          $names = explode('&', $line[0]);
+          if (count($names) > 1)
+          // if the formatting proves more than one first name
+          {
+            foreach ($names as $name) {
+              $owner[$i] = $this->owner_repo->findOneBy(array('firstName' => trim($name), 'lastName' => trim($line[2])));
+              $owner[$i]->addPlot($plot);
+
+            }
+
+          } else {
+            // if there is just a single owner
+            $owner[$i] = $this->owner_repo->findOneBy(array('firstName' => trim($line[0]), 'lastName' => trim($line[2])));
             $owner[$i]->addPlot($plot);
 
           }
-        } else {
-          // if there is just a single owner
-          $owner[$i] = $this->owner_repo->findOneBy(array('firstName' => trim($line[0]), 'lastName' => trim($line[2])));
-          $owner[$i]->addPlot($plot);
-
         }
 
         if ($line[1] != null or $line[1] != '')
-        // if a name/owner exists in joint-owner field
         {
-          $owner[$i] = $this->owner_repo->findOneBy(array('firstName' => trim($line[1]), 'lastName' => trim($line[2])));
-          $owner[$i]->addPlot($plot);
+          $names = explode('&', $line[1]);
+          if (count($names) > 1)
+          // if the formatting proves more than one first name
+          {
+            foreach ($names as $name) {
+              $owner[$i] = $this->owner_repo->findOneBy(array('firstName' => trim($name), 'lastName' => trim($line[2])));
+              $owner[$i]->addPlot($plot);
 
+            }
+
+          } else {
+            // if there is just a single owner
+            $owner[$i] = $this->owner_repo->findOneBy(array('firstName' => trim($line[1]), 'lastName' => trim($line[2])));
+            $owner[$i]->addPlot($plot);
+
+          }
         }
       }
       $count += 1;
       printf("Violet PO - %.2f%%\n", ($count/$file_count)*100);
 
     }
-    // $this->em->flush();
+    $this->em->flush();
+
+
+    $filename = 'C:\Users\Daniel Boling\Documents\Cemetery Project\CSV\Oakridge Cemetery.csv';
+    $csv = fopen($filename, 'r');
+    $file_count = count(file($filename));
+    $count = 0;
+    $i = 0;
+    
+    $id = $this->owner_repo->findOneBy(array(), array('id' => 'desc'))->getId();
+    while (($line = fgetcsv($csv)) !== false)
+    {
+      if (($line[0] != null or $line[0] != '' and $line[1] != null or $line[1] != '') or ($line[2] != null or $line[2] != '' and $line[1] != null or $line[1] != ''))
+      {
+        $plot = $this->plot_repo->findOneBy(array('cemetery' => 'Oakridge', 'section' => trim($line[4]), 'lot' => trim($line[5]), 'space' => trim($line[6])));
+        if ($line[0] != null and $line[0] != '')
+        {
+          var_dump($line);
+          $names = explode('&', $line[0]);
+          if (count($names) > 1)
+          // if the formatting proves more than one first name
+          {
+            foreach ($names as $name) {
+              $owner[$i] = $this->owner_repo->findOneBy(array('firstName' => trim($name), 'lastName' => trim($line[2])));
+              $owner[$i]->addPlot($plot);
+
+            }
+
+          } else {
+            // if there is just a single owner
+            $owner[$i] = $this->owner_repo->findOneBy(array('firstName' => trim($line[0]), 'lastName' => trim($line[2])));
+            $owner[$i]->addPlot($plot);
+
+          }
+        }
+
+        if ($line[1] != null or $line[1] != '')
+        // if a name/owner exists in joint-owner field
+        {
+          var_dump($line);
+          $names = explode('&', $line[1]);
+          if (count($names) > 1)
+          // if the formatting proves more than one first name
+          {
+            foreach ($names as $name)
+            {
+              $owner[$i] = $this->owner_repo->findOneBy(array('firstName' => trim($name), 'lastName' => trim($line[2])));
+              $owner[$i]->addPlot($plot);
+
+            }
+
+          } else {
+            // if there is just a single owner
+            $owner[$i] = $this->owner_repo->findOneBy(array('firstName' => trim($line[1]), 'lastName' => trim($line[2])));
+            $owner[$i]->addPlot($plot);
+
+          }
+        }
+      }
+      $count += 1;
+      printf("Oakridge PO - %.2f%%\n", ($count/$file_count)*100);
+
+    }
     $this->em->flush();
 
   }
