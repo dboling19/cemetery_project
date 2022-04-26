@@ -4,20 +4,21 @@
 <div class="fixed-top">
 {{ include('navbar.html.twig') }}
 </div>
-{% macro printPlotFieldRow(plotField) %}
-  <div class="plot-fields-list">
-    <label>Plot</label>
-    <br>
-    {{ form_label(plotField.cemetery) }}
-    <br>
-    {{ form_widget(plotField.cemetery) }}
-  </div>
-{% endmacro %}
+<div class = "container-fluid" style = "margin-top:55px">
+    
+  <h4><b> Release of Burial Space Ownership Rights</b></h4>
 
-<div class="container-fluid">
-  <h2><b> Release of Burial Space Ownership Rights Test</b></h2>
+  {% macro printPlotFieldRow(plotField) %}
+    <div class="plot-fields-list">
+      <label>Plot</label>
+      <br>
+      {{ form_label(plotField.cemetery) }}
+      <br>
+      {{ form_widget(plotField.cemetery) }}
+    </div>
+  {% endmacro %}
+
   <!---<h3> Goshen City Cemeteries Violett, Oakridge & West Goshen </h3>-->
-  <br>
   {{ form_start(form) }}
   <b>{{ form_label(form.date) }}</b>
   <br>
@@ -60,7 +61,6 @@
   {# {{ form_row(form.notarized) }} #}
   {{ form_row(form.submit, {'attr': {'class': 'btn btn-primary'} }) }}
 </div>
-
     
 
 <script>
