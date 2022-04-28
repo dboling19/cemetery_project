@@ -28,7 +28,13 @@ class PlotReleaseForm extends AbstractType
 
     $builder
       ->add('from_owner', OwnerType::class)
-      ->add('to_owner', OwnerType::class)
+      ->add('to_owner', CollectionType::class, [
+        'entry_type' => OwnerType::class,
+        'allow_add' => true,
+        'allow_delete' => true,
+        'prototype' => true,
+        'delete_empty' => true,
+      ])
       ->add('plot', CollectionType::class, [
         'entry_type' => PlotType::class,
         'allow_add' => true,

@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+    {% block stylesheets %}
+        {{encore_entry_link_tags('app')}}
+    {% endblock %}
+
+    {{ include('navbar.html.twig') }}
+
+    <div class='container-fluid'>
+        {{ form(search_form) }}
+    </div>
+
+</html>

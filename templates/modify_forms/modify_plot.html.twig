@@ -1,3 +1,47 @@
-{{ include('navbar.html.twig') }}
+<!DOCTYPE html>
+<html>
+  <head>
+      
+      {% block stylesheets %}
+        {{encore_entry_link_tags('app')}}
+      {% endblock %}
+      <script src="https://kit.fontawesome.com/0db354818b.js" crossorigin="anonymous"></script>
 
-{{ form(plot_form) }}
+      <title>Cemetery - Plot</title>
+  </head>
+
+  <body>
+    <div style="fixed-top">
+      {{ include("navbar.html.twig") }}
+    </div>
+    <div class="container-fluid">
+      {{ form(plot_form) }}
+    </div>
+    <div class="container-fluid" >
+      <table class="table table-striped table-bordered">
+        <tr>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Address</th>
+          <th>City</th>
+          <th>State</th>
+          <th>Phone Number</th>
+          <th></th>
+        </tr>
+        {% for row in plot.owner %} {# simple loop to output rows #}
+          <tr>
+            <td>{{ row.firstName }}</td>
+            <td>{{ row.lastName }}</td>
+            <td>{{ row.address }}</td>
+            <td>{{ row.city }}</td>
+            <td>{{ row.state }}</td>
+            <td>{{ row.phoneNum }}</td>
+            <td><a href="{{ path('modify_owner',{ id: row.id }) }}" class="btn btn-primary">Edit</a></td>
+          </tr>
+        {% endfor %}
+      </table>
+    </div>
+
+  </body>
+
+</html>

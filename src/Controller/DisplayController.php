@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Knp\Component\Pager\PaginatorInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -38,16 +39,51 @@ class DisplayController extends AbstractController
    * 
    * @Route("/", name="display")
    */
-  public function display(Request $request, PlotRepository $plot_repo, OwnerRepository $owner_repo, BurialRepository $burial_repo): Response
+  public function display(Request $request, PlotRepository $plot_repo, PaginatorInterface $paginator): Response
   {
+    $search = $request->query->get('search');
+    $page = $request->query->getInt('page');
 
-    $result = $plot_repo->findAllRelated();
+    if($search != null or $page >= 1)
+    {
+      $searched = true;
+      $queryBuilder = $plot_repo->findAllRelated(null, $search);
 
+    } else {
+      $searched = false;
+      $queryBuilder = $plot_repo->findAllRelated();
+      
+    }
+
+    $pagination = $paginator->paginate(
+      $queryBuilder, /* query NOT result */
+      $request->query->getInt('page', 1) /* pull page number from url or default to 1 */,
+      20 /*limit per page*/
+    );
 
     return $this->render('displays/display_all.html.twig', [
-      'result' => $result,
+      'result' => $pagination,
+      'searched' => $searched,
     ]);
 
+  }
+
+
+  /**
+   * Displays all useful information to the user about the specified plot
+   * 
+   * @author Daniel Boling
+   * @return rendered details.html.twig
+   * 
+   * @Route("/details/{id}", name="details")
+   */
+  public function details(Request $request, PlotRepository $plot_repo, PaginatorInterface $paginator, $id): Response
+  {
+    $result = $plot_repo->findAllRelated($id);
+
+    return $this->render('displays/details.html.twig', [
+      'result' => $result,
+    ]);
 
   }
 
@@ -58,26 +94,36 @@ class DisplayController extends AbstractController
    * @author Daniel Boling
    * @return rendered owner_display.html.twig
    * 
-   * @Route("/owners/{column}/{order}/{result}", name="owner_display")
+   * @Route("/owners", name="owner_display")
    */
-  public function owner_display(Request $request, OwnerRepository $owner_repo, $order = 'asc', $column = 'id', $result = NULL): Response
+  public function owner_display(Request $request, OwnerRepository $owner_repo, PaginatorInterface $paginator): Response
   {
+    $search = $request->query->get('search');
+    $page = $request->query->getInt('page');
 
-    if ($order == 'asc')
-    // if page was previously asc, load next with desc.
+    if($search != null or $page >= 1)
     {
-      $order = 'desc';
+      $searched = true;
+      $queryBuilder = $owner_repo->findAllRelated($search);
+
     } else {
-      $order = 'asc';
+      $searched = false;
+      $queryBuilder = $owner_repo->findAllRelated();
+      
     }
 
+    
 
-    $result = $owner_repo->findBy(array(), array($column => $order));
 
+    $pagination = $paginator->paginate(
+      $queryBuilder, /* query NOT result */
+      $request->query->getInt('page', 1) /* pull page number from url or default to 1 */,
+      20 /*limit per page*/
+    );
 
     return $this->render('displays/owner_display.html.twig', [
-        'result' => $result,
-        'order' => $order,
+      'result' => $pagination,
+      'searched' => $searched,
     ]);
 
   }
@@ -89,24 +135,31 @@ class DisplayController extends AbstractController
    * @author Daniel Boling
    * @return rendered burial_display.html.twig
    * 
-   * @Route("/burials/{column}/{order}/{result}", name="burial_display")
+   * @Route("/burials", name="burial_display")
    */
-  public function burial_display(Request $request, BurialRepository $burial_repo, $order = 'asc', $column = 'id', $result = NULL): Response
-  {
+  public function burial_display(Request $request, BurialRepository $burial_repo, PaginatorInterface $paginator): Response
+  { 
+    $search = $request->query->get('search');
 
-    if ($order == 'asc')
-    // if page was previously asc, load next with desc.
+    if($search != null)
     {
-      $order = 'desc';
+      $searched = true;
+      $queryBuilder = $burial_repo->findAllRelated($search);
     } else {
-      $order = 'asc';
+      $searched = false;
+      $queryBuilder = $burial_repo->findAllRelated();
     }
 
-    $result = $burial_repo->findBy(array(), array($column => $order));
+
+    $pagination = $paginator->paginate(
+      $queryBuilder, /* query NOT result */
+      $request->query->getInt('page', 1) /* pull page number from url or default to 1 */,
+      20 /*limit per page*/
+    );
 
     return $this->render('displays/burial_display.html.twig', [
-        'result' => $result,
-        'order' => $order,
+      'result' => $pagination,
+      'searched' => $searched,
     ]);
 
   }
@@ -118,31 +171,31 @@ class DisplayController extends AbstractController
    * @author Daniel Boling
    * @return rendered plot_display.html.twig
    * 
-   * @Route("/plots/{column}/{order}/{result}", name="plot_display")
+   * @Route("/plots", name="plot_display")
    */
-  public function plot_display(Request $request, PlotRepository $plot_repo, $order = 'desc', $column = 'id', $result = NULL): Response
+  public function plot_display(Request $request, PlotRepository $plot_repo, PaginatorInterface $paginator): Response
   {
+    $search = $request->query->get('search');
 
-    if ($order == 'asc')
-    // if page was previously asc, load next with desc.
+    if($search != null)
     {
-      $order = 'desc';
+      $searched = true;
+      $queryBuilder = $plot_repo->findAllRelated(null, $search);
     } else {
-      $order = 'asc';
-    }
-
-    if ($column == 'plot')
-    {
-      $result = $plot_repo->findBy(array(), array('section' => $order, 'lot' => $order, 'space' => $order));
-    } else {
-      $result = $plot_repo->findBy(array(), array($column => $order));
+      $searched = false;
+      $queryBuilder = $plot_repo->findAllRelated();
     }
 
 
+    $pagination = $paginator->paginate(
+      $queryBuilder, /* query NOT result */
+      $request->query->getInt('page', 1) /* pull page number from url or default to 1 */,
+      20 /*limit per page*/
+    );
 
     return $this->render('displays/plot_display.html.twig', [
-        'result' => $result,
-        'order' => $order,
+      'result' => $pagination,
+      'searched' => $searched,
     ]);
 
   }

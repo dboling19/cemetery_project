@@ -1,3 +1,42 @@
-{{ include('navbar.html.twig') }}
+<!DOCTYPE html>
+<html>
+  <head>
+      
+      {% block stylesheets %}
+        {{encore_entry_link_tags('app')}}
+      {% endblock %}
+      <script src="https://kit.fontawesome.com/0db354818b.js" crossorigin="anonymous"></script>
 
-{{ form(owner_form) }}
+      <title>Cemetery - Owner</title>
+  </head>
+
+  <body>
+    <div style="fixed-top">
+      {{ include("navbar.html.twig") }}
+    </div>
+    <div class="container-fluid">
+      {{ form(owner_form) }}
+    </div>
+    <div class="container-fluid">
+      <table class="table table-striped table-bordered">
+        <tr>
+          <th>Cemetery</th>
+          <th>Plot</th>
+          <th>Notes</th>
+          <th></th>
+        </tr>
+            {% for row in plots %} {# simple loop to output rows #}
+              <tr>
+                <td>{{ row.cemetery }}</td>
+                <td>{{ row.section ~ row.lot ~ row.space}}</td>
+                <td>{{ row.notes }}</td>
+                <td><a href="{{ path('modify_plot',{ id: row.id }) }}" class="btn btn-primary">Edit</a></td>
+              </tr>
+            {% endfor %}
+      </table>
+    </div>
+
+  </body>
+
+</html>
+

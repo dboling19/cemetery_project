@@ -1,49 +1,85 @@
 <!DOCTYPE html>
 <html>
   <head>
-      <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    {% block stylesheets %}
+      {{encore_entry_link_tags('app')}}
+    {% endblock %}
 
-      <title>Cemetery - Display</title>
+          <script src="https://kit.fontawesome.com/0db354818b.js" crossorigin="anonymous"></script>
+
+    <title>Cemetery - Display</title>
   </head>
 
   <body>
-    {{ include("navbar.html.twig") }}
-    <div class="w3-container">
+    <div class="fixed-top">
+      {{ include("navbar.html.twig") }}
     </div>
-      <table class="w3-table-all">
-        <tr>
-          <th>Plot ID</th>
-          <th>Cemetery</th>
-          <th>Burial First</th>
-          <th>Burial Last</th>
-          <th>Owner First</th>
-          <th>Owner Last</th>
-          <th>Notes</th>
-        </tr>
-        {% for row in result %} {# simple loop to output rows #}
+    <div class="sticky-top" style = "top:45px">
+      <form class="row row-cols-lg-auto g-3 align-items-end p-3 mb-2 bg-secondary">
+        <div class="col-12">
+          <input type="text"
+                  name="search"
+                  class="form-control"
+                  value="{{ app.request.query.get('search') }}"
+                  placeholder="Search...">
+        </div>
+        <div class="col-12">
+          <button type="submit" class="btn btn-primary">
+            <span class="fa fa-search"></span>
+          </button>
+        </div>
+      </form>
+    </div>
+    <div class="container-fluid" style = "margin-top:55px">
+      <br>
+      <p>{% if searched == true %}Results: {{ result.getTotalItemCount }}{% endif %}</p>
+      <table class="table table-striped table-bordered">
+        <thead class="table-light sticky-top" style = "top:125px;z-index:auto">
           <tr>
-            <td>{{ row.id }}</td>
-            <td>{{ row.cemetery }}</td>
-            <td>{% if row.burial != null %}{{ row.burial.firstName }}{% endif %}</td>
-            <td>{% if row.burial != null %}{{ row.burial.lastName }}{% endif %}</td>
-            <td>
-              {% if row.owner != null %}
-                {% for owner in row.owner %}
-                  {{ owner.firstName }};
-                {% endfor %}
-              {% endif %}
-            </td>
-            <td>
-              {% if row.owner != null %}
-                {% for owner in row.owner %}
-                  {{ owner.lastName }};
-                {% endfor %}
-              {% endif %}
-            </td>
-            <td>{{ row.notes }}</td>
+            <th scope="col">Plot</th>
+            <th scope="col">{{ knp_pagination_filter(result, {'plot.cemetery': 'West Goshen', 'plot.cemetery': 'Violet', 'plot.cemetery': 'Oakridge' }) }}</th>
+            <th scope="col">{{ knp_pagination_sortable(result, 'Plot', 'plot.id') }}</th>
+            <th scope="col">{{ knp_pagination_sortable(result, 'Burial First', 'burial.firstName') }}</th>
+            <th scope="col">{{ knp_pagination_sortable(result, 'Burial Last', 'burial.lastName') }}</th>
+            <th scope="col">Owner First</th>
+            <th scope="col">Owner Last</th>
+            <th scope="col">Notes</th>
+            <th scope="col"></th>
           </tr>
-        {% endfor %}
+        </thead>
+        <tbody>
+          {% for row in result %} {# simple loop to output rows #}
+            <tr>
+              <td>{{ row.id }}</td>
+              <td>{{ row.cemetery }}</td>
+              <td>{{ row.section ~ row.lot ~ row.space }}</td>
+              <td>{% if row.burial != null %}{{ row.burial.firstName }}{% endif %}</td>
+              <td>{% if row.burial != null %}{{ row.burial.lastName }}{% endif %}</td>
+              <td>
+                {% if row.owner != null %}
+                  {% for owner in row.owner %}
+                    {{ owner.firstName }};
+                  {% endfor %}
+                {% endif %}
+              </td>
+              <td>
+                {% if row.owner != null %}
+                  {% for owner in row.owner %}
+                    {{ owner.lastName }};
+                  {% endfor %}
+                {% endif %}
+              </td>
+              <td>{{ row.notes }}</td>
+              <td><a href="{{ path('details', { id: row.id }) }}" class="btn btn-primary">Details</a></td>
+            </tr>
+          {% endfor %}
+        </tbody>
       </table>
+    </div>
+
+    <div class="navigation">
+      <div>{{ knp_pagination_render(result) }}</div>
+    </div>
 
   </body>
 

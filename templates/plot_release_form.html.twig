@@ -1,46 +1,66 @@
 {% import _self as plotMacros %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<div class="fixed-top">
 {{ include('navbar.html.twig') }}
-
-{% macro printPlotFieldRow(plotField) %}
-  <div class="plot-fields-list">
-    <label>Plot</label>
-    <br>
-    {{ form_label(plotField.cemetery) }}
-    <br>
-    {{ form_widget(plotField.cemetery) }}
-  </div>
-{% endmacro %}
-
-<h2><b> Release of Burial Space Ownership Rights </b></h2>
-<!---<h3> Goshen City Cemeteries Violett, Oakridge & West Goshen </h3>-->
-<br>
-{{ form_start(form) }}
-{{ form_label(form.date) }}
-{{ form_widget(form.date) }}
-</p>
-<p>
-<label>With Regard to:</label>
-<br>
-{{ form_row(form.from_owner) }}
-{{ form_row(form.to_owner) }}
-
-<div id="plot-fields-list"
-    data-prototype="{{ form_widget(form.plot.vars.prototype)|e }}"
-    data-widget-tags="{{ '<p></p>'|e }}"
-    data-widget-counter="{{ form.plot|length }}">
-<br>
-<br>
-<p>Plot(s)</p>
-{% for plotField in form.plot %}
-  {{ plotField }}
-{% endfor %}
 </div>
-<button type="button" class="add-another-collection-widget" data-list-selector="#plot-fields-list">Add Plot</button>
+<div class = "container-fluid" style = "margin-top:55px">
+    
+  <h4><b> Release of Burial Space Ownership Rights</b></h4>
 
-{# {{ form_row(form.notarized) }} #}
-{{ form_row(form.submit) }}
+  {% macro printPlotFieldRow(plotField) %}
+    <div class="plot-fields-list">
+      <label>Plot</label>
+      <br>
+      {{ form_label(plotField.cemetery) }}
+      <br>
+      {{ form_widget(plotField.cemetery) }}
+    </div>
+  {% endmacro %}
 
+  <!---<h3> Goshen City Cemeteries Violett, Oakridge & West Goshen </h3>-->
+  {{ form_start(form) }}
+  <b>{{ form_label(form.date) }}</b>
+  <br>
+    {{ form_widget(form.date) }}
+  <br>
+  <b><label>Current Owner</label></b>
+  {{ form_widget(form.from_owner) }}
+
+
+  <div id="to_owner-fields-list"
+      data-prototype="{{ form_widget(form.to_owner.vars.prototype)|e }}"
+      data-widget-tags="{{ '<p></p>'|e }}"
+      data-widget-counter="{{ form.to_owner|length }}">
+  
+  <br>
+  <b><label>With Regard to:</label></b>
+  <br>
+  <b><p>Owner(s)</p></b>
+  {% for to_ownerField in form.to_owner %}
+    {{ to_ownerField }}
+  {% endfor %}
+  </div>
+  <button type="button" class="add-another-collection-widget btn btn-primary" data-list-selector="#to_owner-fields-list">Add Recipient</button>
+
+
+  <div id="plot-fields-list"
+      data-prototype="{{ form_widget(form.plot.vars.prototype)|e }}"
+      data-widget-tags="{{ '<p></p>'|e }}"
+      data-widget-counter="{{ form.plot|length }}">
+  <br>
+  <br>
+  <b><p>Plot(s)</p></b>
+  {% for plotField in form.plot %}
+    {{ plotField }}
+  {% endfor %}
+  </div>
+  <button type="button" class="add-another-collection-widget btn btn-primary" data-list-selector="#plot-fields-list">Add Plot</button>
+  <br>
+  <br>
+  {# {{ form_row(form.notarized) }} #}
+  {{ form_row(form.submit, {'attr': {'class': 'btn btn-primary'} }) }}
+</div>
     
 
 <script>

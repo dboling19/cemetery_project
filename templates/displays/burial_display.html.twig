@@ -1,51 +1,74 @@
 <!DOCTYPE html>
 <html>
   <head>
-
-      {% block stylesheets %}
-        {{encore_entry_link_tags('app')}}
-      {% endblock %}
-    
-
-      <title>Cemetery - Burials</title>
+    {% block stylesheets %}
+      {{encore_entry_link_tags('app')}}
+    {% endblock %}
+    <script src="https://kit.fontawesome.com/0db354818b.js" crossorigin="anonymous"></script>
+  
+    <title>Cemetery - Burials</title>
   </head>
 
   <body>
-    <div style="position:fixed;top:0;width:100%">
-    {{ include("navbar.html.twig") }}
-  </div>
-    <div class="w3-container" style = "margin-top:40px">
-    {# {{ form(search_form) }} #}
-      <table class="w3-table-all">
-        <tr>
-          <th><a href="{{ path('burial_display', { column: 'firstName', order: order }) }}">First Name</a></th>
-          <th><a href="{{ path('burial_display', { column: 'lastName', order: order }) }}">Last Name</a></th>
-          <th><a href="{{ path('burial_display', { column: 'date', order: order }) }}">Date</a></th>
-          {# <th><a href="{{ path('burial_display', { column: 'plot', order: order }) }}">Plot</a></th> #}
-          <th><a href="{{ path('burial_display', { column: 'cremation', order: order }) }}">Cremation</a></th>
-          <th><a href="{{ path('burial_display', { column: 'funeralHome', order: order }) }}">Funeral Home</a></th>
-          {# <th>Notes</th> #}
-          <th>Inc. d-m-Y</th>
-          <th><div class="w3-center"><a href="{{ path('burial_display', { column: 'approval', order: order }) }}">Approval</a></div></th>
-        </tr>
-        {% for row in result %} {# simple loop to output rows #}
+    <div class="fixed-top">
+      {{ include("navbar.html.twig") }}
+    </div>
+    <div class="sticky-top" style = "top:45px">
+      <form class="row row-cols-lg-auto g-3 align-items-end p-3 mb-2 bg-secondary">
+        <div class="col-12">
+          <input type="text"
+                  name="search"
+                  class="form-control"
+                  value="{{ app.request.query.get('search') }}"
+                  placeholder="Search...">
+        </div>
+        <div class="col-12">
+          <button type="submit" class="btn btn-primary">
+            <span class="fa fa-search"></span>
+          </button>
+        </div>
+      </form>
+    </div>
+    <div class="container-fluid" style = "margin-top:55px">
+      <p>{% if searched == true %}Results: {{ result.getTotalItemCount }}{% endif %}</p>
+      <table class="table table-striped table-bordered" >
+        <thead class="table-light sticky-top" style = "top:125px;z-index:auto">
           <tr>
-            <td>{{ row.firstName }}</td>
-            <td>{{ row.lastName }}</td>
-            <td>{% if row.date is not null %} {{ row.date|date('m/d/Y') }} {% endif %}</td>
-            {# <td>{{ row.plot }}</td> #}
-            <td>{% if row.cremation == 1 %} Yes {% endif %}</td>
-            <td>{{ row.funeralHome }}</td>
-            {# <td>{{ row.notes }}</td> #}
-            <td>{{ row.IncDate }}</td>
-            <td>
-              <div class="w3-center"><a href="{{ path('modify_burial',{ id: row.id }) }}" class="w3-button w3-ripple w3-border">Edit</a></div>
-              <div class="w3-center"><a href="{{ path('toggle_burial_approval',{ id: row.id }) }}" class="w3-button w3-ripple w3-border {% if row.approval == 0 %}w3-red{% else %}w3-green{% endif %}">{% if row.approval == 0 %}Unapproved{% else %}Approved{% endif %}</a></div>
-            </td>
+            <th scope="col">{{ knp_pagination_sortable(result, 'First Name', 'burial.firstName') }}</th>
+            <th scope="col">{{ knp_pagination_sortable(result, 'Last Name', 'burial.lastName') }}</th>
+            <th scope="col">{{ knp_pagination_sortable(result, 'Date', 'burial.date') }}</th>
+            {# <th><a href="{{ path('burial_display', { column: 'plot', order: order }) }}">Plot</a></th> #}
+            <th scope="col">{{ knp_pagination_sortable(result, 'Cremation', 'burial.cremation') }}</th>
+            <th scope="col">{{ knp_pagination_sortable(result, 'Funeral Home', 'burial.funeralHome') }}</th>
+            <th scope="col">Notes</th>
+            <th scope="col">{{ knp_pagination_sortable(result, 'Inc. d-m-Y', 'burial.incDate') }}</th>
+            <th scope="col">{{ knp_pagination_sortable(result, 'Approval', 'burial.approval') }}</th>
           </tr>
-        {% endfor %}
+        </thead>
+        <tbody>
+          {% for row in result %} {# simple loop to output rows #}
+            <tr>
+              <td>{{ row.firstName }}</td>
+              <td>{{ row.lastName }}</td>
+              <td>{% if row.date is not null %} {{ row.date|date('m/d/Y') }} {% endif %}</td>
+              {# <td>{{ row.plot }}</td> #}
+              <td>{% if row.cremation == 1 %} Yes {% endif %}</td>
+              <td>{{ row.funeralHome }}</td>
+              <td>{{ row.plot.notes }}</td>
+              <td>{{ row.IncDate }}</td>
+              <td>
+                <a href="{{ path('modify_burial',{ id: row.id }) }}" class="btn btn-primary">Edit</a>
+                <a href="{{ path('toggle_burial_approval',{ id: row.id }) }}" class="btn {% if row.approval == 0 %}btn-danger{% else %}btn-success{% endif %}">{% if row.approval == 0 %}Unapproved{% else %}Approved{% endif %}</a>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
       </table>
-  <div>
+    </div>
+
+    <div class="navigation">
+      <div >{{ knp_pagination_render(result) }}</div>
+    </div>
   </body>
 
 </html>

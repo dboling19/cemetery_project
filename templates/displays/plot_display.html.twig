@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
   <head>
-      
       {% block stylesheets %}
         {{encore_entry_link_tags('app')}}
       {% endblock %}
@@ -11,35 +10,54 @@
   </head>
 
   <body>
-  <div style="position:fixed;top:0;width:100%">
-    {{ include("navbar.html.twig") }}
-  </div>
-    <div class="w3-container" style = "margin-top:40px">
+    <div class="fixed-top">
+      {{ include("navbar.html.twig") }}
     </div>
-    
-     
-      <table class="w3-table-all">
-       <div class="barBack">
-        <tr>
-          <th><a class="w3-border w3-red w3-button w3-ripple stickyHead" href="{{ path('plot_display', { column: 'cemetery', order: order }) }}"><i class="fa-solid fa-sort"></i>Cemetery</a></th>
-          <th><a class="w3-border w3-red w3-button w3-ripple stickyHead" href="{{ path('plot_display', { column: 'plot', order: order }) }}">Plot</a></th>
-          <th><div class="w3-button w3-red stickyHead">Notes</div></th>
-          <th><div class="w3-border w3-red w3-button w3-center w3-ripple stickyHead"><a href="{{ path('plot_display', { column: 'approval', order: order }) }}">Approval</a></div></th>
-        </tr>
-        <div style = "margin-top:35px">
-        {% for row in result %} {# simple loop to output rows #}
-          <tr>
-            <td>{{ row.cemetery }}</td>
-            <td>{{ row.section ~ row.lot ~ row.space}}</td>
-            <td>{{ row.notes }}</td>
-            <td>
-              <div class="w3-center"><a href="{{ path('modify_plot',{ id: row.id }) }}" class="w3-button w3-ripple w3-border">Edit</a></div>
-              <div class="w3-center"><a href="{{ path('toggle_plot_approval',{ id: row.id }) }}" class="w3-button w3-ripple w3-border {% if row.approval == 0 %}w3-red{% else %}w3-green{% endif %}">{% if row.approval == 0 %}Unapproved{% else %}Approved{% endif %}</a></div>
-            </td>
-          </tr>
-        {% endfor %}
+    <div class="sticky-top" style = "top:45px">
+      <form class="row row-cols-lg-auto g-3 align-items-end p-3 mb-2 bg-secondary">
+        <div class="col-12">
+          <input type="text"
+                  name="search"
+                  class="form-control"
+                  value="{{ app.request.query.get('search') }}"
+                  placeholder="Search...">
         </div>
+        <div class="col-12">
+          <button type="submit" class="btn btn-primary">
+            <span class="fa fa-search"></span>
+          </button>
+        </div>
+      </form>
+    </div>
+    <div class="container-fluid" style = "margin-top:55px">
+      <p>{% if searched == true %}Results: {{ result.getTotalItemCount }}{% endif %}</p>
+      <table class="table table-striped table-bordered" >
+        <thead class="table-light sticky-top" style = "top:125px;z-index:auto">
+          <tr>
+            <th scope="col">{{ knp_pagination_sortable(result, 'Cemetery', 'plot.cemetery') }}</th>
+            <th scope="col">Plot</th>
+            <th scope="col">Notes</th>
+            <th scope="col">{{ knp_pagination_sortable(result, 'Approval', 'plot.approval') }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in result %} {# simple loop to output rows #}
+            <tr>
+              <td>{{ row.cemetery }}</td>
+              <td>{{ row.section ~ row.lot ~ row.space}}</td>
+              <td>{{ row.notes }}</td>
+              <td>
+                <a href="{{ path('modify_plot',{ id: row.id }) }}" class="btn btn-primary">Edit</a>
+                <a href="{{ path('toggle_plot_approval',{ id: row.id }) }}" class="btn {% if row.approval == 0 %}btn-danger{% else %}btn-success{% endif %}">{% if row.approval == 0 %}Unapproved{% else %}Approved{% endif %}</a>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
       </table>
+    </div>
+    <div class="navigation">
+      <div>{{ knp_pagination_render(result) }}</div>
+    </div>
 
   </body>
 

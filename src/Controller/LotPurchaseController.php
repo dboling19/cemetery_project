@@ -43,6 +43,10 @@ class LotPurchaseController extends AbstractController
   {
 
     $form_array = array();
+    $plot = new Plot();
+    $owner = new Owner();
+    $plot->addOwner($owner);
+    array_push($form_array, $plot, $owner);
     // passing empty array into form to *hopefully* return an array with data later
     $form = $this->createForm(LotPurchaseForm::class, $form_array);
     $form->handleRequest($request);
@@ -65,7 +69,11 @@ class LotPurchaseController extends AbstractController
                 'space' => $plot_query->getSpace()
         ));
         array_push($plots_object_array, $found_plot);
-        $found_plot->setNotes($plot_query->getNotes());
+        if ($plot_query->getNotes() != null or $plot_query->getNotes() != '') {
+          // prevents setting notes to null upon form submission. this will only be allowed
+          // in the actual plot entity modification page.
+          $found_plot->setNotes($plot_query->getNotes());
+        }
         // find the matching plots based on user input from form and push them to a second array
       }
 
@@ -87,7 +95,7 @@ class LotPurchaseController extends AbstractController
           $found_owner->setState($owner_query->getState());
           $found_owner->setZipcode($owner_query->getZipcode());
           $found_owner->setPhoneNum($owner_query->getPhoneNum());
-          $found_owner->setApproval(false);
+          $found_owner->setApproval(-1);
           // change old owner info (name will not change)
           // find the matching owner(s) based on user input from form and push them to a second array
 
@@ -95,7 +103,7 @@ class LotPurchaseController extends AbstractController
           $new_id = $owner_repo->findOneBy(array(), array('id' => 'desc'));
           $new_owner = $owner_query;
           $new_owner->setId(($new_id->getId())+1);
-          $new_owner->setApproval(false);
+          $new_owner->setApproval(-1);
           array_push($owners_object_array, $new_owner);
           $this->em->persist($new_owner);
           // add new owner from array

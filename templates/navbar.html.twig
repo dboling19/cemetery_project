@@ -4,17 +4,40 @@
     {% block stylesheets %}
     {{encore_entry_link_tags('app')}}
     {% endblock %}
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    {% set route_name =app.request.attributes.get('_route')%}
+
+
 <body>
-  <div class = "w3-bar w3-green" >
-      <div class="w3-left">
-        <a class="w3-button w3-border" href="{{ path('display') }}">Display</a>
-        <a class="w3-button w3-border" href="{{ path('lot_purchase') }}">Lot Purchase</a>
-        <a class="w3-button w3-border" href="{{ path('owner_transfer') }}">Plot Release</a>
-        <a class="w3-button w3-border" href="{{ path('burial_transit') }}">Burial Transit</a>
-        <a class="w3-button w3-border" href="{{ path('plot_display') }}">Plots</a>
-        <a class="w3-button w3-border" href="{{ path('owner_display') }}">Owners</a>
-        <a class="w3-button w3-border" href="{{ path('burial_display') }}">Burials</a>
+  <nav class="navbar nav-pills navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="{{ path('display') }}">Display</a>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a {% if route_name == 'lot_purchase' %} class="nav-link active" {% else %} class="nav-link" {% endif %} href="{{ path('lot_purchase') }}">Lot Purchase</a>
+            </li>
+            <li class="nav-item">
+              <a {% if route_name == 'owner_transfer' %} class="nav-link active" {% else %} class="nav-link" {% endif %} href="{{ path('owner_transfer') }}">Plot Release</a>
+            </li>
+            <li class="nav-item">
+              <a {% if route_name == "burial_transit"%} class="nav-link active" {% else %} class="nav-link" {% endif %} href="{{ path('burial_transit') }}">Burial Transit</a>
+            </li>
+            <li class="nav-item">
+              <a {% if route_name == "plot_display" %} class="nav-link active" {% else %} class="nav-link" {% endif %} href="{{ path('plot_display') }}">Plots</a>
+            </li>
+            <li class="nav-item">
+              <a {% if route_name == "owner_display" %} class="nav-link active" {% else %} class="nav-link" {% endif %} href="{{ path('owner_display') }}">Owners</a>
+            </li>
+            <li class="nav-item">
+              <a {% if route_name == "burial_display" %} class="nav-link active" {% else %} class="nav-link" {% endif %} href="{{ path('burial_display') }}">Burials</a>
+            </li>
+          </ul>
+        </div>
       </div>
-    </div>
+    </nav>
   </body>
+
 </html>
+
